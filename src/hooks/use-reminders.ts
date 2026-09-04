@@ -13,7 +13,7 @@ export const REMINDER_SLOTS: ReminderSlot[] = [
   { time: "19:00", label: "Dusk reflection", emoji: "🌙" },
 ];
 
-const PREFS_KEY = "ember-reminder-prefs";
+const PREFS_KEY = "shiftedmind-reminder-prefs";
 
 interface Prefs {
   enabled: boolean;
@@ -78,7 +78,7 @@ export function useReminders(getIntention: () => string | null) {
 
   const fire = useCallback((slot?: ReminderSlot) => {
     const intention = intentionRef.current();
-    const slotText = slot ? `${slot.emoji} ${slot.label}` : "✨ Your glow check-in";
+    const slotText = slot ? `${slot.emoji} ${slot.label}` : "✨ Your intention check-in";
     const body = intention
       ? `Today you meant to: “${intention}”`
       : "You haven't set today's intention yet — it takes ten seconds.";

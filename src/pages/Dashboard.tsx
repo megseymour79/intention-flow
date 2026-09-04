@@ -1,748 +1,518 @@
-import { FloatingBackground } from "@/components/FloatingBackground";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Switch } from "@/components/ui/switch";
-import { dayKeyFor } from "@/convex/intentions";
-import { api } from "@/convex/_generated/api";
-import { useAuth } from "@/hooks/use-auth";
-import { REMINDER_SLOTS, useReminders } from "@/hooks/use-reminders";
-import {
-  ARCHETYPES,
-  archetypeById,
-  INTENTIONS,
-  INTENTION_VIBES,
-  QUIZ_QUESTIONS,
-  tipOfTheDay,
-  type Archetype,
-  type VibeKey,
-} from "@/lib/intention-data";
+import { useMemo, useState } from "react";
 import { useMutation, useQuery } from "convex/react";
-import { AnimatePresence, motion } from "framer-motion";
+import { toast } from "sonner";
+import { motion } from "framer-motion";
 import {
   Bell,
-  BellRing,
-  Check,
+  Edit3,
   Flame,
-  History,
-  Lightbulb,
-  LogOut,
-  Pencil,
-  RotateCcw,
+  Loader2,
+  Plus,
   Sparkles,
-  Wand2,
+  Trash2,
 } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
-import { useNavigate } from "react-router";
-import { toast } from "sonner";
 
-const EASE = [0.22, 0.61, 0.36, 1] as const;
+import { api } from "@/convex/_generated/api";
+import type { Id } from "@/convex/_generated/dataModel";
+import { AppShell } from "@/components/AppShell";
+import { StarEditor } from "@/components/StarEditor";
+import { StarSky, SkyStarLike } from "@/components/StarSky";
+import { StyleQuiz } from "@/components/StyleQuiz";
+import { Button } from "@/components/ui/button";
+import { Switch } from "@/components/ui/switch";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
-function EmberMark({ size = 36 }: { size?: number }) {
-  return (
-    <div
-      className="flex items-center justify-center rounded-xl bg-gradient-to-br from-amber-300 via-orange-400 to-rose-500 shadow-[0_0_20px_rgba(251,146,60,0.4)]"
-      style={{ width: size, height: size }}
-    >
-      <span className="text-white" style={{ fontSize: size * 0.55 }}>
-        ✦
-      </span>
-    </div>
+import { useAuth } from "@/hooks/use-auth";
+import {
+  REMINDER_SLOTS,
+  useReminders,
+} from "@/hooks/use-reminders";
+import { momentLabel, shiftOfTheDay, starColor, styleById } from "@/lib/shift-data";
+
+export default function Dashboard() {
+  const { user } = useAuth();
+
+  const starsData = useQuery(api.stars.listForUser);
+  const streakData = useQuery(api.stars.getStreak);
+  const quizData = useQuery(api.quiz.getMyResult);
+  const setActiveStar = useMutation(api.stars.setActive);
+  const moveStar = useMutation(api.stars.update);
+  const removeStar = useMutation(api.stars.remove);
+
+  const stars: SkyStarLike[] = useMemo(
+    () =>
+      (starsData ?? []).map((s) => ({
+        _id: s._id,
+        text: s.text,
+        moment: s.moment,
+        emoji: s.emoji,
+        colorKey: s.colorKey,
+        x: s.x,
+        y: s.y,
+        active: s.active,
+      })),
+    [starsData],
   );
-}
 
-function useTodayKey() {
-  const [now, setNow] = useState(() => new Date());
-  useEffect(() => {
-    const id = setInterval(() => setNow(new Date()), 60_000);
-    return () => clearInterval(id);
-  }, []);
-  return dayKeyFor(now);
-}
+  const activeStar = stars.find((s) => s.active) ?? null;
+  const shift = useMemo(() => shiftOfTheDay(new Date()), []);
+  const style = quizData ? styleById(quizData.styleId) : null;
+  const loading = starsData === undefined;
 
-/* ------------------------------------------------------------------ */
-/*  Intention card                                                     */
-/* ------------------------------------------------------------------ */
+  const reminders = useReminders(() => activeStar?.text ?? null);
 
-function IntentionCard() {
-  const dayKey = useTodayKey();
-  const today = useQuery(api.intentions.getToday, { dayKey });
-  const setToday = useMutation(api.intentions.setToday);
-  const [editing, setEditing] = useState(false);
-  const [custom, setCustom] = useState("");
-  const [vibe, setVibe] = useState<VibeKey>("glow");
-  const [saving, setSaving] = useState(false);
+  const [editorOpen, setEditorOpen] = useState(false);
+  const [editorTarget, setEditorTarget] = useState<{ x: number; y: number }>();
+  const [editing, setEditing] = useState<SkyStarLike | null>(null);
+  const [quizOpen, setQuizOpen] = useState(false);
+  const [deleteOpen, setDeleteOpen] = useState(false);
+  const [busyId, setBusyId] = useState<Id<"stars"> | null>(null);
 
-  const save = async (text: string, emoji: string, v: VibeKey, isCustom: boolean) => {
-    setSaving(true);
+  const hour = new Date().getHours();
+  const greeting =
+    hour < 5
+      ? "Up late, still stargazing"
+      : hour < 12
+        ? "Good morning"
+        : hour < 18
+          ? "Good afternoon"
+          : "Good evening";
+  const firstName = user?.name?.split(" ")[0] ?? "Stargazer";
+  const focusColor = starColor(activeStar?.colorKey ?? "nova");
+
+  const handlePick = (id: Id<"stars">) => {
+    const star = stars.find((s) => s._id === id);
+    if (!star || star.active) return;
+    void setActiveStar({ id }).catch((err) => {
+      console.error(err);
+      toast("Couldn't focus that star", { description: "Try again in a moment." });
+    });
+  };
+
+  const handleDrop = (id: Id<"stars">, x: number, y: number) => {
+    setBusyId(id);
+    void moveStar({ id, x, y })
+      .catch((err) => {
+        console.error(err);
+        toast("Star slipped", { description: "Couldn't save its new spot." });
+      })
+      .finally(() => setBusyId(null));
+  };
+
+  const handleRemove = async () => {
+    if (!activeStar) return;
     try {
-      await setToday({ dayKey, text, emoji, vibe: v, isCustom });
-      setEditing(false);
-      setCustom("");
-      toast("✨ Intention planted", {
-        description: `Today you mean to: “${text}”`,
+      await removeStar({ id: activeStar._id });
+      toast("Star released", {
+        description: "“" + activeStar.text.slice(0, 60) + "” drifted out of your sky.",
       });
-    } catch (e) {
-      toast.error("Couldn't plant that one", {
-        description: e instanceof Error ? e.message : "Please try again.",
-      });
+    } catch (err) {
+      console.error(err);
+      toast("Couldn't release that star", { description: "Try again in a moment." });
     } finally {
-      setSaving(false);
+      setDeleteOpen(false);
     }
   };
 
-  const vibes = INTENTION_VIBES[vibe];
-
   return (
-    <Card className="relative overflow-hidden border-white/15 bg-white/6 backdrop-blur-md">
-      <div
-        className="pointer-events-none absolute -top-16 -right-16 size-48 rounded-full blur-3xl"
-        style={{ background: `${vibes.hex}33` }}
-      />
-      <CardHeader>
-        <CardTitle className="text-xl">
-          {today ? "Today's glow" : "Set today's glow"}
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        {today && !editing ? (
-          <div className="relative flex flex-col gap-4">
-            <div
-              className="animate-glow-pulse flex items-center gap-4 rounded-2xl border p-5"
-              style={{ borderColor: `${vibes.hex}55` }}
-            >
-              <span className="text-5xl">{today.emoji}</span>
+    <AppShell title="My Sky">
+      <div className="space-y-6">
+        {/* Greeting row */}
+        <div className="flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
+              {new Date().toLocaleDateString([], {
+                weekday: "long",
+                month: "long",
+                day: "numeric",
+              })}
+            </p>
+            <h1 className="mt-1 text-3xl font-extrabold tracking-tight sm:text-4xl">
+              {greeting}, <span className="text-amber-300">{firstName}</span>{" "}
+              <span className="inline-block animate-sway">✦</span>
+            </h1>
+            <p className="mt-1 text-sm text-muted-foreground">
+              {activeStar
+                ? `Tonight you're being: “${activeStar.text}”`
+                : "Pick how you want to show up — then hang it in your sky."}
+            </p>
+          </div>
+          <Button
+            onClick={() => {
+              setEditing(null);
+              setEditorTarget(undefined);
+              setEditorOpen(true);
+            }}
+            className="rounded-full bg-amber-300 font-bold text-amber-950 hover:bg-amber-200"
+          >
+            <Plus className="mr-1.5 h-4 w-4" /> New intention
+          </Button>
+        </div>
+
+        {/* The sky */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4 }}
+        >
+          <div className="relative">
+            <StarSky
+              stars={stars}
+              onPick={handlePick}
+              onDrop={handleDrop}
+              onRequestCreate={(x, y) => {
+                setEditing(null);
+                setEditorTarget({ x, y });
+                setEditorOpen(true);
+              }}
+              className="h-[54vh] min-h-[400px] w-full overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-b from-[#0f0a26] via-[#170f3d] to-[#241450]"
+              hint={
+                stars.length === 0
+                  ? undefined
+                  : "drag stars to move them · tap one to make it your focus"
+              }
+            />
+            {loading && (
+              <div className="absolute inset-0 z-20 flex items-center justify-center rounded-3xl bg-[#0f0a26]/70 backdrop-blur-sm">
+                <Loader2 className="h-6 w-6 animate-spin text-amber-200" />
+              </div>
+            )}
+            {!loading && stars.length === 0 && (
+              <div
+                className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center"
+                aria-hidden
+              >
+                <div className="max-w-sm rounded-3xl border border-white/12 bg-black/35 p-6 text-center backdrop-blur-sm">
+                  <p className="text-3xl">🌌</p>
+                  <p className="mt-2 text-lg font-bold tracking-tight">
+                    Your sky is empty — for now
+                  </p>
+                  <p className="mt-1 text-sm text-foreground/70">
+                    Tap anywhere up here to hang a star, or borrow one of the
+                    ready-made intentions.
+                  </p>
+                </div>
+              </div>
+            )}
+          </div>
+        </motion.div>
+
+        {/* Stat tiles */}
+        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+          {/* North star */}
+          <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-5">
+            <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
+              North star · right now
+            </p>
+            {activeStar ? (
+              <div className="mt-3 space-y-3">
+                <div className="flex items-start gap-3">
+                  <span
+                    className="animate-star-pop flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-white/5 text-2xl ring-1 ring-white/10"
+                    style={{
+                      color: focusColor.hex,
+                      textShadow: `0 0 14px ${focusColor.glow}`,
+                    }}
+                  >
+                    {activeStar.emoji}
+                  </span>
+                  <div className="min-w-0">
+                    <p className="font-semibold leading-snug">
+                      “{activeStar.text}”
+                    </p>
+                    <p className="mt-1 text-xs text-muted-foreground">
+                      For: {momentLabel(activeStar.moment)}
+                    </p>
+                  </div>
+                </div>
+                <div className="flex gap-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => {
+                      setEditing(activeStar);
+                      setEditorTarget(undefined);
+                      setEditorOpen(true);
+                    }}
+                    className="h-8 border-white/15 bg-white/5 text-xs hover:bg-white/10"
+                  >
+                    <Edit3 className="mr-1.5 h-3.5 w-3.5" /> Edit
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setDeleteOpen(true)}
+                    className="h-8 border-rose-400/20 bg-rose-400/5 text-xs text-rose-200 hover:bg-rose-400/15"
+                  >
+                    <Trash2 className="mr-1.5 h-3.5 w-3.5" /> Release
+                  </Button>
+                </div>
+              </div>
+            ) : (
+              <div className="mt-3 space-y-3">
+                <p className="text-sm text-foreground/60">
+                  No star is lit yet. Tap any star in your sky — or hang a new
+                  one — to set today's focus.
+                </p>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => {
+                    setEditing(null);
+                    setEditorTarget(undefined);
+                    setEditorOpen(true);
+                  }}
+                  className="border-amber-300/40 bg-amber-300/10 text-amber-100 hover:bg-amber-300/20"
+                >
+                  <Sparkles className="mr-1.5 h-3.5 w-3.5" /> Hang my focus
+                </Button>
+              </div>
+            )}
+          </div>
+
+          {/* Streak */}
+          <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-5">
+            <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
+              Streak
+            </p>
+            <div className="mt-3 flex items-center gap-3">
+              <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-orange-400/25 to-rose-400/20 text-2xl ring-1 ring-orange-300/20">
+                {streakData?.streak ? "🔥" : "🌱"}
+              </span>
               <div>
-                <p className="text-xl font-extrabold leading-snug">{today.text}</p>
-                <p className="mt-1 text-xs font-bold uppercase tracking-widest opacity-70">
-                  {INTENTION_VIBES[today.vibe as VibeKey]?.label ?? "Your glow"}
+                <p className="text-2xl font-extrabold tracking-tight">
+                  {streakData?.streak ?? 0}
+                  <span className="ml-1 text-sm font-semibold text-muted-foreground">
+                    day{streakData?.streak === 1 ? "" : "s"}
+                  </span>
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  {streakData?.streak
+                    ? "showing up for yourself"
+                    : "hang a star today to start"}
                 </p>
               </div>
             </div>
-            <div className="flex gap-2">
+            <p className="mt-3 border-t border-white/8 pt-3 text-xs text-muted-foreground">
+              <span className="font-semibold text-amber-200/90">
+                {streakData?.total ?? stars.length}
+              </span>{" "}
+              stars in your sky so far
+            </p>
+          </div>
+
+          {/* Shift of the day */}
+          <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-5">
+            <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
+              Today's micro-shift
+            </p>
+            <div className="mt-3 flex items-start gap-3">
+              <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-white/5 text-2xl ring-1 ring-white/10">
+                {shift.emoji}
+              </span>
+              <div className="min-w-0">
+                <p className="font-semibold leading-snug">{shift.title}</p>
+                <p className="mt-1 line-clamp-3 text-xs leading-relaxed text-muted-foreground">
+                  {shift.body}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Response style */}
+          <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-5">
+            <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
+              Your response style
+            </p>
+            {style ? (
+              <div className="mt-3 space-y-3">
+                <div className="flex items-start gap-3">
+                  <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-white/5 text-2xl ring-1 ring-white/10">
+                    {style.emoji}
+                  </span>
+                  <div className="min-w-0">
+                    <p className={`font-bold ${style.glow}`}>{style.name}</p>
+                    <p className="mt-0.5 text-xs leading-relaxed text-muted-foreground">
+                      {style.tagline}
+                    </p>
+                  </div>
+                </div>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => setQuizOpen(true)}
+                  className="h-8 border-white/15 bg-white/5 text-xs hover:bg-white/10"
+                >
+                  Retake the quiz
+                </Button>
+              </div>
+            ) : (
+              <div className="mt-3 space-y-3">
+                <p className="text-sm text-foreground/60">
+                  Six questions. One honest mirror on how you react under
+                  pressure.
+                </p>
+                <Button
+                  size="sm"
+                  onClick={() => setQuizOpen(true)}
+                  className="h-8 rounded-full bg-amber-300 font-bold text-amber-950 hover:bg-amber-200"
+                >
+                  <Sparkles className="mr-1.5 h-3.5 w-3.5" /> Find my style
+                </Button>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Reminders */}
+        <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-5">
+          <div className="flex flex-wrap items-start justify-between gap-4">
+            <div className="flex items-start gap-3">
+              <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-amber-300/15 text-xl ring-1 ring-amber-300/25">
+                <Bell className="h-5 w-5 text-amber-200" />
+              </span>
+              <div>
+                <p className="font-bold">Nudge me back to my intention</p>
+                <p className="mt-0.5 max-w-md text-xs leading-relaxed text-muted-foreground">
+                  {activeStar
+                    ? `We'll check in and remind you: “${activeStar.text.slice(0, 70)}”`
+                    : "Set a focus star and we'll remind you how you meant to show up."}{" "}
+                  Reminders arrive as toasts — and as system notifications when
+                  you allow them.
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center gap-3">
+              <span className="text-xs text-muted-foreground">
+                {reminders.enabled
+                  ? reminders.nextIn
+                    ? `Next nudge in ~${reminders.nextIn}`
+                    : "scheduled"
+                  : "off"}
+              </span>
+              <Switch
+                checked={reminders.enabled}
+                onCheckedChange={(v) => void reminders.toggleEnabled(v)}
+                disabled={
+                  reminders.permission === "denied" && !reminders.enabled
+                }
+              />
+            </div>
+          </div>
+
+          <div className="mt-4 flex flex-wrap items-center gap-2 border-t border-white/8 pt-4">
+            {REMINDER_SLOTS.map((slot) => {
+              const on = reminders.slots.includes(slot.time);
+              return (
+                <button
+                  key={slot.time}
+                  type="button"
+                  disabled={!reminders.enabled}
+                  onClick={() =>
+                    reminders.setSlots(
+                      on
+                        ? reminders.slots.filter((t) => t !== slot.time)
+                        : [...reminders.slots, slot.time].sort(),
+                    )
+                  }
+                  className={`flex items-center gap-2 rounded-full border px-3 py-1.5 text-xs transition-colors disabled:cursor-not-allowed disabled:opacity-40 ${
+                    on
+                      ? "border-amber-300/60 bg-amber-300/15 text-amber-100"
+                      : "border-white/10 bg-white/5 text-muted-foreground hover:border-white/25"
+                  }`}
+                >
+                  <span>{slot.emoji}</span>
+                  {slot.label}
+                  <span className="tabular-nums text-[10px] opacity-70">
+                    {slot.time}
+                  </span>
+                </button>
+              );
+            })}
+            <div className="ml-auto flex items-center gap-2">
+              {reminders.permission === "default" && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => void reminders.requestPermission()}
+                  className="h-8 text-xs text-muted-foreground"
+                >
+                  Allow notifications
+                </Button>
+              )}
               <Button
                 variant="outline"
                 size="sm"
-                className="rounded-full border-white/20 bg-white/5 hover:bg-white/10"
-                onClick={() => setEditing(true)}
+                disabled={!reminders.enabled}
+                onClick={() => reminders.nudgeNow()}
+                className="h-8 border-white/15 bg-white/5 text-xs hover:bg-white/10"
               >
-                <Pencil className="mr-1.5 size-3.5" /> Tweak it
+                Test a nudge
               </Button>
             </div>
           </div>
-        ) : (
-          <div className="flex flex-col gap-5">
-            <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
-              {INTENTIONS.map((int) => (
-                <button
-                  key={int.text}
-                  type="button"
-                  disabled={saving}
-                  onClick={() => save(int.text, int.emoji, int.vibe, false)}
-                  className={`flex items-center gap-2.5 rounded-2xl border px-4 py-3 text-left text-sm font-bold transition-all hover:-translate-y-0.5 disabled:opacity-50 ${INTENTION_VIBES[int.vibe].chip}`}
-                >
-                  <span className="text-xl">{int.emoji}</span>
-                  <span className="leading-tight">{int.text}</span>
-                </button>
-              ))}
-            </div>
-
-            <div className="rounded-2xl border border-dashed border-white/20 bg-white/4 p-4">
-              <p className="mb-3 text-xs font-bold uppercase tracking-widest text-foreground/55">
-                Or write your own
-              </p>
-              <div className="flex flex-col gap-3 sm:flex-row">
-                <Input
-                  value={custom}
-                  onChange={(e) => setCustom(e.target.value)}
-                  placeholder="e.g. Be patient with the slow moments"
-                  className="border-white/20 bg-white/5 placeholder:text-foreground/40"
-                  maxLength={120}
-                />
-                <div className="flex items-center gap-2">
-                  {(Object.keys(INTENTION_VIBES) as VibeKey[]).map((v) => (
-                    <button
-                      key={v}
-                      type="button"
-                      title={INTENTION_VIBES[v].label}
-                      onClick={() => setVibe(v)}
-                      className={`size-7 rounded-full border-2 transition-transform hover:scale-110 ${
-                        vibe === v ? `ring-2 ring-offset-2 ring-offset-background ${INTENTION_VIBES[v].ring}` : "border-white/25"
-                      }`}
-                      style={{ background: INTENTION_VIBES[v].hex }}
-                    />
-                  ))}
-                </div>
-              </div>
-              <Button
-                className="mt-3 gap-2 rounded-full bg-amber-300 font-extrabold text-amber-950 hover:bg-amber-200"
-                disabled={saving || custom.trim().length === 0}
-                onClick={() => save(custom.trim(), "💫", vibe, true)}
-              >
-                {saving ? "Planting…" : "Plant it"} <Sparkles className="size-4" />
-              </Button>
-            </div>
-          </div>
-        )}
-      </CardContent>
-    </Card>
-  );
-}
-
-/* ------------------------------------------------------------------ */
-/*  Reminders card                                                     */
-/* ------------------------------------------------------------------ */
-
-function RemindersCard({ getIntention }: { getIntention: () => string | null }) {
-  const {
-    enabled,
-    slots,
-    permission,
-    nextIn,
-    lastNudged,
-    toggleEnabled,
-    setSlots,
-    nudgeNow,
-  } = useReminders(getIntention);
-
-  const toggleSlot = (time: string) => {
-    if (slots.includes(time)) {
-      setSlots(slots.filter((s) => s !== time));
-    } else {
-      setSlots([...slots, time].sort());
-    }
-  };
-
-  const permissionHint =
-    permission === "denied" ? (
-      <p className="text-xs text-rose-300">
-        Notifications are blocked in your browser. Allow them in your site
-        settings to get real alerts — in-app nudges still work.
-      </p>
-    ) : permission === "unsupported" ? (
-      <p className="text-xs text-foreground/55">
-        This browser doesn't support notifications, so we'll nudge you in-app.
-      </p>
-    ) : null;
-
-  return (
-    <Card className="border-white/15 bg-white/6 backdrop-blur-md">
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2 text-xl">
-          <Bell className="size-5 text-amber-300" /> Reminders
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="flex flex-col gap-5">
-        <div className="flex items-center justify-between gap-4">
-          <div>
-            <p className="font-bold">Let Ember remind you</p>
-            <p className="text-sm text-foreground/60">
-              {enabled
-                ? nextIn
-                  ? `Next nudge in about ${nextIn}`
-                  : "Scheduled"
-                : "A soft whisper of your intention, right when you need it"}
+          {reminders.permission === "denied" && (
+            <p className="mt-3 text-xs text-rose-200/80">
+              Notifications are blocked in your browser — toasts will still
+              reach you while this tab is open.
             </p>
-          </div>
-          <Switch
-            checked={enabled}
-            onCheckedChange={(v) => void toggleEnabled(v)}
-            className="data-[state=checked]:bg-amber-300"
-          />
-        </div>
-
-        <div className="flex flex-wrap gap-2">
-          {REMINDER_SLOTS.map((slot) => {
-            const active = slots.includes(slot.time);
-            return (
-              <button
-                key={slot.time}
-                type="button"
-                disabled={!enabled}
-                onClick={() => toggleSlot(slot.time)}
-                className={`flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-bold transition-all disabled:opacity-40 ${
-                  active
-                    ? "border-amber-300/60 bg-amber-300/15 text-amber-200"
-                    : "border-white/15 bg-white/5 text-foreground/60 hover:border-white/30"
-                }`}
-              >
-                {slot.emoji} {slot.label} · {slot.time}
-                {active && <Check className="size-3.5" />}
-              </button>
-            );
-          })}
-        </div>
-
-        <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
-          <Button
-            variant="outline"
-            className="gap-2 rounded-full border-amber-300/40 bg-amber-300/10 font-bold text-amber-200 hover:bg-amber-300/20"
-            onClick={nudgeNow}
-          >
-            <BellRing className="size-4" />
-            Nudge me now
-          </Button>
-          {lastNudged && (
-            <span className="text-xs text-foreground/55">
-              Last nudged at{" "}
-              {lastNudged.toLocaleTimeString([], {
-                hour: "2-digit",
-                minute: "2-digit",
-              })}
-            </span>
           )}
-        </div>
-        {permissionHint}
-      </CardContent>
-    </Card>
-  );
-}
-
-/* ------------------------------------------------------------------ */
-/*  Quiz card                                                          */
-/* ------------------------------------------------------------------ */
-
-function QuizCard({ onSetIntention }: { onSetIntention: (t: string) => void }) {
-  const result = useQuery(api.quiz.getMyResult);
-  const saveResult = useMutation(api.quiz.saveResult);
-  const [started, setStarted] = useState(false);
-  const [step, setStep] = useState(0);
-  const [scores, setScores] = useState<Record<string, number>>(
-    Object.fromEntries(ARCHETYPES.map((a) => [a.id, 0])),
-  );
-  const [finished, setFinished] = useState(false);
-  const [saving, setSaving] = useState(false);
-
-  const winner: Archetype | null = useMemo(() => {
-    if (!finished) return null;
-    const max = Math.max(...Object.values(scores));
-    const id = Object.entries(scores).find(([, v]) => v === max)?.[0] ?? "firefly";
-    return archetypeById(id);
-  }, [finished, scores]);
-
-  const start = () => {
-    setStarted(true);
-    setStep(0);
-    setFinished(false);
-    setScores(Object.fromEntries(ARCHETYPES.map((a) => [a.id, 0])));
-  };
-
-  const answer = async (archetypeId: string) => {
-    const next = { ...scores, [archetypeId]: (scores[archetypeId] ?? 0) + 1 };
-    setScores(next);
-    if (step + 1 >= QUIZ_QUESTIONS.length) {
-      setFinished(true);
-      const max = Math.max(...Object.values(next));
-      const id = Object.entries(next).find(([, v]) => v === max)?.[0] ?? "firefly";
-      setSaving(true);
-      try {
-        await saveResult({ archetype: id, scores: next });
-      } catch {
-        toast.error("Couldn't save your result", {
-          description: "It's still yours — you can retake anytime.",
-        });
-      } finally {
-        setSaving(false);
-      }
-    } else {
-      setStep((s) => s + 1);
-    }
-  };
-
-  const q = QUIZ_QUESTIONS[step];
-
-  // Show the saved archetype if one exists and we're not mid-quiz
-  const saved = result && !started ? archetypeById(result.archetype) : null;
-  const showResult = finished ? winner : saved;
-
-  return (
-    <Card className="border-white/15 bg-white/6 backdrop-blur-md">
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2 text-xl">
-          <Wand2 className="size-5 text-violet-300" /> The Glow Quiz
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        <AnimatePresence mode="wait">
-          {!started && !finished && (
-            <motion.div
-              key="intro"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0, y: -12 }}
-              transition={{ duration: 0.3 }}
-            >
-              {showResult ? (
-                <div>
-                  <div className="flex flex-col items-center gap-4 text-center">
-                    <span className="text-6xl">{showResult.emoji}</span>
-                    <div>
-                      <h3 className="text-2xl font-extrabold">
-                        You are {showResult.name}
-                      </h3>
-                      <p className="mt-1 text-violet-200">{showResult.tagline}</p>
-                    </div>
-                  </div>
-                  <p className="mt-5 text-sm leading-relaxed text-foreground/75">
-                    {showResult.description}
-                  </p>
-                  <div className="mt-4 rounded-2xl border border-white/12 bg-white/5 p-4">
-                    <p className="text-xs font-bold uppercase tracking-widest text-foreground/55">
-                      Your micro-practice
-                    </p>
-                    <p className="mt-1.5 text-sm leading-relaxed">
-                      {showResult.practice}
-                    </p>
-                  </div>
-                  <div className="mt-5">
-                    <p className="mb-2 text-xs font-bold uppercase tracking-widest text-foreground/55">
-                      Intentions that fit you
-                    </p>
-                    <div className="flex flex-wrap gap-2">
-                      {showResult.intentions.map((t) => (
-                        <button
-                          key={t}
-                          type="button"
-                          onClick={() => onSetIntention(t)}
-                          className="rounded-full border border-white/15 bg-white/5 px-3.5 py-1.5 text-sm font-bold transition-colors hover:border-amber-300/50 hover:bg-amber-300/10"
-                        >
-                          {t}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                  <Button
-                    variant="outline"
-                    className="mt-6 gap-2 rounded-full border-white/20 bg-white/5 hover:bg-white/10"
-                    onClick={start}
-                  >
-                    <RotateCcw className="size-4" /> Retake the quiz
-                  </Button>
-                </div>
-              ) : (
-                <div className="flex flex-col items-center gap-4 py-4 text-center">
-                  <span className="text-6xl">✨</span>
-                  <div>
-                    <h3 className="text-2xl font-extrabold">
-                      Which glow are you?
-                    </h3>
-                    <p className="mx-auto mt-2 max-w-md text-sm leading-relaxed text-foreground/70">
-                      Six quick questions. Meet your intention-archetype and get
-                      practices + intentions that fit how you naturally shine.
-                    </p>
-                  </div>
-                  <Button
-                    className="gap-2 rounded-full bg-violet-300 font-extrabold text-amber-950 hover:bg-violet-200"
-                    onClick={start}
-                  >
-                    <Sparkles className="size-4" /> Take the quiz
-                  </Button>
-                </div>
-              )}
-            </motion.div>
-          )}
-
-          {started && !finished && q && (
-            <motion.div
-              key={`q-${step}`}
-              initial={{ opacity: 0, x: 40 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -40 }}
-              transition={{ duration: 0.35, ease: EASE }}
-            >
-              <div className="mb-2 flex items-center justify-between text-xs font-bold uppercase tracking-widest text-foreground/55">
-                <span>
-                  Question {step + 1} of {QUIZ_QUESTIONS.length}
-                </span>
-                <span className="text-violet-300">{q.emoji}</span>
-              </div>
-              <div className="mb-5 h-1.5 overflow-hidden rounded-full bg-white/10">
-                <motion.div
-                  className="h-full rounded-full bg-gradient-to-r from-amber-300 to-violet-400"
-                  animate={{ width: `${((step + 1) / QUIZ_QUESTIONS.length) * 100}%` }}
-                  transition={{ duration: 0.4 }}
-                />
-              </div>
-              <h3 className="text-xl font-extrabold leading-snug">{q.question}</h3>
-              <div className="mt-5 grid gap-2.5 sm:grid-cols-2">
-                {q.answers.map((a) => (
-                  <button
-                    key={a.label}
-                    type="button"
-                    disabled={saving}
-                    onClick={() => void answer(a.archetype)}
-                    className="rounded-2xl border border-white/12 bg-white/5 px-4 py-3.5 text-left text-sm font-semibold transition-all hover:-translate-y-0.5 hover:border-violet-300/50 hover:bg-violet-400/10"
-                  >
-                    {a.label}
-                  </button>
-                ))}
-              </div>
-              {saving && (
-                <p className="mt-4 text-sm text-violet-300">
-                  Saving your glow…
-                </p>
-              )}
-            </motion.div>
-          )}
-
-          {finished && winner && (
-            <motion.div
-              key="result"
-              initial={{ opacity: 0, scale: 0.96 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.45, ease: EASE }}
-            >
-              <div className="flex flex-col items-center gap-3 text-center">
-                <motion.span
-                  className="text-7xl"
-                  initial={{ y: -16, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{ delay: 0.15, duration: 0.5 }}
-                >
-                  {winner.emoji}
-                </motion.span>
-                <div>
-                  <p className="text-xs font-bold uppercase tracking-widest text-foreground/55">
-                    Your glow is
-                  </p>
-                  <h3 className="text-3xl font-extrabold">
-                    {winner.name} <span className={winner.glow}>✦</span>
-                  </h3>
-                  <p className="mt-1 font-semibold text-foreground/70">
-                    {winner.tagline}
-                  </p>
-                </div>
-              </div>
-              <div className="mt-6 space-y-2.5">
-                {ARCHETYPES.map((a) => {
-                  const score = scores[a.id] ?? 0;
-                  const pct = (score / QUIZ_QUESTIONS.length) * 100;
-                  return (
-                    <div key={a.id} className="flex items-center gap-3">
-                      <span className="w-28 shrink-0 text-sm font-bold">
-                        {a.emoji} {a.name}
-                      </span>
-                      <div className="h-2.5 flex-1 overflow-hidden rounded-full bg-white/10">
-                        <motion.div
-                          className={`h-full rounded-full ${a.bar}`}
-                          initial={{ width: 0 }}
-                          animate={{ width: `${pct}%` }}
-                          transition={{ duration: 0.7, ease: EASE }}
-                        />
-                      </div>
-                      <span className="w-6 shrink-0 text-right text-xs text-foreground/55">
-                        {score}
-                      </span>
-                    </div>
-                  );
-                })}
-              </div>
-              <p className="mt-5 text-sm leading-relaxed text-foreground/75">
-                {winner.description}
-              </p>
-              <div className="mt-4 rounded-2xl border border-white/12 bg-white/5 p-4">
-                <p className="text-xs font-bold uppercase tracking-widest text-foreground/55">
-                  Your micro-practice
-                </p>
-                <p className="mt-1.5 text-sm leading-relaxed">
-                  {winner.practice}
-                </p>
-              </div>
-              <div className="mt-5">
-                <p className="mb-2 text-xs font-bold uppercase tracking-widest text-foreground/55">
-                  Intentions that fit you
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  {winner.intentions.map((t) => (
-                    <button
-                      key={t}
-                      type="button"
-                      onClick={() => onSetIntention(t)}
-                      className="rounded-full border border-white/15 bg-white/5 px-3.5 py-1.5 text-sm font-bold transition-colors hover:border-amber-300/50 hover:bg-amber-300/10"
-                    >
-                      {t}
-                    </button>
-                  ))}
-                </div>
-              </div>
-              <Button
-                variant="outline"
-                className="mt-6 gap-2 rounded-full border-white/20 bg-white/5 hover:bg-white/10"
-                onClick={start}
-              >
-                <RotateCcw className="size-4" /> Retake
-              </Button>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </CardContent>
-    </Card>
-  );
-}
-
-/* ------------------------------------------------------------------ */
-/*  History card                                                       */
-/* ------------------------------------------------------------------ */
-
-function HistoryCard() {
-  const history = useQuery(api.intentions.listForUser);
-  const streak = useQuery(api.intentions.getStreak);
-
-  const recent = history?.slice(0, 8) ?? [];
-
-  return (
-    <Card className="border-white/15 bg-white/6 backdrop-blur-md">
-      <CardHeader className="flex-row items-center justify-between space-y-0">
-        <CardTitle className="flex items-center gap-2 text-xl">
-          <History className="size-5 text-rose-300" /> Your glow history
-        </CardTitle>
-        <div className="flex items-center gap-1.5 rounded-full border border-orange-300/30 bg-orange-400/10 px-3.5 py-1.5">
-          <Flame className="size-4 text-orange-300" />
-          <span className="text-sm font-extrabold text-orange-200">
-            {streak?.streak ?? 0}-day streak
-          </span>
-        </div>
-      </CardHeader>
-      <CardContent>
-        {recent.length === 0 ? (
-          <div className="rounded-2xl border border-dashed border-white/15 bg-white/4 p-6 text-center text-sm text-foreground/60">
-            <p className="text-3xl">🌱</p>
-            <p className="mt-2 font-bold">No intentions yet</p>
-            <p>Set today's glow above and your little garden starts here.</p>
-          </div>
-        ) : (
-          <ul className="space-y-2">
-            {recent.map((int) => (
-              <li
-                key={int._id}
-                className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/4 px-4 py-2.5"
-              >
-                <span className="text-2xl">{int.emoji}</span>
-                <span className="flex-1 text-sm font-semibold">{int.text}</span>
-                <span className="text-xs tabular-nums text-foreground/50">
-                  {new Date(`${int.dayKey}T12:00:00`).toLocaleDateString([], {
-                    weekday: "short",
-                    month: "short",
-                    day: "numeric",
-                  })}
-                </span>
-              </li>
-            ))}
-          </ul>
-        )}
-        {streak && streak.total > 0 && (
-          <p className="mt-4 text-xs text-foreground/55">
-            {streak.total} intention{streak.total === 1 ? "" : "s"} planted so far
-            {streak.streak > 0 ? " · keep the flame alive" : ""}.
-          </p>
-        )}
-      </CardContent>
-    </Card>
-  );
-}
-
-/* ------------------------------------------------------------------ */
-/*  Page                                                               */
-/* ------------------------------------------------------------------ */
-
-export default function Dashboard() {
-  const { user, signOut } = useAuth();
-  const navigate = useNavigate();
-  const dayKey = useTodayKey();
-  const today = useQuery(api.intentions.getToday, { dayKey });
-  const setToday = useMutation(api.intentions.setToday);
-  const tip = tipOfTheDay(new Date());
-
-  const handleSignOut = async () => {
-    await signOut();
-    navigate("/");
-  };
-
-  const plantFromQuiz = async (text: string) => {
-    const match = INTENTIONS.find((i) => i.text === text);
-    const vibe = match?.vibe ?? "glow";
-    const emoji = match?.emoji ?? "💫";
-    try {
-      await setToday({
-        dayKey: dayKeyFor(new Date()),
-        text,
-        emoji,
-        vibe,
-        isCustom: !match,
-      });
-      toast("✨ Intention planted", {
-        description: `Today you mean to: “${text}”`,
-      });
-    } catch (e) {
-      toast.error("Couldn't plant that one", {
-        description: e instanceof Error ? e.message : "Please try again.",
-      });
-    }
-  };
-
-  return (
-    <main className="min-h-screen text-foreground">
-      <FloatingBackground count={22} />
-      <div className="relative z-10 mx-auto max-w-5xl px-5 py-8 sm:px-8">
-        {/* Header */}
-        <header className="mb-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <div className="flex items-center gap-3">
-            <EmberMark />
-            <div>
-              <p className="text-xs font-bold uppercase tracking-widest text-amber-300/80">
-                {new Date().toLocaleDateString([], {
-                  weekday: "long",
-                  month: "long",
-                  day: "numeric",
-                })}
-              </p>
-              <h1 className="text-2xl font-extrabold tracking-tight sm:text-3xl">
-                {user?.name ? `Hello, ${user.name.split(" ")[0]} 👋` : "Hello, glow-bringer 👋"}
-              </h1>
-            </div>
-          </div>
-          <Button
-            variant="outline"
-            className="gap-2 self-start rounded-full border-white/20 bg-white/5 hover:bg-white/10 sm:self-auto"
-            onClick={handleSignOut}
-          >
-            <LogOut className="size-4" /> Sign out
-          </Button>
-        </header>
-
-        <div className="grid gap-8 lg:grid-cols-2">
-          <div className="flex flex-col gap-8">
-            <IntentionCard />
-            <RemindersCard getIntention={() => today?.text ?? null} />
-            <HistoryCard />
-          </div>
-
-          <div className="flex flex-col gap-8">
-            <QuizCard onSetIntention={(t) => void plantFromQuiz(t)} />
-            <Card className="border-white/15 bg-white/6 backdrop-blur-md">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-xl">
-                  <Lightbulb className="size-5 text-emerald-300" /> Today's little
-                  nudge
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="rounded-2xl border border-emerald-300/20 bg-emerald-400/8 p-5">
-                  <div className="text-4xl">{tip.emoji}</div>
-                  <h3 className="mt-3 text-lg font-extrabold">{tip.title}</h3>
-                  <p className="mt-1.5 text-sm leading-relaxed text-foreground/75">
-                    {tip.body}
-                  </p>
-                  <Badge className="mt-4 rounded-full bg-emerald-300/15 text-emerald-200">
-                    Tip of the day
-                  </Badge>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
         </div>
       </div>
-    </main>
+
+      <StarEditor
+        open={editorOpen}
+        onOpenChange={setEditorOpen}
+        target={editorTarget}
+        existing={
+          editing
+            ? {
+                _id: editing._id,
+                text: editing.text,
+                moment: editing.moment,
+                emoji: editing.emoji,
+                colorKey: editing.colorKey,
+              }
+            : null
+        }
+      />
+
+      <StyleQuiz open={quizOpen} onOpenChange={setQuizOpen} />
+
+      <AlertDialog open={deleteOpen} onOpenChange={setDeleteOpen}>
+        <AlertDialogContent className="border-white/12 bg-[#1c1242]/95 backdrop-blur-xl">
+          <AlertDialogHeader>
+            <AlertDialogTitle>Release this star?</AlertDialogTitle>
+            <AlertDialogDescription>
+              “{activeStar?.text}” will drift out of your sky. Its glow is gone
+              for good — unless you hang it again.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel className="rounded-full">Keep it</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={(e) => {
+                e.preventDefault();
+                void handleRemove();
+              }}
+              className="rounded-full bg-rose-400/90 font-bold text-rose-950 hover:bg-rose-300"
+            >
+              Release it
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      {busyId && <span className="sr-only">moving star</span>}
+    </AppShell>
   );
 }

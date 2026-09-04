@@ -14,6 +14,7 @@ import {
   InputOTPSlot,
 } from "@/components/ui/input-otp";
 import { FloatingBackground } from "@/components/FloatingBackground";
+import { StarMark } from "@/components/StarMark";
 
 import { useAuth } from "@/hooks/use-auth";
 import { ArrowRight, Loader2, Mail, UserX } from "lucide-react";
@@ -22,19 +23,6 @@ import { useNavigate, useSearchParams } from "react-router";
 
 interface AuthProps {
   redirectAfterAuth?: string;
-}
-
-function EmberMark({ size = 56 }: { size?: number }) {
-  return (
-    <div
-      className="flex items-center justify-center rounded-2xl bg-gradient-to-br from-amber-300 via-orange-400 to-rose-500 shadow-[0_0_28px_rgba(251,146,60,0.45)]"
-      style={{ width: size, height: size }}
-    >
-      <span className="text-white" style={{ fontSize: size * 0.55 }}>
-        ✦
-      </span>
-    </div>
-  );
 }
 
 function resolveRedirectAfterAuth(
@@ -65,6 +53,7 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
       navigate(redirect);
     }
   }, [authLoading, isAuthenticated, navigate, redirect]);
+
   const handleEmailSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsLoading(true);
@@ -79,7 +68,7 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
       setError(
         error instanceof Error
           ? error.message
-          : "Failed to send verification code. Please try again.",
+          : "Failed to send your code. Please try again.",
       );
       setIsLoading(false);
     }
@@ -92,16 +81,11 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
     try {
       const formData = new FormData(event.currentTarget);
       await signIn("email-otp", formData);
-
-      console.log("signed in");
-
       navigate(redirect);
     } catch (error) {
       console.error("OTP verification error:", error);
-
-      setError("The verification code you entered is incorrect.");
+      setError("That code doesn't look right — check it and try again.");
       setIsLoading(false);
-
       setOtp("");
     }
   };
@@ -110,14 +94,15 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
     setIsLoading(true);
     setError(null);
     try {
-      console.log("Attempting anonymous sign in...");
       await signIn("anonymous");
-      console.log("Anonymous sign in successful");
       navigate(redirect);
     } catch (error) {
       console.error("Guest login error:", error);
-      console.error("Error details:", JSON.stringify(error, null, 2));
-      setError(`Failed to sign in as guest: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      setError(
+        `Couldn't start a guest session: ${
+          error instanceof Error ? error.message : "unknown error"
+        }`,
+      );
       setIsLoading(false);
     }
   };
@@ -134,19 +119,27 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
             onClick={() => navigate("/")}
             className="mb-6 flex items-center gap-3 text-left"
           >
-            <EmberMark />
-            <span className="text-2xl font-extrabold tracking-tight">
-              Ember<span className="text-amber-300">.</span>
+            <StarMark size={52} />
+            <span>
+              <span className="block text-2xl font-extrabold tracking-tight">
+                Shifted<span className="text-amber-300">Mind</span>
+              </span>
+              <span className="block text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
+                choose your responses
+              </span>
             </span>
           </button>
-          <Card className="w-full border-white/15 bg-white/6 shadow-[0_24px_80px_-24px_rgba(0,0,0,0.6)] backdrop-blur-md pb-0">
+
+          <Card className="w-full border-white/15 bg-white/6 pb-0 shadow-[0_24px_80px_-24px_rgba(0,0,0,0.6)] backdrop-blur-md">
             {step === "signIn" ? (
               <>
                 <CardHeader className="text-center">
-                  <p className="text-3xl">🪔</p>
-                  <CardTitle className="text-2xl">Set your intention</CardTitle>
+                  <p className="animate-floaty inline-block text-3xl">✦</p>
+                  <CardTitle className="text-2xl tracking-tight">
+                    Hang your first intention
+                  </CardTitle>
                   <CardDescription>
-                    Sign in or start fresh — your glow is waiting.
+                    Sign in or start fresh — your sky is waiting.
                   </CardDescription>
                 </CardHeader>
                 <form onSubmit={handleEmailSubmit}>
@@ -187,7 +180,7 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
                           <span className="w-full border-t border-white/10" />
                         </div>
                         <div className="relative flex justify-center text-xs uppercase">
-                          <span className="bg-[#2b1d5e] px-2 text-muted-foreground">
+                          <span className="bg-[#1c1242] px-2 text-muted-foreground">
                             Or
                           </span>
                         </div>
@@ -201,7 +194,7 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
                         disabled={isLoading}
                       >
                         <UserX className="mr-2 h-4 w-4" />
-                        Continue as Guest
+                        Continue as a guest star
                       </Button>
                     </div>
                   </CardContent>
@@ -210,9 +203,11 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
             ) : (
               <>
                 <CardHeader className="text-center mt-4">
-                  <CardTitle>Check your email</CardTitle>
+                  <CardTitle className="tracking-tight">
+                    Check your email
+                  </CardTitle>
                   <CardDescription>
-                    We've sent a code to {step.email}
+                    We've sent a six-digit code to {step.email}
                   </CardDescription>
                 </CardHeader>
                 <form onSubmit={handleOtpSubmit}>
@@ -228,7 +223,6 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
                         disabled={isLoading}
                         onKeyDown={(e) => {
                           if (e.key === "Enter" && otp.length === 6 && !isLoading) {
-                            // Find the closest form and submit it
                             const form = (e.target as HTMLElement).closest("form");
                             if (form) {
                               form.requestSubmit();
@@ -272,7 +266,7 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
                         </>
                       ) : (
                         <>
-                          Verify code
+                          Light it up
                           <ArrowRight className="ml-2 h-4 w-4" />
                         </>
                       )}
@@ -284,7 +278,7 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
                       disabled={isLoading}
                       className="w-full"
                     >
-                      Use different email
+                      Use a different email
                     </Button>
                   </CardFooter>
                 </form>
@@ -304,7 +298,7 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
             </div>
           </Card>
           <p className="mt-5 text-sm text-foreground/55">
-            ✨ One intention a day keeps the overwhelm away
+            ✨ One intention a day keeps autopilot away
           </p>
         </div>
       </div>

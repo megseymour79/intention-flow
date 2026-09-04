@@ -56,6 +56,10 @@ export const STAR_COLORS: Record<ColorKey, StarColor> = {
 
 export const STAR_COLOR_KEYS = Object.keys(STAR_COLORS) as ColorKey[];
 
+export function starColor(key: string): StarColor {
+  return STAR_COLORS[key as ColorKey] ?? STAR_COLORS.nova;
+}
+
 export interface Moment {
   id: string;
   label: string;
