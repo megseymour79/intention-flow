@@ -11,8 +11,11 @@
 import type * as auth from "../auth.js";
 import type * as auth_emailOtp from "../auth/emailOtp.js";
 import type * as http from "../http.js";
-import type * as intentions from "../intentions.js";
+import type * as messages from "../messages.js";
+import type * as posts from "../posts.js";
 import type * as quiz from "../quiz.js";
+import type * as stars from "../stars.js";
+import type * as storage from "../storage.js";
 import type * as users from "../users.js";
 
 import type {
@@ -25,8 +28,11 @@ declare const fullApi: ApiFromModules<{
   auth: typeof auth;
   "auth/emailOtp": typeof auth_emailOtp;
   http: typeof http;
-  intentions: typeof intentions;
+  messages: typeof messages;
+  posts: typeof posts;
   quiz: typeof quiz;
+  stars: typeof stars;
+  storage: typeof storage;
   users: typeof users;
 }>;
 

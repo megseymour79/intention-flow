@@ -18,15 +18,15 @@ export const getMyResult = query({
 
 export const saveResult = mutation({
   args: {
-    archetype: v.string(),
+    styleId: v.string(),
     scores: v.record(v.string(), v.number()),
   },
-  handler: async (ctx, { archetype, scores }) => {
+  handler: async (ctx, { styleId, scores }) => {
     const userId = await getAuthUserId(ctx);
     if (userId === null) throw new Error("Not authenticated");
     return await ctx.db.insert("quizResults", {
       userId,
-      archetype,
+      styleId,
       scores,
       createdAt: Date.now(),
     });
