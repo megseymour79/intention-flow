@@ -1,3 +1,4 @@
+import '@vly-ai/integrations';
 import { Toaster } from "@/components/ui/sonner";
 import { RequireAuth } from "@/components/RequireAuth";
 import { VlyToolbar } from "../vly-toolbar-readonly.tsx";
@@ -79,7 +80,7 @@ createRoot(document.getElementById("root")!).render(
             </Routes>
           </Suspense>
         </BrowserRouter>
-        <Toaster />
+        <Toaster theme="dark" position="top-center" richColors closeButton />
       </ConvexAuthProvider>
     </InstrumentationProvider>
   </StrictMode>,

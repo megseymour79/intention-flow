@@ -32,12 +32,26 @@ const schema = defineSchema(
       role: v.optional(roleValidator), // role of the user. do not remove
     }).index("email", ["email"]), // index for the email. do not remove or modify
 
-    // add other tables here
+    // one intention per user per day
+    intentions: defineTable({
+      userId: v.id("users"),
+      dayKey: v.string(), // local date "YYYY-MM-DD"
+      text: v.string(),
+      emoji: v.string(),
+      vibe: v.string(), // color key from INTENTION_VIBES
+      isCustom: v.boolean(),
+      createdAt: v.number(),
+    })
+      .index("by_user_day", ["userId", "dayKey"])
+      .index("by_user", ["userId"]),
 
-    // tableName: defineTable({
-    //   ...
-    //   // table fields
-    // }).index("by_field", ["field"])
+    // latest quiz result per user (archetype)
+    quizResults: defineTable({
+      userId: v.id("users"),
+      archetype: v.string(),
+      scores: v.record(v.string(), v.number()),
+      createdAt: v.number(),
+    }).index("by_user", ["userId"]),
   },
   {
     schemaValidation: false,
