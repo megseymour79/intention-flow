@@ -175,17 +175,32 @@ export function InstrumentationProvider({
   const [error, setError] = useState<GenericError | null>(null);
 
   useEffect(() => {
+    // Errors the browser masked for us (cross-origin iframe) or transient module
+    // reload noise carry no usable detail — log them, but don't alarm the user.
+    const isMaskedOrTransient = (message: string, filename: string) =>
+      message === "Script error." ||
+      message === "Script error.".toLowerCase() ||
+      /importing a module script failed|failed to fetch dynamically imported module|error loading dynamically imported module/i.test(
+        message,
+      ) ||
+      (!filename && message.startsWith("Uncaught"));
+
     const handleError = async (event: ErrorEvent) => {
       try {
         console.log(event);
         event.preventDefault();
-        setError({
-          error: event.message,
-          stack: event.error?.stack || "",
-          filename: event.filename || "",
-          lineno: event.lineno,
-          colno: event.colno,
-        });
+
+        if (
+          !isMaskedOrTransient(event.message ?? "", event.filename ?? "")
+        ) {
+          setError({
+            error: event.message,
+            stack: event.error?.stack || "",
+            filename: event.filename || "",
+            lineno: event.lineno,
+            colno: event.colno,
+          });
+        }
 
         if (import.meta.env.VITE_VLY_APP_ID) {
           await reportErrorToVly({
@@ -205,17 +220,28 @@ export function InstrumentationProvider({
       try {
         console.error(event);
 
-        if (import.meta.env.VITE_VLY_APP_ID) {
-          await reportErrorToVly({
-            error: event.reason.message,
-            stackTrace: event.reason.stack,
+        const reason = event.reason;
+        const message =
+          reason instanceof Error
+            ? reason.message
+            : typeof reason === "string"
+              ? reason
+              : String(reason ?? "Unknown promise rejection");
+        const stack = reason instanceof Error ? (reason.stack ?? "") : "";
+
+        if (!isMaskedOrTransient(message, "")) {
+          setError({
+            error: message,
+            stack,
           });
         }
 
-        setError({
-          error: event.reason.message,
-          stack: event.reason.stack,
-        });
+        if (import.meta.env.VITE_VLY_APP_ID) {
+          await reportErrorToVly({
+            error: message,
+            stackTrace: stack,
+          });
+        }
       } catch (error) {
         console.error("Error in handleRejection:", error);
       }

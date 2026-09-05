@@ -25,19 +25,43 @@ const NotFound = lazy(() => import("./pages/NotFound.tsx"));
 // a redeploy or a stale Vite dep cache), hard-reload once to pick up fresh assets.
 function recoverFromChunkFailure() {
   const KEY = "shiftedmind:chunk-recovery";
+  let last = 0;
+  try {
+    last = Number(sessionStorage.getItem(KEY) ?? 0);
+  } catch {
+    // Storage can be blocked in sandboxed iframes — treat as no history.
+  }
   const now = Date.now();
-  const last = Number(sessionStorage.getItem(KEY) ?? 0);
   if (now - last < 10_000) return; // avoid reload loops
-  sessionStorage.setItem(KEY, String(now));
+  try {
+    sessionStorage.setItem(KEY, String(now));
+  } catch {
+    // Ignore — recovery still proceeds without the guard.
+  }
   window.location.reload();
 }
 
 const CHUNK_FAIL = /importing a module script failed|failed to fetch dynamically imported module|error loading dynamically imported module/i;
 window.addEventListener("error", (e) => {
-  if (CHUNK_FAIL.test(e.message ?? "")) recoverFromChunkFailure();
+  try {
+    if (CHUNK_FAIL.test(e.message ?? "")) recoverFromChunkFailure();
+  } catch {
+    // never let the recovery path itself throw
+  }
 });
 window.addEventListener("unhandledrejection", (e) => {
-  if (CHUNK_FAIL.test(String(e.reason))) recoverFromChunkFailure();
+  try {
+    const reason = e.reason;
+    const text =
+      reason instanceof Error
+        ? reason.message
+        : typeof reason === "string"
+          ? reason
+          : "";
+    if (CHUNK_FAIL.test(text)) recoverFromChunkFailure();
+  } catch {
+    // never let the recovery path itself throw
+  }
 });
 
 // Fallback UI when a lazy route fails to load (stale cache, network hiccup).
