@@ -79,9 +79,8 @@ export default defineConfig({
   },
   // Performance hints
   server: {
-    // Keep HMR on, but disable full-screen error overlay
-    hmr: {
-      overlay: false,
-    },
+    // Freebuff requires HMR to remain disabled (full reloads avoid
+    // react-refresh runtime desyncs like null-dispatcher crashes).
+    hmr: false,
   },
 });
