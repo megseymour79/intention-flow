@@ -5,7 +5,9 @@ import { VlyToolbar } from "../vly-toolbar-readonly.tsx";
 import { InstrumentationProvider } from "@/instrumentation.tsx";
 import { ConvexAuthProvider } from "@convex-dev/auth/react";
 import { ConvexReactClient } from "convex/react";
-import { StrictMode, useEffect, lazy, Suspense } from "react";
+import { StrictMode, useEffect, lazy, Suspense, Component } from "react";
+import type { ReactNode } from "react";
+import { Button } from "@/components/ui/button";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, Route, Routes, useLocation } from "react-router";
 import "./index.css";
@@ -18,6 +20,49 @@ const Dashboard = lazy(() => import("./pages/Dashboard.tsx"));
 const Community = lazy(() => import("./pages/Community.tsx"));
 const Messages = lazy(() => import("./pages/Messages.tsx"));
 const NotFound = lazy(() => import("./pages/NotFound.tsx"));
+
+// Self-heal stale build chunks: if the browser fails to load a module (e.g. after
+// a redeploy or a stale Vite dep cache), hard-reload once to pick up fresh assets.
+function recoverFromChunkFailure() {
+  const KEY = "shiftedmind:chunk-recovery";
+  const now = Date.now();
+  const last = Number(sessionStorage.getItem(KEY) ?? 0);
+  if (now - last < 10_000) return; // avoid reload loops
+  sessionStorage.setItem(KEY, String(now));
+  window.location.reload();
+}
+
+const CHUNK_FAIL = /importing a module script failed|failed to fetch dynamically imported module|error loading dynamically imported module/i;
+window.addEventListener("error", (e) => {
+  if (CHUNK_FAIL.test(e.message ?? "")) recoverFromChunkFailure();
+});
+window.addEventListener("unhandledrejection", (e) => {
+  if (CHUNK_FAIL.test(String(e.reason))) recoverFromChunkFailure();
+});
+
+// Fallback UI when a lazy route fails to load (stale cache, network hiccup).
+class RouteErrorBoundary extends Component<
+  { children: ReactNode },
+  { failed: boolean }
+> {
+  state = { failed: false };
+  static getDerivedStateFromError() {
+    return { failed: true };
+  }
+  render() {
+    if (this.state.failed) {
+      return (
+        <div className="min-h-screen flex flex-col items-center justify-center gap-4 bg-background text-foreground">
+          <p className="text-lg text-muted-foreground">
+            The sky drifted out of place. Let's re-anchor it.
+          </p>
+          <Button onClick={() => window.location.reload()}>Reload ShiftedMind</Button>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
 
 // Simple loading fallback for route transitions
 function RouteLoading() {
@@ -63,6 +108,7 @@ createRoot(document.getElementById("root")!).render(
       <ConvexAuthProvider client={convex}>
         <BrowserRouter>
           <RouteSyncer />
+          <RouteErrorBoundary>
           <Suspense fallback={<RouteLoading />}>
             <Routes>
               <Route path="/" element={<Landing />} />
@@ -97,6 +143,7 @@ createRoot(document.getElementById("root")!).render(
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>
+          </RouteErrorBoundary>
         </BrowserRouter>
         <Toaster theme="dark" position="top-center" richColors closeButton />
       </ConvexAuthProvider>
