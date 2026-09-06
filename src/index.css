@@ -328,6 +328,111 @@
   animation-duration: 9s;
 }
 
+/* --- black hole mystique ------------------------------------------------ */
+
+/* inner disk: counter-rotates, breathes hotter and brighter as it turns */
+@keyframes disk-counter {
+  from {
+    transform: translate(-50%, -50%) rotate(360deg) scale(1);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(0deg) scale(1.08);
+  }
+}
+
+.animate-disk-counter {
+  animation-name: disk-counter;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+  animation-duration: 14s;
+}
+
+/* the whole event horizon: a slow heartbeat, as if the void were breathing */
+@keyframes horizon-breathe {
+  0%,
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.96;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.045);
+    opacity: 1;
+  }
+}
+
+.animate-horizon-breathe {
+  animation-name: horizon-breathe;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+  animation-duration: 7s;
+}
+
+/* one mote of captured light, spiraling down into the horizon */
+@keyframes infall {
+  0% {
+    transform: rotate(0deg) translateX(var(--fall-from, 46px)) scale(1);
+    opacity: 0;
+  }
+  18% {
+    opacity: 1;
+  }
+  100% {
+    transform: rotate(var(--fall-to, -240deg)) translateX(6px) scale(0.3);
+    opacity: 0;
+  }
+}
+
+/* fallback when the animation utility isn't matched (safety no-op) */
+.animate-infall {
+  animation-name: infall;
+  animation-iteration-count: infinite;
+  animation-timing-function: cubic-bezier(0.45, 0, 0.6, 1);
+}
+
+/* the user's fall: the whole vortex stretches vertically and the sky dims */
+@keyframes dive {
+  0% {
+    transform: translate(-50%, -50%) scaleY(1) scaleX(1);
+    opacity: 1;
+  }
+  55% {
+    transform: translate(-50%, -50%) scaleY(2.4) scaleX(0.42);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) scaleY(6) scaleX(0.08);
+    opacity: 0;
+  }
+}
+
+.animate-dive {
+  animation-name: dive;
+  animation-iteration-count: 1;
+  animation-timing-function: cubic-bezier(0.7, 0, 0.84, 0);
+  animation-fill-mode: forwards;
+  animation-duration: 700ms;
+}
+
+/* the glow halo dimming out as the user falls in */
+@keyframes dive-fade {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(2.6);
+    opacity: 0;
+  }
+}
+
+.animate-dive-fade {
+  animation-name: dive-fade;
+  animation-iteration-count: 1;
+  animation-timing-function: ease-in;
+  animation-fill-mode: forwards;
+  animation-duration: 700ms;
+}
+
 @keyframes aurora {
   0%,
   100% {

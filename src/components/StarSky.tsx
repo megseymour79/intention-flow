@@ -237,49 +237,142 @@ function ShootingStars() {
 }
 
 /* ------------------------------------------------------------------ */
-/* The black hole — the way down into deeper quizzes                    */
+/* The black hole — a gravitational lens, and the way down into the     */
+/* deeper quizzes. Click it to fall in.                                 */
 /* ------------------------------------------------------------------ */
 
 /** A quiet gravitational lens in the sky. Click to dive deeper. */
 function SkyVortex({ onDiveIn }: { onDiveIn: () => void }) {
+  const [falling, setFalling] = useState(false);
+
+  const fall = () => {
+    if (falling) return;
+    setFalling(true);
+    // Let the fall play out (~700ms) before the quiz list opens.
+    setTimeout(onDiveIn, 720);
+  };
+
   return (
     <button
       type="button"
       aria-label="Dive into the black hole — open the deeper quizzes"
       title="Dive deeper"
-      onClick={onDiveIn}
+      onClick={fall}
       className="group absolute z-10 -translate-x-1/2 -translate-y-1/2 touch-none select-none outline-none"
-      style={{ left: "88%", top: "18%" }}
+      style={{ left: "88%", top: "20%" }}
     >
-      {/* slow pulse ring — makes the void findable without breaking the night */}
+      {falling && (
+        <>
+          {/* the whole lens stretching into a thread as you fall through */}
+          <span
+            aria-hidden
+            className="animate-dive absolute left-1/2 top-1/2 h-[148px] w-[148px] rounded-[50%]"
+            style={{
+              background:
+                "radial-gradient(circle, #000 0%, #05070f 55%, rgba(120,150,230,0.14) 72%, transparent 78%)",
+            }}
+          />
+          {/* its glow blown outward, dimming as the horizon swallows you */}
+          <span
+            aria-hidden
+            className="animate-dive-fade absolute left-1/2 top-1/2 h-[148px] w-[148px] rounded-full"
+            style={{
+              background:
+                "radial-gradient(circle, transparent 46%, rgba(150,180,255,0.16) 58%, transparent 74%)",
+            }}
+          />
+        </>
+      )}
+
+      {/* gravitational lensing halo — space bending around the void */}
       <span
         aria-hidden
-        className="animate-vortex-pulse absolute left-1/2 top-1/2 h-9 w-9 -translate-x-1/2 -translate-y-1/2 rounded-full border border-blue-200/40"
-      />
-      {/* rotating accretion glow */}
-      <span
-        aria-hidden
-        className="animate-swirl absolute left-1/2 top-1/2 h-16 w-16 -translate-x-1/2 -translate-y-1/2 rounded-full blur-[3px]"
+        className="animate-horizon-breathe pointer-events-none absolute left-1/2 top-1/2 h-[168px] w-[168px] rounded-full"
         style={{
           background:
-            "conic-gradient(from 40deg, transparent 0deg, rgba(150,180,255,0.45) 70deg, rgba(255,255,255,0.6) 110deg, rgba(150,180,255,0.25) 160deg, transparent 240deg)",
+            "radial-gradient(circle, transparent 26%, rgba(140,170,255,0.14) 38%, rgba(90,120,220,0.07) 48%, transparent 62%)",
         }}
       />
-      {/* the event horizon */}
+
+      {/* outer accretion disk — slow, cool, broad */}
       <span
         aria-hidden
-        className="relative block h-9 w-9 rounded-full border border-white/30 transition-transform duration-200 group-hover:scale-110"
+        className="animate-swirl pointer-events-none absolute left-1/2 top-1/2 h-[132px] w-[132px] rounded-full blur-[4px]"
         style={{
           background:
-            "radial-gradient(circle at 42% 38%, #10141f 0%, #030408 55%, #000 100%)",
+            "conic-gradient(from 40deg, transparent 0deg, rgba(120,150,255,0.22) 70deg, rgba(210,225,255,0.38) 110deg, rgba(120,150,255,0.14) 160deg, transparent 235deg)",
+        }}
+      />
+      {/* inner disk — counter-rotating, hotter, tighter */}
+      <span
+        aria-hidden
+        className="animate-disk-counter pointer-events-none absolute left-1/2 top-1/2 h-[92px] w-[92px] rounded-full blur-[2px]"
+        style={{
+          background:
+            "conic-gradient(from 200deg, transparent 0deg, rgba(255,246,230,0.5) 55deg, rgba(170,195,255,0.75) 95deg, rgba(255,235,205,0.4) 140deg, transparent 210deg)",
+        }}
+      />
+
+      {/* the event horizon itself */}
+      <span
+        aria-hidden
+        className="animate-horizon-breathe relative block h-[64px] w-[64px] rounded-full"
+        style={{
+          background:
+            "radial-gradient(circle at 42% 38%, #0c101a 0%, #02040a 52%, #000 100%)",
           boxShadow:
-            "0 0 18px 4px rgba(140,170,255,0.45), inset 0 0 8px 2px rgba(0,0,0,0.9)",
+            "0 0 30px 8px rgba(130,160,255,0.4), 0 0 80px 24px rgba(80,110,220,0.18), inset 0 0 16px 6px rgba(0,0,0,0.95)",
         }}
       />
-      {/* the always-on label — the invitation, faint until hover */}
-      <span className="pointer-events-none absolute left-1/2 top-full mt-1.5 -translate-x-1/2 whitespace-nowrap rounded-full border border-white/10 bg-black/60 px-2.5 py-0.5 text-[11px] font-medium text-blue-50/80 backdrop-blur-sm transition-opacity duration-200 group-hover:text-white group-hover:opacity-100 sm:opacity-70">
+      {/* the photon ring — the thin brilliant circle right at the edge */}
+      <span
+        aria-hidden
+        className="animate-horizon-breathe absolute left-1/2 top-1/2 h-[64px] w-[64px] rounded-full"
+        style={{
+          border: "1.5px solid rgba(255,255,255,0.85)",
+          boxShadow:
+            "0 0 10px 1px rgba(255,255,255,0.5), 0 0 26px 3px rgba(160,185,255,0.35)",
+        }}
+      />
+
+      {/* infalling motes — captured starlight spiraling into the horizon */}
+      {[0, 1, 2, 3, 4, 5].map((i) => {
+        const d = seeded(i, 71);
+        return (
+          <span
+            key={`infall-${i}`}
+            aria-hidden
+            className="animate-infall pointer-events-none absolute left-1/2 top-1/2 h-[3px] w-[3px] rounded-full"
+            style={
+              {
+                background: "rgba(220,232,255,0.9)",
+                boxShadow: "0 0 5px 1px rgba(190,210,255,0.7)",
+                animationDuration: `${2.6 + d * 2.6}s`,
+                animationDelay: `${d * 3.2}s`,
+                "--fall-from": `${40 + d * 22}px`,
+                "--fall-to": `${-180 - d * 160}deg`,
+              } as React.CSSProperties
+            }
+          />
+        );
+      })}
+
+      {/* slow pulse ring — the void announcing itself */}
+      <span
+        aria-hidden
+        className="animate-vortex-pulse absolute left-1/2 top-1/2 h-[72px] w-[72px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-blue-200/35"
+      />
+
+      {/* the invitation — always visible, brighter on hover */}
+      <span className="pointer-events-none absolute left-1/2 top-full mt-2 -translate-x-1/2 whitespace-nowrap rounded-full border border-blue-200/20 bg-black/60 px-3 py-1 text-[11px] font-medium tracking-wide text-blue-50/85 backdrop-blur-sm transition-colors duration-200 group-hover:border-blue-200/50 group-hover:text-white">
         dive deeper ↓
       </span>
+
+      {/* a wider, generous grab area so the fall is easy to trigger */}
+      <span
+        aria-hidden
+        className="absolute left-1/2 top-1/2 h-[190px] w-[190px] -translate-x-1/2 -translate-y-1/2 rounded-full"
+      />
     </button>
   );
 }
@@ -541,17 +634,22 @@ export function StarSky({
           exit={{ opacity: 0 }}
           transition={{ delay: 1.2, duration: 0.4 }}
           onClick={onDiveIn}
-          className="absolute right-2 top-28 z-20 max-w-[180px] rounded-2xl border border-blue-200/25 bg-black/60 p-3 text-left backdrop-blur-md transition-colors hover:border-blue-200/50"
+          className="absolute z-20 max-w-[180px] rounded-2xl border border-blue-200/25 bg-black/60 p-3 text-left backdrop-blur-md transition-colors hover:border-blue-200/50"
+          // Anchored beside the vortex (centered at 88% / 20%) — the arrow points into the void.
+          style={{
+            right: "calc(12% + 108px)",
+            top: "calc(20% - 30px)",
+          }}
         >
           <span className="text-[11px] font-bold uppercase tracking-[0.16em] text-blue-200/90">
             Something pulls
           </span>
           <span className="mt-0.5 block text-xs leading-relaxed text-foreground/80">
-            The black hole is a door. Click it to dive into the deeper quizzes.
+            The black hole is a door. Step in and dive into the deeper quizzes.
           </span>
           <span
             aria-hidden
-            className="absolute -right-1.5 top-3 h-3 w-3 rotate-45 border-r border-t border-blue-200/25 bg-black/60"
+            className="absolute -right-1.5 top-1/2 h-3 w-3 -translate-y-1/2 rotate-45 border-r border-t border-blue-200/25 bg-black/60"
           />
         </motion.button>
       )}
