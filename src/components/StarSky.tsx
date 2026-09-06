@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import { motion } from "framer-motion";
 import type { Id } from "@/convex/_generated/dataModel";
 import { starColor } from "@/lib/shift-data";
 import { moonPhase, skyEventFor } from "@/lib/sky-events";
@@ -250,28 +251,33 @@ function SkyVortex({ onDiveIn }: { onDiveIn: () => void }) {
       className="group absolute z-10 -translate-x-1/2 -translate-y-1/2 touch-none select-none outline-none"
       style={{ left: "88%", top: "18%" }}
     >
+      {/* slow pulse ring — makes the void findable without breaking the night */}
+      <span
+        aria-hidden
+        className="animate-vortex-pulse absolute left-1/2 top-1/2 h-9 w-9 -translate-x-1/2 -translate-y-1/2 rounded-full border border-blue-200/40"
+      />
       {/* rotating accretion glow */}
       <span
         aria-hidden
         className="animate-swirl absolute left-1/2 top-1/2 h-16 w-16 -translate-x-1/2 -translate-y-1/2 rounded-full blur-[3px]"
         style={{
           background:
-            "conic-gradient(from 40deg, transparent 0deg, rgba(150,180,255,0.35) 70deg, rgba(255,255,255,0.5) 110deg, rgba(150,180,255,0.2) 160deg, transparent 240deg)",
+            "conic-gradient(from 40deg, transparent 0deg, rgba(150,180,255,0.45) 70deg, rgba(255,255,255,0.6) 110deg, rgba(150,180,255,0.25) 160deg, transparent 240deg)",
         }}
       />
       {/* the event horizon */}
       <span
         aria-hidden
-        className="relative block h-9 w-9 rounded-full border border-white/25 transition-transform duration-200 group-hover:scale-110"
+        className="relative block h-9 w-9 rounded-full border border-white/30 transition-transform duration-200 group-hover:scale-110"
         style={{
           background:
             "radial-gradient(circle at 42% 38%, #10141f 0%, #030408 55%, #000 100%)",
           boxShadow:
-            "0 0 14px 2px rgba(140,170,255,0.35), inset 0 0 8px 2px rgba(0,0,0,0.9)",
+            "0 0 18px 4px rgba(140,170,255,0.45), inset 0 0 8px 2px rgba(0,0,0,0.9)",
         }}
       />
-      {/* hint label on hover / focus */}
-      <span className="pointer-events-none absolute left-1/2 top-full mt-1.5 -translate-x-1/2 whitespace-nowrap rounded-full border border-white/10 bg-black/60 px-2.5 py-0.5 text-[11px] text-amber-50/90 opacity-0 backdrop-blur-sm transition-opacity duration-200 group-hover:opacity-100 group-focus-visible:opacity-100">
+      {/* the always-on label — the invitation, faint until hover */}
+      <span className="pointer-events-none absolute left-1/2 top-full mt-1.5 -translate-x-1/2 whitespace-nowrap rounded-full border border-white/10 bg-black/60 px-2.5 py-0.5 text-[11px] font-medium text-blue-50/80 backdrop-blur-sm transition-opacity duration-200 group-hover:text-white group-hover:opacity-100 sm:opacity-70">
         dive deeper ↓
       </span>
     </button>
@@ -362,6 +368,26 @@ export function StarSky({
   const moon = useMemo(() => moonPhase(new Date()), []);
   const tonight = useMemo(() => skyEventFor(new Date()), []);
   const [eventDismissed, setEventDismissed] = useState(false);
+  // One-time per session: point at the black hole so nobody misses the way down.
+  const [showVortexHint, setShowVortexHint] = useState(() => {
+    try {
+      return sessionStorage.getItem("sm-vortex-hint") === null;
+    } catch {
+      return true;
+    }
+  });
+  useEffect(() => {
+    if (!showVortexHint || !onDiveIn) return;
+    const t = setTimeout(() => {
+      setShowVortexHint(false);
+      try {
+        sessionStorage.setItem("sm-vortex-hint", "1");
+      } catch {
+        /* private mode — hint simply shows again next visit */
+      }
+    }, 9000);
+    return () => clearTimeout(t);
+  }, [showVortexHint, onDiveIn]);
   const [pendingWish, setPendingWish] = useState<{
     starter: string;
     x: number;
@@ -506,6 +532,29 @@ export function StarSky({
         }}
       />
       {onDiveIn && <SkyVortex onDiveIn={onDiveIn} />}
+      {onDiveIn && showVortexHint && (
+        <motion.button
+          type="button"
+          aria-label="Open the deeper quizzes"
+          initial={{ opacity: 0, y: 6 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0 }}
+          transition={{ delay: 1.2, duration: 0.4 }}
+          onClick={onDiveIn}
+          className="absolute right-2 top-28 z-20 max-w-[180px] rounded-2xl border border-blue-200/25 bg-black/60 p-3 text-left backdrop-blur-md transition-colors hover:border-blue-200/50"
+        >
+          <span className="text-[11px] font-bold uppercase tracking-[0.16em] text-blue-200/90">
+            Something pulls
+          </span>
+          <span className="mt-0.5 block text-xs leading-relaxed text-foreground/80">
+            The black hole is a door. Click it to dive into the deeper quizzes.
+          </span>
+          <span
+            aria-hidden
+            className="absolute -right-1.5 top-3 h-3 w-3 rotate-45 border-r border-t border-blue-200/25 bg-black/60"
+          />
+        </motion.button>
+      )}
       {hint && (
         <p className="pointer-events-none absolute bottom-3 left-1/2 z-10 -translate-x-1/2 whitespace-nowrap rounded-full border border-white/10 bg-black/40 px-3 py-1 text-[11px] text-amber-100/70 backdrop-blur-sm">
           {hint}

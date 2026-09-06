@@ -287,6 +287,28 @@
   transform-origin: left center;
 }
 
+@keyframes vortex-pulse {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.7;
+  }
+  70% {
+    transform: translate(-50%, -50%) scale(2.1);
+    opacity: 0;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(2.1);
+    opacity: 0;
+  }
+}
+
+.animate-vortex-pulse {
+  animation-name: vortex-pulse;
+  animation-iteration-count: infinite;
+  animation-timing-function: cubic-bezier(0.2, 0.6, 0.4, 1);
+  animation-duration: 2.8s;
+}
+
 @keyframes swirl {
   from {
     transform: translate(-50%, -50%) rotate(0deg) scale(1);
