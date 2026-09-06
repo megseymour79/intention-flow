@@ -405,7 +405,7 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* ---- Response style quiz teaser ---- */}
+      {/* ---- Archetype quiz teaser ---- */}
       <section id="quiz" className="relative scroll-mt-20 py-20">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <FadeUp>
@@ -413,15 +413,15 @@ export default function Landing() {
               <div className="flex flex-wrap items-end justify-between gap-6">
                 <div className="max-w-xl">
                   <p className="text-xs font-bold uppercase tracking-[0.25em] text-amber-200/80">
-                    The response-style quiz
+                    The archetype quiz
                   </p>
                   <h2 className="mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl">
-                    You react a certain way. Do you know which?
+                    Which celestial body are you?
                   </h2>
                   <p className="mt-4 text-sm leading-relaxed text-foreground/70 sm:text-base">
-                    Six playful questions, one honest mirror. Meet your response
-                    style, see the pattern it tends to run, and get a practice
-                    that gently reroutes it.
+                    Eight introspective questions, one honest reading. Discover
+                    your archetype — the way your energy naturally moves, the
+                    shadow that shadows it, and a practice to keep it lit.
                   </p>
                   <Button
                     asChild

@@ -80,6 +80,11 @@ export default function Dashboard() {
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [busyId, setBusyId] = useState<Id<"stars"> | null>(null);
   const [customTime, setCustomTime] = useState("07:30");
+  const [editorDraft, setEditorDraft] = useState<{
+    text?: string;
+    moment?: string;
+    colorKey?: string;
+  } | null>(null);
 
   const hour = new Date().getHours();
   const greeting =
@@ -92,6 +97,26 @@ export default function Dashboard() {
           : "Good evening";
   const firstName = user?.name?.split(" ")[0] ?? "Stargazer";
   const focusColor = starColor(activeStar?.colorKey ?? "nova");
+
+  const openFreshEditor = () => {
+    setEditing(null);
+    setEditorDraft(null);
+    setEditorTarget(undefined);
+    setEditorOpen(true);
+  };
+
+  // Borrowing a quiz suggestion opens the editor prefilled at a random spot.
+  const handleQuizIntention = (draft: {
+    text: string;
+    moment: string;
+    colorKey: string;
+  }) => {
+    setQuizOpen(false);
+    setEditing(null);
+    setEditorTarget(undefined);
+    setEditorDraft(draft);
+    setEditorOpen(true);
+  };
 
   const handlePick = (id: Id<"stars">) => {
     const star = stars.find((s) => s._id === id);
@@ -151,11 +176,7 @@ export default function Dashboard() {
             </p>
           </div>
           <Button
-            onClick={() => {
-              setEditing(null);
-              setEditorTarget(undefined);
-              setEditorOpen(true);
-            }}
+            onClick={openFreshEditor}
             className="rounded-full bg-amber-300 font-bold text-amber-950 hover:bg-amber-200"
           >
             <Plus className="mr-1.5 h-4 w-4" /> New intention
@@ -175,6 +196,7 @@ export default function Dashboard() {
               onDrop={handleDrop}
               onRequestCreate={(x, y) => {
                 setEditing(null);
+                setEditorDraft(null);
                 setEditorTarget({ x, y });
                 setEditorOpen(true);
               }}
@@ -247,6 +269,7 @@ export default function Dashboard() {
                     size="sm"
                     onClick={() => {
                       setEditing(activeStar);
+                      setEditorDraft(null);
                       setEditorTarget(undefined);
                       setEditorOpen(true);
                     }}
@@ -273,11 +296,7 @@ export default function Dashboard() {
                 <Button
                   size="sm"
                   variant="outline"
-                  onClick={() => {
-                    setEditing(null);
-                    setEditorTarget(undefined);
-                    setEditorOpen(true);
-                  }}
+                  onClick={openFreshEditor}
                   className="border-amber-300/40 bg-amber-300/10 text-amber-100 hover:bg-amber-300/20"
                 >
                   <Sparkles className="mr-1.5 h-3.5 w-3.5" /> Hang my focus
@@ -338,7 +357,7 @@ export default function Dashboard() {
           {/* Response style */}
           <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-5">
             <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
-              Your response style
+              Your archetype
             </p>
             {style ? (
               <div className="mt-3 space-y-3">
@@ -347,7 +366,12 @@ export default function Dashboard() {
                     {style.emoji}
                   </span>
                   <div className="min-w-0">
-                    <p className={`font-bold ${style.glow}`}>{style.name}</p>
+                    <p className={`font-bold ${style.glow}`}>
+                      {style.emoji} {style.name}
+                    </p>
+                    <p className="mt-0.5 text-xs text-muted-foreground/80">
+                      {style.element}
+                    </p>
                     <p className="mt-0.5 text-xs leading-relaxed text-muted-foreground">
                       {style.tagline}
                     </p>
@@ -365,8 +389,8 @@ export default function Dashboard() {
             ) : (
               <div className="mt-3 space-y-3">
                 <p className="text-sm text-foreground/60">
-                  Six questions. One honest mirror on how you react under
-                  pressure.
+                  Eight questions. One honest reading of where your energy
+                  lives — and what shadows it.
                 </p>
                 <Button
                   size="sm"
@@ -518,6 +542,7 @@ export default function Dashboard() {
         open={editorOpen}
         onOpenChange={setEditorOpen}
         target={editorTarget}
+        draft={editorDraft}
         existing={
           editing
             ? {
@@ -531,7 +556,11 @@ export default function Dashboard() {
         }
       />
 
-      <StyleQuiz open={quizOpen} onOpenChange={setQuizOpen} />
+      <StyleQuiz
+        open={quizOpen}
+        onOpenChange={setQuizOpen}
+        onHangIntention={handleQuizIntention}
+      />
 
       <AlertDialog open={deleteOpen} onOpenChange={setDeleteOpen}>
         <AlertDialogContent className="border-white/12 bg-[#1c1242]/95 backdrop-blur-xl">

@@ -10,22 +10,51 @@ import { Dialog, DialogContent } from "@/components/ui/dialog";
 
 import {
   buildQuiz,
+  ColorKey,
+  momentForHour,
   QUIZ_LENGTH,
   RESPONSE_STYLES,
+  SUGGESTED_STARS,
   styleById,
   type QuizQuestion,
+  type ResponseStyle,
 } from "@/lib/shift-data";
 
 interface StyleQuizProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  /** Called when the user borrows a suggested intention from the result screen. */
+  onHangIntention?: (draft: { text: string; moment: string; colorKey: string }) => void;
 }
+
+/** Star look matching each archetype — mirrors the pulse question. */
+const STYLE_STAR: Record<
+  ResponseStyle["id"],
+  { emoji: string; colorKey: ColorKey }
+> = {
+  spark: { emoji: "☄️", colorKey: "nova" },
+  anchor: { emoji: "🌟", colorKey: "wave" },
+  current: { emoji: "🌙", colorKey: "pulse" },
+  bloom: { emoji: "🌌", colorKey: "surge" },
+};
 
 function emptyScores(): Record<string, number> {
   return Object.fromEntries(RESPONSE_STYLES.map((s) => [s.id, 0]));
 }
 
-export function StyleQuiz({ open, onOpenChange }: StyleQuizProps) {
+/** Sort the four styles from strongest to weakest for a set of scores. */
+function rankedStyles(scores: Record<string, number>): ResponseStyle[] {
+  return [...RESPONSE_STYLES].sort(
+    (a, b) => (scores[b.id] ?? 0) - (scores[a.id] ?? 0),
+  );
+}
+
+
+export function StyleQuiz({
+  open,
+  onOpenChange,
+  onHangIntention,
+}: StyleQuizProps) {
   const saveResult = useMutation(api.quiz.saveResult);
   // A fresh, shuffled deck is drawn for every run.
   const [deck, setDeck] = useState<QuizQuestion[]>(() =>
@@ -80,15 +109,15 @@ export function StyleQuiz({ open, onOpenChange }: StyleQuizProps) {
 
   const finish = async (finalScores: Record<string, number>) => {
     setSaving(true);
-    const top = [...RESPONSE_STYLES].sort(
-      (a, b) => (finalScores[b.id] ?? 0) - (finalScores[a.id] ?? 0),
-    )[0];
+    const ranked = rankedStyles(finalScores);
+    const top = ranked[0];
     try {
       await saveResult({ styleId: top.id, scores: finalScores });
       setFinished(top.id);
       setStep(-1);
-      toast(`You're ${top.name.toLowerCase()}`, {
-        description: top.tagline,
+      const style = styleById(top.id);
+      toast(`You are ${style.name.toLowerCase()}`, {
+        description: style.tagline,
       });
     } catch (err) {
       console.error(err);
@@ -104,6 +133,13 @@ export function StyleQuiz({ open, onOpenChange }: StyleQuizProps) {
   const question =
     step >= 0 && step < deck.length ? deck[step] : null;
   const result = finished ? styleById(finished) : null;
+  const ranked = finished
+    ? rankedStyles(scores).map((style) => ({
+        style,
+        score: scores[style.id] ?? 0,
+      }))
+    : [];
+  const maxScore = ranked[0]?.score ?? 0;
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
@@ -120,7 +156,7 @@ export function StyleQuiz({ open, onOpenChange }: StyleQuizProps) {
             >
               <div className="flex items-center justify-between">
                 <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                  How do you respond?
+                  Where does your energy live?
                 </p>
                 <p className="text-xs tabular-nums text-amber-200/80">
                   {step + 1} / {deck.length}
@@ -200,19 +236,64 @@ export function StyleQuiz({ open, onOpenChange }: StyleQuizProps) {
                 </motion.div>
                 <div>
                   <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
-                    Your response style
+                    Your archetype
                   </p>
                   <h3 className="mt-1 text-3xl font-extrabold tracking-tight">
                     <span className={result.glow}>{result.name}</span>
                   </h3>
                   <p className="mt-1 text-sm text-foreground/70">
-                    {result.tagline}
+                    {result.element} · {result.tagline}
                   </p>
                 </div>
 
                 <p className="mx-auto max-w-md text-sm leading-relaxed text-foreground/85">
                   {result.description}
                 </p>
+
+                {/* The shadow — every archetype has one */}
+                <div className="w-full rounded-2xl border border-violet-300/25 bg-violet-300/[0.07] p-4 text-left">
+                  <p className="text-xs font-bold uppercase tracking-wider text-violet-200/90">
+                    🌑 Your shadow
+                  </p>
+                  <p className="mt-1.5 text-sm leading-relaxed text-violet-50/90">
+                    {result.shadow}
+                  </p>
+                </div>
+
+                {/* Score breakdown */}
+                <div className="w-full space-y-2.5 rounded-2xl border border-white/10 bg-white/[0.03] p-4 text-left">
+                  <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
+                    Your full reading
+                  </p>
+                  {ranked.map(({ style, score }, i) => (
+                    <div key={style.id} className="flex items-center gap-3">
+                      <span
+                        className={`w-24 shrink-0 truncate text-xs font-semibold ${
+                          i === 0 ? style.glow : "text-muted-foreground"
+                        }`}
+                      >
+                        {style.emoji} {style.name.replace("The ", "")}
+                      </span>
+                      <div className="h-2 flex-1 overflow-hidden rounded-full bg-white/8">
+                        <motion.div
+                          initial={{ width: 0 }}
+                          animate={{
+                            width: `${maxScore > 0 ? (score / maxScore) * 100 : 0}%`,
+                          }}
+                          transition={{ duration: 0.5, delay: 0.2 + i * 0.08 }}
+                          className={`h-full rounded-full ${style.bar}`}
+                        />
+                      </div>
+                      <span className="w-4 text-right text-xs tabular-nums text-muted-foreground">
+                        {score}
+                      </span>
+                    </div>
+                  ))}
+                  <p className="pt-0.5 text-[10px] text-muted-foreground/70">
+                    Most of us are a blend — your strongest is just where you
+                    start.
+                  </p>
+                </div>
 
                 <div className="rounded-2xl border border-amber-300/25 bg-amber-300/8 p-4 text-left">
                   <p className="text-xs font-bold uppercase tracking-wider text-amber-200/90">
@@ -221,6 +302,40 @@ export function StyleQuiz({ open, onOpenChange }: StyleQuizProps) {
                   <p className="mt-1.5 text-sm leading-relaxed text-amber-50/90">
                     {result.practice}
                   </p>
+                </div>
+
+                {/* Style-tuned intentions to hang */}
+                <div className="w-full text-left">
+                  <p className="mb-2 text-xs font-bold uppercase tracking-wider text-muted-foreground">
+                    ✦ Intentions that fit {result.name.replace("The ", "")}s
+                  </p>
+                  <div className="flex flex-col gap-1.5">
+                    {result.intentions.map((text) => {
+                      const preset = SUGGESTED_STARS.find((s) => s.text === text);
+                      const look = STYLE_STAR[result.id];
+                      return (
+                        <button
+                          key={text}
+                          type="button"
+                          onClick={() => {
+                            onHangIntention?.({
+                              text,
+                              moment: preset?.moment ?? momentForHour(),
+                              colorKey: preset?.colorKey ?? look.colorKey,
+                            });
+                          }}
+                          className="group flex w-full items-center justify-between gap-3 rounded-xl border border-white/10 bg-white/5 px-3.5 py-2.5 text-left text-sm text-foreground/90 transition-all hover:border-amber-300/50 hover:bg-amber-300/10"
+                        >
+                          <span>
+                            {look.emoji} {text}
+                          </span>
+                          <span className="text-xs text-amber-200/60 transition-colors group-hover:text-amber-200">
+                            Hang it →
+                          </span>
+                        </button>
+                      );
+                    })}
+                  </div>
                 </div>
 
                 <div className="flex flex-col gap-2 pt-1">

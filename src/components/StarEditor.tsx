@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { Id } from "@/convex/_generated/dataModel";
 import { api } from "@/convex/_generated/api";
 import { useMutation } from "convex/react";
@@ -41,6 +41,8 @@ interface StarEditorProps {
     emoji: string;
     colorKey: string;
   } | null;
+  /** Prefill for a brand-new star (e.g. borrowed from quiz suggestions). */
+  draft?: { text?: string; moment?: string; colorKey?: string } | null;
 }
 
 function pick<T>(arr: readonly T[]): T {
@@ -52,6 +54,7 @@ export function StarEditor({
   onOpenChange,
   target,
   existing,
+  draft,
 }: StarEditorProps) {
   const createStar = useMutation(api.stars.create);
   const updateStar = useMutation(api.stars.update);
@@ -65,18 +68,25 @@ export function StarEditor({
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const reset = () => {
+  // Re-seed the form every time the editor opens — from the star being
+  // edited, from a prefilled draft, or blank for a fresh intention.
+  useEffect(() => {
+    if (!open) return;
     setError(null);
-    if (!existing) {
-      setText("");
-      setMoment("conversations");
+    if (existing) {
+      setText(existing.text);
+      setMoment(existing.moment);
+      setEmoji(existing.emoji);
+      setColorKey((existing.colorKey as ColorKey | undefined) ?? "nova");
+    } else {
+      setText(draft?.text ?? "");
+      setMoment(draft?.moment ?? momentForHour());
       setEmoji(pick(STAR_EMOJIS));
-      setColorKey(pick(STAR_COLOR_KEYS));
+      setColorKey((draft?.colorKey as ColorKey | undefined) ?? pick(STAR_COLOR_KEYS));
     }
-  };
+  }, [open, existing, draft]);
 
   const handleOpenChange = (next: boolean) => {
-    if (next) reset();
     onOpenChange(next);
   };
 
