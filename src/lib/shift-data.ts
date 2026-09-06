@@ -263,7 +263,116 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
       { label: "Lime — open, growing, curious", style: "bloom" },
     ],
   },
+  {
+    question: "Your phone hits 20% battery in the middle of a busy day. You…",
+    emoji: "🔋",
+    answers: [
+      { label: "Switch to low-power mode and rewrite your priority list", style: "anchor" },
+      { label: "Feel the spike of panic, then problem-solve out loud", style: "spark" },
+      { label: "Borrow a charger and work around it — plans bend", style: "current" },
+      { label: "Take it as a sign to take a screen-free stretch", style: "bloom" },
+    ],
+  },
+  {
+    question: "You hit every green light on the way to something important. You…",
+    emoji: "🚦",
+    answers: [
+      { label: "Enjoy it — then double-check you packed everything anyway", style: "anchor" },
+      { label: "Take it as momentum: today is yours", style: "spark" },
+      { label: "Smile and move on without reading into it", style: "current" },
+      { label: "Wonder who else is having a lucky day — and text them", style: "bloom" },
+    ],
+  },
+  {
+    question: "Someone takes credit for your idea in a meeting.",
+    emoji: "🏝️",
+    answers: [
+      { label: "Let it land, then follow up privately with the facts", style: "anchor" },
+      { label: "Jump in right there: “Building on what I said earlier…”", style: "spark" },
+      { label: "Read the room and pick the moment that serves you best", style: "current" },
+      { label: "Feel the sting, then get curious about why they needed it", style: "bloom" },
+    ],
+  },
+  {
+    question: "A completely free Saturday, zero obligations. You…",
+    emoji: "🛋️",
+    answers: [
+      { label: "Keep a short list, then genuinely rest once it's done", style: "anchor" },
+      { label: "Start three things before breakfast", style: "spark" },
+      { label: "Wake up and let the day decide", style: "current" },
+      { label: "Say yes to the first invitation that sounds warm", style: "bloom" },
+    ],
+  },
+  {
+    question: "Someone asks you a question you don't know the answer to.",
+    emoji: "❓",
+    answers: [
+      { label: "Say “I don't know — let's find out” and actually look it up", style: "anchor" },
+      { label: "Venture your best guess with total confidence", style: "spark" },
+      { label: "Redirect with charm until someone else weighs in", style: "current" },
+      { label: "Turn it around — ask what they think first", style: "bloom" },
+    ],
+  },
+  {
+    question: "A friend is giving you advice you didn't ask for.",
+    emoji: "🗣️",
+    answers: [
+      { label: "Thank them, then decide on your own timeline", style: "anchor" },
+      { label: "Defend your position on the spot", style: "spark" },
+      { label: "Nod along and quietly do your own thing", style: "current" },
+      { label: "Hear the care underneath it, even if the advice is off", style: "bloom" },
+    ],
+  },
+  {
+    question: "Which failure stings the most?",
+    emoji: "🪞",
+    answers: [
+      { label: "Breaking a promise I made to someone", style: "anchor" },
+      { label: "Freezing when I should have acted", style: "spark" },
+      { label: "Getting swept into someone else's plan", style: "current" },
+      { label: "Holding back when I could have connected", style: "bloom" },
+    ],
+  },
+  {
+    question: "Your group chat is planning something you're not into.",
+    emoji: "💬",
+    answers: [
+      { label: "Name it plainly: “Count me out for this one — next time?”", style: "anchor" },
+      { label: "Push hard for the version you actually want", style: "spark" },
+      { label: "Go along — the company matters more than the plan", style: "current" },
+      { label: "Join for the people and carve out one part you'd love", style: "bloom" },
+    ],
+  },
+  {
+    question: "You're running late and someone slow is in front of you.",
+    emoji: "🐌",
+    answers: [
+      { label: "Recalculate quietly — being late isn't their fault", style: "anchor" },
+      { label: "Feel the heat rise, maybe sigh loudly enough to be heard", style: "spark" },
+      { label: "Ease off — you'll get there when you get there", style: "current" },
+      { label: "Make a moment of it — a smile costs nothing", style: "bloom" },
+    ],
+  },
 ];
+
+/** Questions drawn per quiz run. */
+export const QUIZ_LENGTH = 6;
+
+function shuffled<T>(arr: readonly T[]): T[] {
+  const copy = [...arr];
+  for (let i = copy.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [copy[i], copy[j]] = [copy[j], copy[i]];
+  }
+  return copy;
+}
+
+/** Build a fresh quiz run: random questions from the bank, answers shuffled. */
+export function buildQuiz(length: number = QUIZ_LENGTH): QuizQuestion[] {
+  return shuffled(QUIZ_QUESTIONS)
+    .slice(0, Math.min(length, QUIZ_QUESTIONS.length))
+    .map((q) => ({ ...q, answers: shuffled(q.answers) }));
+}
 
 export interface Shift {
   emoji: string;

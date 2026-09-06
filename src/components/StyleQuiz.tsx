@@ -9,9 +9,11 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 
 import {
-  QUIZ_QUESTIONS,
+  buildQuiz,
+  QUIZ_LENGTH,
   RESPONSE_STYLES,
   styleById,
+  type QuizQuestion,
 } from "@/lib/shift-data";
 
 interface StyleQuizProps {
@@ -25,14 +27,21 @@ function emptyScores(): Record<string, number> {
 
 export function StyleQuiz({ open, onOpenChange }: StyleQuizProps) {
   const saveResult = useMutation(api.quiz.saveResult);
+  // A fresh, shuffled deck is drawn for every run.
+  const [deck, setDeck] = useState<QuizQuestion[]>(() =>
+    buildQuiz(QUIZ_LENGTH),
+  );
   const [step, setStep] = useState(0); // 0..n-1 questions, then -1 = result
   const [scores, setScores] = useState<Record<string, number>>(emptyScores);
+  const [picks, setPicks] = useState<Record<number, string>>({});
   const [saving, setSaving] = useState(false);
   const [finished, setFinished] = useState<string | null>(null);
 
   const reset = () => {
+    setDeck(buildQuiz(QUIZ_LENGTH));
     setStep(0);
     setScores(emptyScores());
+    setPicks({});
     setFinished(null);
     setSaving(false);
   };
@@ -45,11 +54,28 @@ export function StyleQuiz({ open, onOpenChange }: StyleQuizProps) {
   const answer = (styleId: string) => {
     const next = { ...scores, [styleId]: (scores[styleId] ?? 0) + 1 };
     setScores(next);
-    if (step + 1 >= QUIZ_QUESTIONS.length) {
+    setPicks((p) => ({ ...p, [step]: styleId }));
+    if (step + 1 >= deck.length) {
       finish(next);
     } else {
       setStep((s) => s + 1);
     }
+  };
+
+  // Going back un-scores the answer on the current question.
+  const goBack = () => {
+    const picked = picks[step];
+    if (picked) {
+      setScores((s) => ({
+        ...s,
+        [picked]: Math.max(0, (s[picked] ?? 0) - 1),
+      }));
+      setPicks((p) => {
+        const { [step]: _removed, ...rest } = p;
+        return rest;
+      });
+    }
+    setStep((s) => Math.max(0, s - 1));
   };
 
   const finish = async (finalScores: Record<string, number>) => {
@@ -69,13 +95,14 @@ export function StyleQuiz({ open, onOpenChange }: StyleQuizProps) {
       toast("Couldn't save your result", {
         description: "Try that again in a second.",
       });
-      setStep(QUIZ_QUESTIONS.length - 1);
+      setStep(deck.length - 1);
     } finally {
       setSaving(false);
     }
   };
 
-  const question = step >= 0 ? QUIZ_QUESTIONS[step] : null;
+  const question =
+    step >= 0 && step < deck.length ? deck[step] : null;
   const result = finished ? styleById(finished) : null;
 
   return (
@@ -96,12 +123,12 @@ export function StyleQuiz({ open, onOpenChange }: StyleQuizProps) {
                   How do you respond?
                 </p>
                 <p className="text-xs tabular-nums text-amber-200/80">
-                  {step + 1} / {QUIZ_QUESTIONS.length}
+                  {step + 1} / {deck.length}
                 </p>
               </div>
 
               <div className="flex gap-1.5">
-                {QUIZ_QUESTIONS.map((_, i) => (
+                {deck.map((_, i) => (
                   <span
                     key={i}
                     className={`h-1.5 flex-1 rounded-full transition-colors ${
@@ -136,7 +163,7 @@ export function StyleQuiz({ open, onOpenChange }: StyleQuizProps) {
                   <Button
                     variant="ghost"
                     size="sm"
-                    onClick={() => setStep((s) => s - 1)}
+                    onClick={goBack}
                     className="text-muted-foreground"
                   >
                     <ArrowLeft className="mr-1.5 h-4 w-4" /> Back
@@ -206,11 +233,7 @@ export function StyleQuiz({ open, onOpenChange }: StyleQuizProps) {
                   <Button
                     variant="ghost"
                     size="sm"
-                    onClick={() => {
-                      setFinished(null);
-                      setStep(0);
-                      setScores(emptyScores());
-                    }}
+                    onClick={reset}
                     className="text-muted-foreground"
                   >
                     <RotateCcw className="mr-1.5 h-4 w-4" /> Retake the quiz
