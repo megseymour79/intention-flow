@@ -306,6 +306,54 @@
   animation-duration: 9s;
 }
 
+@keyframes aurora {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: translateX(0) scaleY(1);
+  }
+  33% {
+    opacity: 0.9;
+    transform: translateX(3%) scaleY(1.15);
+  }
+  66% {
+    opacity: 0.7;
+    transform: translateX(-2%) scaleY(0.92);
+  }
+}
+
+.animate-aurora {
+  animation-name: aurora;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+  animation-duration: 13s;
+}
+
+/* the wish comet: enters from the left, exits right; button spans the full path */
+@keyframes comet-cross {
+  0% {
+    left: -6%;
+    opacity: 0;
+  }
+  6% {
+    opacity: 1;
+  }
+  94% {
+    opacity: 1;
+  }
+  100% {
+    left: 106%;
+    opacity: 0;
+  }
+}
+
+.animate-comet {
+  animation-name: comet-cross;
+  animation-iteration-count: 1;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+
 /* soft scrollbar to match the theme */
 * {
   scrollbar-width: thin;

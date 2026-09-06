@@ -1,6 +1,16 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { Id } from "@/convex/_generated/dataModel";
 import { starColor } from "@/lib/shift-data";
+import { moonPhase, skyEventFor } from "@/lib/sky-events";
+import {
+  AuroraBand,
+  MoonPhase,
+  PlanetPoint,
+  StarBloom,
+  TonightEvent,
+  WishCaught,
+  WishComet,
+} from "@/components/SkyFeatures";
 
 export interface SkyStarLike {
   _id: Id<"stars">;
@@ -20,6 +30,12 @@ interface StarSkyProps {
   onRequestCreate: (x: number, y: number) => void;
   /** Present to render the black hole; called when it is clicked to dive deeper. */
   onDiveIn?: () => void;
+  /** Render the real moon phase in the corner. */
+  showMoon?: boolean;
+  /** Enables tonight's event, aurora/planets, and the once-a-visit wish comet. */
+  onCatchWish?: (starter: string, x: number, y: number) => void;
+  /** Enables tap-able newborn stars on starbloom nights. */
+  onCatchBloom?: (x: number, y: number) => void;
   hint?: string;
   className?: string;
 }
@@ -332,12 +348,36 @@ export function StarSky({
   onDrop,
   onRequestCreate,
   onDiveIn,
+  showMoon,
+  onCatchWish,
+  onCatchBloom,
   hint,
   className,
 }: StarSkyProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const dragRef = useRef<DragState | null>(null);
   const tapRef = useRef<{ x: number; y: number } | null>(null);
+
+  // The sky is different every night — computed once per mount.
+  const moon = useMemo(() => moonPhase(new Date()), []);
+  const tonight = useMemo(() => skyEventFor(new Date()), []);
+  const [eventDismissed, setEventDismissed] = useState(false);
+  const [pendingWish, setPendingWish] = useState<{
+    starter: string;
+    x: number;
+    y: number;
+  } | null>(null);
+
+  // Convert a point event inside the container into sky percentages.
+  const pointToSky = (el: HTMLElement) => {
+    const box = containerRef.current?.getBoundingClientRect();
+    if (!box || box.width === 0 || box.height === 0) return null;
+    const r = el.getBoundingClientRect();
+    return {
+      x: clamp(((r.left + r.width / 2 - box.left) / box.width) * 100, 4, 96),
+      y: clamp(((r.top + r.height / 2 - box.top) / box.height) * 100, 6, 94),
+    };
+  };
   // Live drag positions keyed by star id, overriding the stored x/y while dragging
   const [live, setLive] = useState<Record<string, { x: number; y: number }>>({});
 
@@ -436,6 +476,35 @@ export function StarSky({
       <SkyDecor />
       <ShootingStars />
       <Constellation stars={stars} live={live} />
+      {showMoon && <MoonPhase phase={moon.phase} />}
+      {onCatchWish && !eventDismissed && (
+        <TonightEvent event={tonight} onDismiss={() => setEventDismissed(true)} />
+      )}
+      {onCatchWish && tonight.kind === "aurora" && <AuroraBand />}
+      {onCatchWish && tonight.kind === "planetrise" && tonight.planet && (
+        <PlanetPoint name={tonight.planet} />
+      )}
+      {onCatchBloom && tonight.kind === "starbloom" && (
+        <StarBloom onCatch={(x, y) => onCatchBloom(x, y)} />
+      )}
+      {onCatchWish && (
+        <WishComet
+          onCatch={(starter, e) => {
+            const pos = pointToSky(e.currentTarget as HTMLElement);
+            if (pos) setPendingWish({ starter, ...pos });
+          }}
+        />
+      )}
+      <WishCaught
+        open={pendingWish !== null}
+        starter={pendingWish?.starter ?? null}
+        onClose={() => {
+          if (pendingWish) {
+            onCatchWish?.(pendingWish.starter, pendingWish.x, pendingWish.y);
+          }
+          setPendingWish(null);
+        }}
+      />
       {onDiveIn && <SkyVortex onDiveIn={onDiveIn} />}
       {hint && (
         <p className="pointer-events-none absolute bottom-3 left-1/2 z-10 -translate-x-1/2 whitespace-nowrap rounded-full border border-white/10 bg-black/40 px-3 py-1 text-[11px] text-amber-100/70 backdrop-blur-sm">

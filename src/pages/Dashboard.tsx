@@ -42,6 +42,7 @@ import {
 } from "@/hooks/use-reminders";
 import { momentLabel, shiftOfTheDay, starColor, styleById } from "@/lib/shift-data";
 import { QUIZ_PACKS, resultById } from "@/lib/quiz-packs";
+import { randomWishStarter } from "@/lib/sky-events";
 import { ReflectionHeroCard, ReflectionLedger } from "@/components/ReflectionLedger";
 
 export default function Dashboard() {
@@ -134,6 +135,28 @@ export default function Dashboard() {
     setEditorOpen(true);
   };
 
+  // A caught falling wish opens the editor with its sentence starter.
+  const handleCatchWish = (starter: string, x: number, y: number) => {
+    setEditing(null);
+    setEditorTarget({ x, y });
+    setEditorDraft({ text: starter, colorKey: "nova" });
+    setEditorOpen(true);
+    toast("✨ Wish caught", {
+      description: "Finish the sentence and hang it where it fell.",
+    });
+  };
+
+  // Newborn stars (starbloom nights) open a fresh editor where they were tapped.
+  const handleCatchBloom = (x: number, y: number) => {
+    setEditing(null);
+    setEditorTarget({ x, y });
+    setEditorDraft({ text: randomWishStarter(), colorKey: "wave" });
+    setEditorOpen(true);
+    toast("🌟 Newborn star", {
+      description: "It's brightest now — name what you want to grow.",
+    });
+  };
+
   const handlePick = (id: Id<"stars">) => {
     const star = stars.find((s) => s._id === id);
     if (!star || star.active) return;
@@ -217,6 +240,9 @@ export default function Dashboard() {
                 setEditorOpen(true);
               }}
               onDiveIn={() => setDiveOpen(true)}
+              showMoon
+              onCatchWish={handleCatchWish}
+              onCatchBloom={handleCatchBloom}
               className="h-[54vh] min-h-[400px] w-full overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-b from-[#03050e] via-[#071026] to-[#0d1a33]"
               hint={
                 stars.length === 0
