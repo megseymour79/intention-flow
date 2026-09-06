@@ -18,6 +18,8 @@ interface StarSkyProps {
   onPick: (id: Id<"stars">) => void;
   onDrop: (id: Id<"stars">, x: number, y: number) => void;
   onRequestCreate: (x: number, y: number) => void;
+  /** Present to render the black hole; called when it is clicked to dive deeper. */
+  onDiveIn?: () => void;
   hint?: string;
   className?: string;
 }
@@ -218,6 +220,49 @@ function ShootingStars() {
 }
 
 /* ------------------------------------------------------------------ */
+/* The black hole — the way down into deeper quizzes                    */
+/* ------------------------------------------------------------------ */
+
+/** A quiet gravitational lens in the sky. Click to dive deeper. */
+function SkyVortex({ onDiveIn }: { onDiveIn: () => void }) {
+  return (
+    <button
+      type="button"
+      aria-label="Dive into the black hole — open the deeper quizzes"
+      title="Dive deeper"
+      onClick={onDiveIn}
+      className="group absolute z-10 -translate-x-1/2 -translate-y-1/2 touch-none select-none outline-none"
+      style={{ left: "88%", top: "18%" }}
+    >
+      {/* rotating accretion glow */}
+      <span
+        aria-hidden
+        className="animate-swirl absolute left-1/2 top-1/2 h-16 w-16 -translate-x-1/2 -translate-y-1/2 rounded-full blur-[3px]"
+        style={{
+          background:
+            "conic-gradient(from 40deg, transparent 0deg, rgba(150,180,255,0.35) 70deg, rgba(255,255,255,0.5) 110deg, rgba(150,180,255,0.2) 160deg, transparent 240deg)",
+        }}
+      />
+      {/* the event horizon */}
+      <span
+        aria-hidden
+        className="relative block h-9 w-9 rounded-full border border-white/25 transition-transform duration-200 group-hover:scale-110"
+        style={{
+          background:
+            "radial-gradient(circle at 42% 38%, #10141f 0%, #030408 55%, #000 100%)",
+          boxShadow:
+            "0 0 14px 2px rgba(140,170,255,0.35), inset 0 0 8px 2px rgba(0,0,0,0.9)",
+        }}
+      />
+      {/* hint label on hover / focus */}
+      <span className="pointer-events-none absolute left-1/2 top-full mt-1.5 -translate-x-1/2 whitespace-nowrap rounded-full border border-white/10 bg-black/60 px-2.5 py-0.5 text-[11px] text-amber-50/90 opacity-0 backdrop-blur-sm transition-opacity duration-200 group-hover:opacity-100 group-focus-visible:opacity-100">
+        dive deeper ↓
+      </span>
+    </button>
+  );
+}
+
+/* ------------------------------------------------------------------ */
 /* Constellation lines for the focused star                           */
 /* ------------------------------------------------------------------ */
 
@@ -286,6 +331,7 @@ export function StarSky({
   onPick,
   onDrop,
   onRequestCreate,
+  onDiveIn,
   hint,
   className,
 }: StarSkyProps) {
@@ -390,6 +436,7 @@ export function StarSky({
       <SkyDecor />
       <ShootingStars />
       <Constellation stars={stars} live={live} />
+      {onDiveIn && <SkyVortex onDiveIn={onDiveIn} />}
       {hint && (
         <p className="pointer-events-none absolute bottom-3 left-1/2 z-10 -translate-x-1/2 whitespace-nowrap rounded-full border border-white/10 bg-black/40 px-3 py-1 text-[11px] text-amber-100/70 backdrop-blur-sm">
           {hint}

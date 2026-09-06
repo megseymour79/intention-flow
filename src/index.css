@@ -287,6 +287,25 @@
   transform-origin: left center;
 }
 
+@keyframes swirl {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg) scale(1);
+  }
+  50% {
+    transform: translate(-50%, -50%) rotate(180deg) scale(1.12);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(360deg) scale(1);
+  }
+}
+
+.animate-swirl {
+  animation-name: swirl;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+  animation-duration: 9s;
+}
+
 /* soft scrollbar to match the theme */
 * {
   scrollbar-width: thin;

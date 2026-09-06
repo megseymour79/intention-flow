@@ -17,6 +17,7 @@ import {
 import { api } from "@/convex/_generated/api";
 import type { Id } from "@/convex/_generated/dataModel";
 import { AppShell } from "@/components/AppShell";
+import { DiveInDialog } from "@/components/DiveInDialog";
 import { PersonalityQuiz } from "@/components/PersonalityQuiz";
 import { StarEditor } from "@/components/StarEditor";
 import { StarSky, SkyStarLike } from "@/components/StarSky";
@@ -81,6 +82,7 @@ export default function Dashboard() {
   const [editing, setEditing] = useState<SkyStarLike | null>(null);
   const [quizOpen, setQuizOpen] = useState(false);
   const [deepOpen, setDeepOpen] = useState<string | null>(null);
+  const [diveOpen, setDiveOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [busyId, setBusyId] = useState<Id<"stars"> | null>(null);
   const [customTime, setCustomTime] = useState("07:30");
@@ -101,6 +103,15 @@ export default function Dashboard() {
           : "Good evening";
   const firstName = user?.name?.split(" ")[0] ?? "Stargazer";
   const focusColor = starColor(activeStar?.colorKey ?? "nova");
+
+  // The black hole in the sky opens the quiz list; a pick launches that quiz.
+  const handleDivePick = (kind: string) => {
+    if (kind === "style") {
+      setQuizOpen(true);
+    } else {
+      setDeepOpen(kind);
+    }
+  };
 
   const openFreshEditor = () => {
     setEditing(null);
@@ -205,6 +216,7 @@ export default function Dashboard() {
                 setEditorTarget({ x, y });
                 setEditorOpen(true);
               }}
+              onDiveIn={() => setDiveOpen(true)}
               className="h-[54vh] min-h-[400px] w-full overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-b from-[#03050e] via-[#071026] to-[#0d1a33]"
               hint={
                 stars.length === 0
@@ -614,6 +626,12 @@ export default function Dashboard() {
         open={quizOpen}
         onOpenChange={setQuizOpen}
         onHangIntention={handleQuizIntention}
+      />
+
+      <DiveInDialog
+        open={diveOpen}
+        onOpenChange={setDiveOpen}
+        onPickQuiz={handleDivePick}
       />
 
       {QUIZ_PACKS.map((pack) => (
