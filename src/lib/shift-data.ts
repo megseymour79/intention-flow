@@ -129,8 +129,10 @@ export interface ResponseStyle {
   id: "spark" | "anchor" | "current" | "bloom";
   name: string;
   emoji: string;
+  element: string; // short celestial essence
   tagline: string;
   description: string;
+  shadow: string; // the honest weakness of the archetype
   practice: string;
   intentions: string[]; // suggested star texts
   bar: string;
@@ -140,55 +142,67 @@ export interface ResponseStyle {
 export const RESPONSE_STYLES: ResponseStyle[] = [
   {
     id: "spark",
-    name: "The Spark",
-    emoji: "⚡",
-    tagline: "You respond fast, bright, and on instinct.",
+    name: "The Comet",
+    emoji: "☄️",
+    element: "Velocity",
+    tagline: "You move fast, burn bright, and trust instinct.",
     description:
-      "Your first reaction is quick and energetic — you feel things immediately and say so. That speed is a gift; the risk is that your first answer isn't always your best one. Your edge comes from inserting a beat between the spark and the flame.",
+      "Comets cross the whole sky in minutes, and so do you: your instinct fires first and the world warms up around you. People feel your arrival — decisions get made, things get moving. Your gift is momentum most people can't summon. The discipline is remembering that a comet that never slows never gets to choose its orbit.",
+    shadow:
+      "Burning through moments faster than you can mean them — and occasionally burning out before the thing is finished.",
     practice:
-      "Before you answer, count three slow breaths and ask: 'Am I responding to this, or to what I think this means?' Then let the same spark out — aimed.",
+      "Once a day, before one reaction, take three slow breaths and ask: 'Am I answering this moment, or the last one?' Then let the same fire out — aimed.",
     intentions: ["Breathe first, then decide", "Get curious before I get defensive", "Notice the urge, don't obey it"],
     bar: "bg-yellow-300",
     glow: "text-yellow-300",
   },
   {
     id: "anchor",
-    name: "The Anchor",
-    emoji: "🧭",
-    tagline: "You respond with weight, patience, and follow-through.",
+    name: "The North Star",
+    emoji: "🌟",
+    element: "Constancy",
+    tagline: "You are the fixed point other people steer by.",
     description:
-      "You deliberate before you act, and people count on your word because it holds. The risk is that deliberation becomes delay — or that you hold your own needs still while everyone else moves. Your edge is deciding faster once you've decided well.",
+      "While everything else drifts, you hold position. Your word lands, your judgment is weighed carefully, and people navigate by you — often without saying so. Your gift is reliability that outlasts moods and trends. The discipline is remembering that even fixed stars precess: staying constant on purpose is different from staying still by default.",
+    shadow:
+      "Holding a position long after it stopped serving you — and mistaking stillness for strength.",
     practice:
-      "Set a decision deadline for small choices: one minute, then commit. For bigger ones, write down what you actually need, then answer the moment in front of you instead of the one in your head.",
+      "Give small decisions a one-minute deadline and commit. For the big ones, write down what you actually need, then answer the moment in front of you instead of the one in your head.",
     intentions: ["One thing at a time, all the way through", "Speak slower than I think", "Adapt the plan, keep the goal"],
     bar: "bg-cyan-300",
     glow: "text-cyan-300",
   },
   {
     id: "current",
-    name: "The Current",
-    emoji: "🌊",
-    tagline: "You respond by adapting — and it almost always works.",
+    name: "The Moon",
+    emoji: "🌙",
+    element: "Reflection",
+    tagline: "You move in phases and read every light in the room.",
     description:
-      "You read the room, bend with circumstances, and rarely get stuck. That flexibility keeps you effective; the risk is drifting past your own preferences without noticing. Your edge is choosing your direction, then letting the flow do the work.",
+      "You wax, you wane, and you notice — rooms, moods, the unspoken thing under the words. You adapt without being asked, and people feel understood around you in a way they can't quite explain. Your gift is a permeability that makes you fluent in others. The discipline is keeping some light that is only yours.",
+    shadow:
+      "Reflecting everyone so faithfully that you lose track of what you actually wanted.",
     practice:
-      "Once a day, name what you actually want before checking what's convenient. Then adapt around that, not instead of it.",
+      "Once a day, name what you want before checking what's convenient. Then adapt around that — not instead of it.",
     intentions: ["Adapt the plan, keep the goal", "Let the other person finish", "Notice the urge, don't obey it"],
     bar: "bg-fuchsia-300",
     glow: "text-fuchsia-300",
   },
   {
     id: "bloom",
-    name: "The Bloom",
-    emoji: "🌸",
-    tagline: "You respond openly — you hold space for what's possible.",
+    name: "The Nebula",
+    emoji: "🌌",
+    element: "Emergence",
+    tagline: "You are raw potential — always forming something new.",
     description:
-      "You meet moments with openness and generosity, seeing options others miss. The risk is saying yes until your own needs go quiet. Your edge is keeping your yes as deliberate as your curiosity.",
+      "Nebulae are where stars are born, and you live there: in the space between what is and what could be. You see options before others see problems, and your openness is generative — people leave conversations with you carrying ideas they didn't have coming in. Your gift is possibility. The discipline is choosing which cloud collapses into a star.",
+    shadow:
+      "Starting galaxies and finishing none — openness that never hardens into a decision.",
     practice:
-      "For every yes you give today, make one of them to yourself. 'I'll help' and 'I need a minute' can live in the same conversation.",
+      "For every yes you hand out today, give one to yourself. 'I'll help' and 'I need a minute' can live in the same conversation.",
     intentions: ["Stay curious when the answer feels obvious", "Leave the work at the door tonight", "Get curious before I get defensive"],
-    bar: "bg-lime-300",
-    glow: "text-lime-300",
+    bar: "bg-emerald-300",
+    glow: "text-emerald-300",
   },
 ];
 
