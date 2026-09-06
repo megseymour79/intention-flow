@@ -83,10 +83,10 @@ function HeroSky() {
         onPick={() => undefined}
         onDrop={() => undefined}
         onRequestCreate={hang}
-        className="h-[380px] w-full overflow-hidden rounded-[28px] border border-white/12 bg-gradient-to-b from-[#0e0924] via-[#1a1040] to-[#2b1654] sm:h-[440px]"
+        className="h-[380px] w-full overflow-hidden rounded-[28px] border border-white/12 bg-gradient-to-b from-[#03050e] via-[#071026] to-[#0d1a33] sm:h-[440px]"
         hint="tap the sky & type a way you want to be"
       />
-      <div className="relative z-10 -mt-8 mx-auto w-[92%] rounded-2xl border border-white/12 bg-[#201443]/90 p-2 shadow-[0_18px_50px_-20px_rgba(0,0,0,0.7)] backdrop-blur-xl">
+      <div className="relative z-10 -mt-8 mx-auto w-[92%] rounded-2xl border border-white/12 bg-[#0b1322]/90 p-2 shadow-[0_18px_50px_-20px_rgba(0,0,0,0.7)] backdrop-blur-xl">
         <div className="flex items-center gap-2">
           <span className="pl-2 text-lg">✍️</span>
           <Input
@@ -242,7 +242,7 @@ export default function Landing() {
               className="mt-5 text-4xl font-extrabold leading-[1.05] tracking-tight sm:text-6xl"
             >
               Choose how you{" "}
-              <span className="bg-gradient-to-r from-amber-200 via-amber-300 to-fuchsia-300 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-amber-200 via-amber-100 to-sky-200 bg-clip-text text-transparent">
                 show up
               </span>{" "}
               — before life chooses for you.
@@ -409,7 +409,7 @@ export default function Landing() {
       <section id="quiz" className="relative scroll-mt-20 py-20">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <FadeUp>
-            <div className="overflow-hidden rounded-[32px] border border-white/10 bg-gradient-to-br from-[#1d1145] via-[#241a5c] to-[#3a1e5f] p-8 sm:p-12">
+            <div className="overflow-hidden rounded-[32px] border border-white/10 bg-gradient-to-br from-[#0a1120] via-[#0e1728] to-[#14203a] p-8 sm:p-12">
               <div className="flex flex-wrap items-end justify-between gap-6">
                 <div className="max-w-xl">
                   <p className="text-xs font-bold uppercase tracking-[0.25em] text-amber-200/80">
@@ -530,7 +530,7 @@ export default function Landing() {
       <section className="relative py-24">
         <div className="mx-auto max-w-4xl px-4 sm:px-6">
           <FadeUp>
-            <div className="relative overflow-hidden rounded-[32px] border border-amber-300/25 bg-gradient-to-br from-amber-300/15 via-[#2b1a55] to-[#46205f] p-10 text-center sm:p-14">
+            <div className="relative overflow-hidden rounded-[32px] border border-amber-300/25 bg-gradient-to-br from-amber-300/10 via-[#0c1424] to-[#152238] p-10 text-center sm:p-14">
               <div className="pointer-events-none absolute -top-16 left-1/2 h-48 w-96 -translate-x-1/2 rounded-full bg-amber-300/20 blur-3xl" />
               <span className="animate-floaty inline-block text-4xl">🌌</span>
               <h2 className="mx-auto mt-4 max-w-xl text-3xl font-extrabold tracking-tight sm:text-5xl">

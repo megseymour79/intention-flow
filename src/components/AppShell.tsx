@@ -102,7 +102,7 @@ export function AppShell({
                   type="button"
                   className="flex w-full items-center gap-3 rounded-xl border border-white/8 bg-white/4 px-3 py-2 text-left transition-colors hover:bg-white/8"
                 >
-                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-amber-300/70 to-fuchsia-400/70 text-sm font-bold text-[#1a1440]">
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-amber-300/70 to-sky-400/70 text-sm font-bold text-[#0a1120]">
                     {initialsOf(user?.name)}
                   </span>
                   <span className="min-w-0 flex-1">
@@ -130,7 +130,7 @@ export function AppShell({
         </aside>
 
         {/* Mobile header */}
-        <header className="sticky top-0 z-40 border-b border-white/8 bg-[#150f30]/85 backdrop-blur-md lg:hidden">
+        <header className="sticky top-0 z-40 border-b border-white/8 bg-[#070d1a]/85 backdrop-blur-md lg:hidden">
           <div className="flex items-center justify-between px-4 py-3">
             <NavLink to="/" className="flex items-center gap-2">
               <StarMark size={32} />

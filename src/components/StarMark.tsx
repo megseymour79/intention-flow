@@ -11,26 +11,26 @@ export function StarMark({ size = 40, className }: StarMarkProps) {
     <div
       aria-hidden
       className={cn(
-        "relative flex shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-[#2b1d5e] via-[#3b2a75] to-[#5b2a5e] ring-1 ring-white/15",
+        "relative flex shrink-0 items-center justify-center rounded-2xl bg-gradient-to-b from-[#101a2e] to-[#050a16] ring-1 ring-white/15",
         className,
       )}
       style={{ width: size, height: size }}
     >
       {/* tiny background stars */}
       <span
-        className="absolute rounded-full bg-amber-100/70"
+        className="absolute rounded-full bg-blue-100/70"
         style={{
-          width: Math.max(2, size * 0.05),
-          height: Math.max(2, size * 0.05),
+          width: Math.max(1.5, size * 0.045),
+          height: Math.max(1.5, size * 0.045),
           top: size * 0.18,
           left: size * 0.16,
         }}
       />
       <span
-        className="absolute rounded-full bg-cyan-200/60"
+        className="absolute rounded-full bg-slate-200/50"
         style={{
-          width: Math.max(1.5, size * 0.04),
-          height: Math.max(1.5, size * 0.04),
+          width: Math.max(1, size * 0.035),
+          height: Math.max(1, size * 0.035),
           bottom: size * 0.16,
           right: size * 0.14,
         }}
@@ -39,10 +39,11 @@ export function StarMark({ size = 40, className }: StarMarkProps) {
       <span
         className="relative text-center font-bold leading-none"
         style={{
-          fontSize: size * 0.52,
+          fontSize: size * 0.5,
           lineHeight: 1,
-          color: "#fde68a",
-          textShadow: "0 0 10px rgba(251,191,36,0.9), 0 0 22px rgba(251,191,36,0.5)",
+          color: "#e8eeff",
+          textShadow:
+            "0 0 8px rgba(200,218,255,0.9), 0 0 18px rgba(160,190,255,0.45)",
           transform: "translateY(-2%)",
         }}
       >

@@ -50,13 +50,13 @@ function SkyDecor() {
 
   const dots = useMemo(
     () =>
-      Array.from({ length: 64 }, (_, i) => ({
+      Array.from({ length: 110 }, (_, i) => ({
         left: seeded(i, 11) * 100,
         top: seeded(i, 12) * 100,
-        size: 1 + seeded(i, 13) * 2.4,
-        delay: seeded(i, 14) * 6,
-        duration: 3 + seeded(i, 15) * 5,
-        dim: seeded(i, 16) > 0.35,
+        size: 0.8 + seeded(i, 13) * 1.5,
+        delay: seeded(i, 14) * 8,
+        duration: 4 + seeded(i, 15) * 7,
+        bright: seeded(i, 16) > 0.86,
         depth: seeded(i, 17) > 0.5 ? "front" : "back",
       })),
     [],
@@ -89,14 +89,18 @@ function SkyDecor() {
         <span
           key={`${depth}-${i}`}
           aria-hidden
-          className={`animate-twinkle pointer-events-none absolute rounded-full ${
-            d.dim ? "bg-amber-50/40" : "bg-amber-100/80"
+          className={`pointer-events-none absolute rounded-full ${
+            d.bright ? "animate-twinkle" : ""
           }`}
           style={{
             left: `${d.left}%`,
             top: `${d.top}%`,
             width: d.size,
             height: d.size,
+            background: d.bright
+              ? "rgba(226,236,255,0.95)"
+              : "rgba(214,224,246,0.45)",
+            boxShadow: d.bright ? "0 0 6px 1px rgba(226,236,255,0.4)" : undefined,
             animationDelay: `${d.delay}s`,
             animationDuration: `${d.duration}s`,
           }}
@@ -105,10 +109,22 @@ function SkyDecor() {
 
   return (
     <>
-      {/* nebula washes */}
-      <div className="pointer-events-none absolute -top-24 left-1/2 h-72 w-[36rem] -translate-x-1/2 rounded-full bg-violet-500/10 blur-3xl" />
-      <div className="pointer-events-none absolute -left-20 top-1/3 h-64 w-64 rounded-full bg-rose-400/10 blur-3xl" />
-      <div className="pointer-events-none absolute -right-16 bottom-0 h-72 w-80 rounded-full bg-amber-300/10 blur-3xl" />
+      {/* milky way band — faint unresolved starlight across the upper sky */}
+      <div
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background:
+            "radial-gradient(150% 60% at 75% -15%, rgba(196,208,235,0.06) 0%, rgba(196,208,235,0.024) 40%, transparent 68%)",
+        }}
+      />
+      {/* horizon airglow along the bottom edge of the sky */}
+      <div
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3"
+        style={{
+          background:
+            "linear-gradient(to top, rgba(30,44,70,0.5) 0%, rgba(22,34,56,0.2) 50%, transparent 100%)",
+        }}
+      />
       <div
         ref={layerBack}
         className="absolute inset-0 will-change-transform"
@@ -189,8 +205,8 @@ function ShootingStars() {
               left: `${m.left}%`,
               top: `${m.top}%`,
               background:
-                "linear-gradient(90deg, rgba(255,255,255,0.95), rgba(251,191,36,0.7), transparent)",
-              filter: "drop-shadow(0 0 6px rgba(255,241,180,0.9))",
+                "linear-gradient(90deg, rgba(235,244,255,0.95), rgba(180,205,245,0.5), transparent)",
+              filter: "drop-shadow(0 0 4px rgba(200,220,255,0.7))",
               animationDuration: `${m.duration}s`,
               "--shoot-angle": `${m.angle}deg`,
             } as React.CSSProperties
@@ -346,7 +362,7 @@ export function StarSky({
       ref={containerRef}
       className={
         className ??
-        "relative h-full w-full overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-b from-[#120d2b] via-[#1b1245] to-[#2a1750]"
+        "relative h-full w-full overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-b from-[#03050e] via-[#071026] to-[#0d1a33]"
       }
       onPointerDown={(e) => {
         // Remember where a press on empty sky began, so scrolls don't open the composer

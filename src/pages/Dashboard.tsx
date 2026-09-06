@@ -200,7 +200,7 @@ export default function Dashboard() {
                 setEditorTarget({ x, y });
                 setEditorOpen(true);
               }}
-              className="h-[54vh] min-h-[400px] w-full overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-b from-[#0f0a26] via-[#170f3d] to-[#241450]"
+              className="h-[54vh] min-h-[400px] w-full overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-b from-[#03050e] via-[#071026] to-[#0d1a33]"
               hint={
                 stars.length === 0
                   ? undefined
@@ -208,7 +208,7 @@ export default function Dashboard() {
               }
             />
             {loading && (
-              <div className="absolute inset-0 z-20 flex items-center justify-center rounded-3xl bg-[#0f0a26]/70 backdrop-blur-sm">
+              <div className="absolute inset-0 z-20 flex items-center justify-center rounded-3xl bg-[#03050e]/70 backdrop-blur-sm">
                 <Loader2 className="h-6 w-6 animate-spin text-amber-200" />
               </div>
             )}
@@ -563,7 +563,7 @@ export default function Dashboard() {
       />
 
       <AlertDialog open={deleteOpen} onOpenChange={setDeleteOpen}>
-        <AlertDialogContent className="border-white/12 bg-[#1c1242]/95 backdrop-blur-xl">
+        <AlertDialogContent className="border-white/12 bg-[#0b1322]/95 backdrop-blur-xl">
           <AlertDialogHeader>
             <AlertDialogTitle>Release this star?</AlertDialogTitle>
             <AlertDialogDescription>

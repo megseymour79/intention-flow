@@ -305,7 +305,7 @@ export default function Community() {
                           <AvatarImage src={post.author.image} alt={post.author.name} />
                         ) : null}
                         <AvatarFallback
-                          className={`bg-gradient-to-br ${avatarHue(post.author.userId)} text-sm font-bold text-[#1a1440]`}
+                          className={`bg-gradient-to-br ${avatarHue(post.author.userId)} text-sm font-bold text-[#0a1120]`}
                         >
                           {(post.author.name ?? "?").slice(0, 1).toUpperCase()}
                         </AvatarFallback>
@@ -440,7 +440,7 @@ export default function Community() {
                                   />
                                 ) : null}
                                 <AvatarFallback
-                                  className={`bg-gradient-to-br ${avatarHue(c.author.userId)} text-[10px] font-bold text-[#1a1440]`}
+                                  className={`bg-gradient-to-br ${avatarHue(c.author.userId)} text-[10px] font-bold text-[#0a1120]`}
                                 >
                                   {(c.author.name ?? "?").slice(0, 1).toUpperCase()}
                                 </AvatarFallback>

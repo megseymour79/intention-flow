@@ -150,7 +150,7 @@ export default function Messages() {
                     {c.otherImage ? (
                       <AvatarImage src={c.otherImage} alt={c.otherName} />
                     ) : null}
-                    <AvatarFallback className="bg-gradient-to-br from-cyan-300/70 to-violet-400/70 text-sm font-bold text-[#1a1440]">
+                    <AvatarFallback className="bg-gradient-to-br from-cyan-300/70 to-blue-400/70 text-sm font-bold text-[#0a1120]">
                       {initialsOf(c.otherName)}
                     </AvatarFallback>
                   </Avatar>
@@ -190,7 +190,7 @@ export default function Messages() {
                         alt={openConvo.otherName}
                       />
                     ) : null}
-                    <AvatarFallback className="bg-gradient-to-br from-cyan-300/70 to-violet-400/70 text-xs font-bold text-[#1a1440]">
+                    <AvatarFallback className="bg-gradient-to-br from-cyan-300/70 to-blue-400/70 text-xs font-bold text-[#0a1120]">
                       {initialsOf(openConvo.otherName)}
                     </AvatarFallback>
                   </Avatar>
@@ -303,7 +303,7 @@ export default function Messages() {
                   ← Back
                 </Button>
                 <Avatar className="h-8 w-8">
-                  <AvatarFallback className="bg-gradient-to-br from-cyan-300/70 to-violet-400/70 text-[10px] font-bold text-[#1a1440]">
+                  <AvatarFallback className="bg-gradient-to-br from-cyan-300/70 to-blue-400/70 text-[10px] font-bold text-[#0a1120]">
                     {initialsOf(openConvo.otherName)}
                   </AvatarFallback>
                 </Avatar>

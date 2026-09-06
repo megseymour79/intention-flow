@@ -133,7 +133,7 @@ export function StarEditor({
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
-      <DialogContent className="max-h-[92vh] overflow-y-auto border-white/12 bg-[#1c1242]/95 backdrop-blur-xl sm:max-w-xl">
+      <DialogContent className="max-h-[92vh] overflow-y-auto border-white/12 bg-[#0b1322]/95 backdrop-blur-xl sm:max-w-xl">
         <DialogTitle className="sr-only">
           {existing ? "Edit your star" : "Hang a new intention star"}
         </DialogTitle>
@@ -146,7 +146,7 @@ export function StarEditor({
         >
           <div className="flex items-center gap-3">
             <div
-              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-[#3b2a75] to-[#5b2a5e] text-xl ring-1 ring-white/15"
+              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-[#16233c] to-[#0a1120] text-xl ring-1 ring-white/15"
               style={{
                 color: STAR_COLORS[colorKey].hex,
                 textShadow: `0 0 14px ${STAR_COLORS[colorKey].glow}`,
