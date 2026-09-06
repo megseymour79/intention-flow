@@ -263,6 +263,30 @@
   animation-timing-function: ease-in-out;
 }
 
+@keyframes shoot {
+  0% {
+    transform: rotate(var(--shoot-angle, 35deg)) translateX(0) scaleX(0.2);
+    opacity: 0;
+  }
+  12% {
+    opacity: 1;
+  }
+  85% {
+    opacity: 1;
+  }
+  100% {
+    transform: rotate(var(--shoot-angle, 35deg)) translateX(220px) scaleX(1);
+    opacity: 0;
+  }
+}
+
+.animate-shoot {
+  animation-name: shoot;
+  animation-iteration-count: 1;
+  animation-timing-function: ease-out;
+  transform-origin: left center;
+}
+
 /* soft scrollbar to match the theme */
 * {
   scrollbar-width: thin;

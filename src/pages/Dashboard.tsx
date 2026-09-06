@@ -4,12 +4,14 @@ import { toast } from "sonner";
 import { motion } from "framer-motion";
 import {
   Bell,
+  Clock,
   Edit3,
   Flame,
   Loader2,
   Plus,
   Sparkles,
   Trash2,
+  X,
 } from "lucide-react";
 
 import { api } from "@/convex/_generated/api";
@@ -37,6 +39,7 @@ import {
   useReminders,
 } from "@/hooks/use-reminders";
 import { momentLabel, shiftOfTheDay, starColor, styleById } from "@/lib/shift-data";
+import { ReflectionHeroCard, ReflectionLedger } from "@/components/ReflectionLedger";
 
 export default function Dashboard() {
   const { user } = useAuth();
@@ -76,6 +79,7 @@ export default function Dashboard() {
   const [quizOpen, setQuizOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [busyId, setBusyId] = useState<Id<"stars"> | null>(null);
+  const [customTime, setCustomTime] = useState("07:30");
 
   const hour = new Date().getHours();
   const greeting =
@@ -205,6 +209,9 @@ export default function Dashboard() {
             )}
           </div>
         </motion.div>
+
+        {/* Ledger-so-far summary */}
+        <ReflectionHeroCard />
 
         {/* Stat tiles */}
         <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
@@ -438,6 +445,41 @@ export default function Dashboard() {
                 </button>
               );
             })}
+            {/* Custom time */}
+            <div className="flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3 py-1.5">
+              <Clock className="h-3.5 w-3.5 text-muted-foreground" />
+              <input
+                type="time"
+                value={customTime}
+                disabled={!reminders.enabled}
+                onChange={(e) => setCustomTime(e.target.value)}
+                aria-label="Custom reminder time"
+                className="bg-transparent text-xs tabular-nums outline-none [color-scheme:dark] disabled:opacity-40"
+              />
+              <button
+                type="button"
+                disabled={!reminders.enabled || !customTime}
+                onClick={() =>
+                  reminders.setSlots(
+                    reminders.slots.includes(customTime)
+                      ? reminders.slots.filter((t) => t !== customTime)
+                      : [...reminders.slots, customTime].sort(),
+                  )
+                }
+                aria-label={
+                  reminders.slots.includes(customTime)
+                    ? "Remove this custom time"
+                    : "Add this custom time"
+                }
+                className="text-muted-foreground transition-colors hover:text-amber-200 disabled:cursor-not-allowed disabled:opacity-40"
+              >
+                {reminders.slots.includes(customTime) ? (
+                  <X className="h-3.5 w-3.5" />
+                ) : (
+                  <Plus className="h-3.5 w-3.5" />
+                )}
+              </button>
+            </div>
             <div className="ml-auto flex items-center gap-2">
               {reminders.permission === "default" && (
                 <Button
@@ -467,6 +509,9 @@ export default function Dashboard() {
             </p>
           )}
         </div>
+
+        {/* Evening reflection ledger */}
+        <ReflectionLedger intentionText={activeStar?.text ?? null} />
       </div>
 
       <StarEditor

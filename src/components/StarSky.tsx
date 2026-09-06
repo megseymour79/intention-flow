@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type { Id } from "@/convex/_generated/dataModel";
 import { starColor } from "@/lib/shift-data";
 
@@ -39,30 +39,55 @@ function seeded(i: number, salt: number) {
   return x - Math.floor(x);
 }
 
-/** Decorative field of faint dots + nebula glows behind the user's stars. */
-function SkyDecor({ starCount }: { starCount: number }) {
+/* ------------------------------------------------------------------ */
+/* Decorative sky layers                                              */
+/* ------------------------------------------------------------------ */
+
+/** Faint background dots, split into two depth layers for parallax. */
+function SkyDecor() {
+  const layerBack = useRef<HTMLDivElement | null>(null);
+  const layerFront = useRef<HTMLDivElement | null>(null);
+
   const dots = useMemo(
     () =>
-      Array.from({ length: 46 }, (_, i) => ({
+      Array.from({ length: 64 }, (_, i) => ({
         left: seeded(i, 11) * 100,
         top: seeded(i, 12) * 100,
         size: 1 + seeded(i, 13) * 2.4,
         delay: seeded(i, 14) * 6,
         duration: 3 + seeded(i, 15) * 5,
         dim: seeded(i, 16) > 0.35,
+        depth: seeded(i, 17) > 0.5 ? "front" : "back",
       })),
     [],
   );
-  void starCount;
-  return (
-    <>
-      {/* nebula washes */}
-      <div className="pointer-events-none absolute -top-24 left-1/2 h-72 w-[36rem] -translate-x-1/2 rounded-full bg-violet-500/10 blur-3xl" />
-      <div className="pointer-events-none absolute -left-20 top-1/3 h-64 w-64 rounded-full bg-rose-400/10 blur-3xl" />
-      <div className="pointer-events-none absolute -right-16 bottom-0 h-72 w-80 rounded-full bg-amber-300/10 blur-3xl" />
-      {dots.map((d, i) => (
+
+  // Pointer parallax: back layer drifts opposite the pointer, front layer with it.
+  useEffect(() => {
+    const host = layerBack.current?.parentElement;
+    if (!host) return;
+    const onMove = (e: PointerEvent) => {
+      const box = host.getBoundingClientRect();
+      if (box.width === 0) return;
+      const nx = (e.clientX - box.left) / box.width - 0.5; // -0.5..0.5
+      const ny = (e.clientY - box.top) / box.height - 0.5;
+      if (layerBack.current) {
+        layerBack.current.style.transform = `translate(${nx * -10}px, ${ny * -8}px)`;
+      }
+      if (layerFront.current) {
+        layerFront.current.style.transform = `translate(${nx * 16}px, ${ny * 12}px)`;
+      }
+    };
+    host.addEventListener("pointermove", onMove);
+    return () => host.removeEventListener("pointermove", onMove);
+  }, []);
+
+  const render = (depth: "back" | "front") =>
+    dots
+      .filter((d) => d.depth === depth)
+      .map((d, i) => (
         <span
-          key={`decor-${i}`}
+          key={`${depth}-${i}`}
           aria-hidden
           className={`animate-twinkle pointer-events-none absolute rounded-full ${
             d.dim ? "bg-amber-50/40" : "bg-amber-100/80"
@@ -76,14 +101,169 @@ function SkyDecor({ starCount }: { starCount: number }) {
             animationDuration: `${d.duration}s`,
           }}
         />
+      ));
+
+  return (
+    <>
+      {/* nebula washes */}
+      <div className="pointer-events-none absolute -top-24 left-1/2 h-72 w-[36rem] -translate-x-1/2 rounded-full bg-violet-500/10 blur-3xl" />
+      <div className="pointer-events-none absolute -left-20 top-1/3 h-64 w-64 rounded-full bg-rose-400/10 blur-3xl" />
+      <div className="pointer-events-none absolute -right-16 bottom-0 h-72 w-80 rounded-full bg-amber-300/10 blur-3xl" />
+      <div
+        ref={layerBack}
+        className="absolute inset-0 will-change-transform"
+        style={{ transition: "transform 0.6s cubic-bezier(0.22,1,0.36,1)" }}
+        aria-hidden
+      >
+        {render("back")}
+      </div>
+      <div
+        ref={layerFront}
+        className="absolute inset-0 will-change-transform"
+        style={{ transition: "transform 0.9s cubic-bezier(0.22,1,0.36,1)" }}
+        aria-hidden
+      >
+        {render("front")}
+      </div>
+    </>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/* Shooting stars                                                     */
+/* ------------------------------------------------------------------ */
+
+interface Meteor {
+  id: number;
+  left: number; // %
+  top: number; // %
+  angle: number; // deg
+  duration: number; // s
+  delay: number; // s
+}
+
+/** An occasional shooting star streaking across the sky. */
+function ShootingStars() {
+  const [meteors, setMeteors] = useState<Meteor[]>([]);
+  const nextId = useRef(0);
+
+  useEffect(() => {
+    let alive = true;
+    const spawn = () => {
+      if (!alive) return;
+      const id = nextId.current++;
+      const m: Meteor = {
+        id,
+        left: 8 + Math.random() * 70,
+        top: 4 + Math.random() * 40,
+        angle: 24 + Math.random() * 26, // always downward-right-ish
+        duration: 0.9 + Math.random() * 0.8,
+        delay: 0,
+      };
+      setMeteors((prev) => [...prev.slice(-2), m]);
+      setTimeout(() => {
+        if (alive) setMeteors((prev) => prev.filter((x) => x.id !== id));
+      }, (m.duration + 0.4) * 1000);
+      schedule();
+    };
+    const schedule = () => {
+      const wait = 9_000 + Math.random() * 14_000;
+      timer = setTimeout(spawn, wait);
+    };
+    let timer: ReturnType<typeof setTimeout> = setTimeout(spawn, 4_500);
+    return () => {
+      alive = false;
+      clearTimeout(timer);
+    };
+  }, []);
+
+  return (
+    <>
+      {meteors.map((m) => (
+        <span
+          key={m.id}
+          aria-hidden
+          className="animate-shoot pointer-events-none absolute h-px w-24 rounded-full"
+          style={
+            {
+              left: `${m.left}%`,
+              top: `${m.top}%`,
+              background:
+                "linear-gradient(90deg, rgba(255,255,255,0.95), rgba(251,191,36,0.7), transparent)",
+              filter: "drop-shadow(0 0 6px rgba(255,241,180,0.9))",
+              animationDuration: `${m.duration}s`,
+              "--shoot-angle": `${m.angle}deg`,
+            } as React.CSSProperties
+          }
+        />
       ))}
     </>
   );
 }
 
+/* ------------------------------------------------------------------ */
+/* Constellation lines for the focused star                           */
+/* ------------------------------------------------------------------ */
+
+/** Draws soft lines from the active star to its 3 nearest neighbors. */
+function Constellation({
+  stars,
+  live,
+}: {
+  stars: SkyStarLike[];
+  live: Record<string, { x: number; y: number }>;
+}) {
+  const active = stars.find((s) => s.active);
+  if (!active || stars.length < 2) return null;
+
+  const pos = (s: SkyStarLike) => live[s._id] ?? { x: s.x, y: s.y };
+  const a = pos(active);
+
+  const others = stars
+    .filter((s) => s._id !== active._id)
+    .map((s) => ({ s, d: Math.hypot(pos(s).x - a.x, pos(s).y - a.y) }))
+    .sort((p, q) => p.d - q.d)
+    .slice(0, 3);
+
+  const color = starColor(active.colorKey);
+
+  return (
+    <svg
+      aria-hidden
+      className="pointer-events-none absolute inset-0 z-[5]"
+      width="100%"
+      height="100%"
+    >
+      {others.map(({ s }) => {
+        const b = pos(s);
+        return (
+          <line
+            key={`line-${active._id}-${s._id}`}
+            x1={`${a.x}%`}
+            y1={`${a.y}%`}
+            x2={`${b.x}%`}
+            y2={`${b.y}%`}
+            stroke={color.hex}
+            strokeOpacity={0.22}
+            strokeWidth={1}
+            strokeDasharray="3 6"
+            style={{ filter: `drop-shadow(0 0 3px ${color.glow})` }}
+          />
+        );
+      })}
+    </svg>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/* The interactive night sky                                          */
+/* ------------------------------------------------------------------ */
+
 /**
  * The interactive night sky. Stars hang at percentage coordinates; drag any
  * star to move it (persisted by the caller) and tap one to focus it.
+ * Decor layers parallax with the pointer, meteors streak occasionally,
+ * and the focused star draws a constellation to its nearest neighbors.
  */
 export function StarSky({
   stars,
@@ -191,13 +371,15 @@ export function StarSky({
         onRequestCreate(Math.round(x), Math.round(y));
       }}
     >
-      <SkyDecor starCount={stars.length} />
+      <SkyDecor />
+      <ShootingStars />
+      <Constellation stars={stars} live={live} />
       {hint && (
         <p className="pointer-events-none absolute bottom-3 left-1/2 z-10 -translate-x-1/2 whitespace-nowrap rounded-full border border-white/10 bg-black/40 px-3 py-1 text-[11px] text-amber-100/70 backdrop-blur-sm">
           {hint}
         </p>
       )}
-      {stars.map((star) => {
+      {stars.map((star, idx) => {
         const pos = live[star._id] ?? { x: star.x, y: star.y };
         const color = starColor(star.colorKey);
         const dragging = Boolean(live[star._id]);
@@ -235,8 +417,14 @@ export function StarSky({
                 fontSize: star.active ? 34 : 27,
                 color: color.hex,
                 textShadow: `0 0 14px ${color.glow}, 0 0 34px ${color.glow}`,
-                filter: star.active ? "drop-shadow(0 0 10px rgba(255,255,255,0.35))" : undefined,
+                filter: star.active
+                  ? "drop-shadow(0 0 10px rgba(255,255,255,0.35))"
+                  : undefined,
                 opacity: star.active || dragging ? 1 : 0.85,
+                // gentle idle float, frozen while the star is being dragged
+                animation: dragging
+                  ? "none"
+                  : `floaty ${4.5 + seeded(idx, 31) * 3.5}s ease-in-out ${seeded(idx, 32) * -6}s infinite`,
               }}
             >
               {star.emoji}

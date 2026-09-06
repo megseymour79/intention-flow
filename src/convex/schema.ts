@@ -48,6 +48,20 @@ const schema = defineSchema(
       .index("by_user", ["userId"])
       .index("by_user_active", ["userId", "active"]),
 
+    // one nightly reflection per user per local day
+    reflections: defineTable({
+      userId: v.id("users"),
+      dayKey: v.string(), // local day, same key as stars.dayKey
+      intentionText: v.optional(v.string()), // snapshot of the active star's text
+      honored: v.boolean(), // did they show up as intended?
+      mood: v.number(), // 1 (heavy) .. 5 (bright)
+      note: v.optional(v.string()),
+      createdAt: v.number(),
+      updatedAt: v.number(),
+    })
+      .index("by_user", ["userId"])
+      .index("by_user_day", ["userId", "dayKey"]),
+
     // latest response-style quiz result per user
     quizResults: defineTable({
       userId: v.id("users"),

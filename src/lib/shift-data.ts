@@ -371,3 +371,69 @@ export function dayKeyFor(date: Date): string {
   const d = String(date.getDate()).padStart(2, "0");
   return `${y}-${m}-${d}`;
 }
+
+/** Best-guess "life moment" for the current hour — grounds suggestions in now. */
+export function momentForHour(date: Date = new Date()): string {
+  const h = date.getHours();
+  if (h < 5) return "nights";
+  if (h < 11) return "mornings";
+  if (h < 14) return "meetings";
+  if (h < 18) return "conversations";
+  if (h < 21) return "change";
+  return "nights";
+}
+
+/** Rank suggestions so stars for the selected moment surface first. */
+export function suggestionsForMoment(
+  selectedMoment: string,
+  limit = 6,
+): SuggestedStar[] {
+  return [...SUGGESTED_STARS]
+    .sort((a, b) => {
+      const aMatch = a.moment === selectedMoment ? 0 : 1;
+      const bMatch = b.moment === selectedMoment ? 0 : 1;
+      return aMatch - bMatch;
+    })
+    .slice(0, limit);
+}
+
+export interface QualityHint {
+  tone: "good" | "nudge";
+  message: string;
+}
+
+const DOING_WORDS =
+  /\b(finish|complete|email|call|reply|clean|exercise|work out|study|apply|submit|buy|send|stop)\b/i;
+const BEING_WORDS =
+  /\b(stay|be|remain|keep|choose|allow|notice|let|show up|respond|act|feel|hold|carry|arrive)\b/i;
+
+/** A gentle check that the intention is about *being*, not *doing*. */
+export function intentionQuality(text: string): QualityHint | null {
+  const t = text.trim();
+  if (t.length < 8) return null;
+  if (DOING_WORDS.test(t) && !BEING_WORDS.test(t)) {
+    return {
+      tone: "nudge",
+      message:
+        "That reads like a task to finish. Try the way you want to be while doing it — “finish it calmly” becomes “stay steady under pressure”.",
+    };
+  }
+  if (BEING_WORDS.test(t) && t.length < 30) {
+    return {
+      tone: "good",
+      message:
+        "Short and being-shaped — the kind you can still remember mid-moment.",
+    };
+  }
+  if (BEING_WORDS.test(t)) {
+    return {
+      tone: "good",
+      message: "That's about how you want to be. It'll hold up under pressure.",
+    };
+  }
+  return {
+    tone: "nudge",
+    message:
+      "Try framing it as a way of being — “stay”, “choose”, “notice”, “let” — rather than a thing to get done.",
+  };
+}

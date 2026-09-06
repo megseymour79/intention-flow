@@ -14,6 +14,7 @@ import type * as http from "../http.js";
 import type * as messages from "../messages.js";
 import type * as posts from "../posts.js";
 import type * as quiz from "../quiz.js";
+import type * as reflections from "../reflections.js";
 import type * as stars from "../stars.js";
 import type * as storage from "../storage.js";
 import type * as users from "../users.js";
@@ -31,6 +32,7 @@ declare const fullApi: ApiFromModules<{
   messages: typeof messages;
   posts: typeof posts;
   quiz: typeof quiz;
+  reflections: typeof reflections;
   stars: typeof stars;
   storage: typeof storage;
   users: typeof users;

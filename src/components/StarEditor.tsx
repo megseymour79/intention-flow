@@ -12,11 +12,13 @@ import { Textarea } from "@/components/ui/textarea";
 
 import {
   ColorKey,
+  intentionQuality,
   MOMENTS,
+  momentForHour,
   STAR_COLORS,
   STAR_COLOR_KEYS,
   STAR_EMOJIS,
-  SUGGESTED_STARS,
+  suggestionsForMoment,
 } from "@/lib/shift-data";
 
 export interface StarEditorDraft {
@@ -55,7 +57,7 @@ export function StarEditor({
   const updateStar = useMutation(api.stars.update);
 
   const [text, setText] = useState(existing?.text ?? "");
-  const [moment, setMoment] = useState(existing?.moment ?? "conversations");
+  const [moment, setMoment] = useState(existing?.moment ?? momentForHour());
   const [emoji, setEmoji] = useState(existing?.emoji ?? "✦");
   const [colorKey, setColorKey] = useState<ColorKey>(
     (existing?.colorKey as ColorKey | undefined) ?? "nova",
@@ -164,6 +166,22 @@ export function StarEditor({
             <p className="text-right text-[11px] text-muted-foreground/70">
               {text.length}/120
             </p>
+            {(() => {
+              const hint = intentionQuality(text);
+              if (!hint) return null;
+              return (
+                <p
+                  className={`rounded-lg border px-3 py-2 text-xs leading-relaxed ${
+                    hint.tone === "good"
+                      ? "border-emerald-300/25 bg-emerald-300/[0.07] text-emerald-100/90"
+                      : "border-amber-300/30 bg-amber-300/[0.07] text-amber-100/90"
+                  }`}
+                >
+                  {hint.tone === "good" ? "✦ " : "✧ "}
+                  {hint.message}
+                </p>
+              );
+            })()}
           </div>
 
           {/* Suggested intentions */}
@@ -173,7 +191,7 @@ export function StarEditor({
               ready-made wish
             </p>
             <div className="flex flex-wrap gap-1.5">
-              {SUGGESTED_STARS.slice(0, 6).map((s) => (
+              {suggestionsForMoment(moment).map((s) => (
                 <button
                   key={s.text}
                   type="button"
