@@ -12,6 +12,7 @@ import type * as auth from "../auth.js";
 import type * as auth_emailOtp from "../auth/emailOtp.js";
 import type * as http from "../http.js";
 import type * as messages from "../messages.js";
+import type * as personality from "../personality.js";
 import type * as posts from "../posts.js";
 import type * as quiz from "../quiz.js";
 import type * as reflections from "../reflections.js";
@@ -30,6 +31,7 @@ declare const fullApi: ApiFromModules<{
   "auth/emailOtp": typeof auth_emailOtp;
   http: typeof http;
   messages: typeof messages;
+  personality: typeof personality;
   posts: typeof posts;
   quiz: typeof quiz;
   reflections: typeof reflections;

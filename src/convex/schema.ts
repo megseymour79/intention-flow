@@ -70,6 +70,17 @@ const schema = defineSchema(
       createdAt: v.number(),
     }).index("by_user", ["userId"]),
 
+    // results for the deeper personality quizzes (mbti, spirit, attachment)
+    personalityResults: defineTable({
+      userId: v.id("users"),
+      kind: v.string(), // quiz pack kind
+      resultId: v.string(), // resolved result id within the pack
+      scores: v.record(v.string(), v.number()),
+      createdAt: v.number(),
+    })
+      .index("by_user", ["userId"])
+      .index("by_user_kind", ["userId", "kind"]),
+
     // community posts (text + optional uploaded image)
     posts: defineTable({
       userId: v.id("users"),

@@ -17,6 +17,7 @@ import {
 import { api } from "@/convex/_generated/api";
 import type { Id } from "@/convex/_generated/dataModel";
 import { AppShell } from "@/components/AppShell";
+import { PersonalityQuiz } from "@/components/PersonalityQuiz";
 import { StarEditor } from "@/components/StarEditor";
 import { StarSky, SkyStarLike } from "@/components/StarSky";
 import { StyleQuiz } from "@/components/StyleQuiz";
@@ -39,6 +40,7 @@ import {
   useReminders,
 } from "@/hooks/use-reminders";
 import { momentLabel, shiftOfTheDay, starColor, styleById } from "@/lib/shift-data";
+import { QUIZ_PACKS, resultById } from "@/lib/quiz-packs";
 import { ReflectionHeroCard, ReflectionLedger } from "@/components/ReflectionLedger";
 
 export default function Dashboard() {
@@ -47,6 +49,7 @@ export default function Dashboard() {
   const starsData = useQuery(api.stars.listForUser);
   const streakData = useQuery(api.stars.getStreak);
   const quizData = useQuery(api.quiz.getMyResult);
+  const deepResults = useQuery(api.personality.myResults) ?? [];
   const setActiveStar = useMutation(api.stars.setActive);
   const moveStar = useMutation(api.stars.update);
   const removeStar = useMutation(api.stars.remove);
@@ -77,6 +80,7 @@ export default function Dashboard() {
   const [editorTarget, setEditorTarget] = useState<{ x: number; y: number }>();
   const [editing, setEditing] = useState<SkyStarLike | null>(null);
   const [quizOpen, setQuizOpen] = useState(false);
+  const [deepOpen, setDeepOpen] = useState<string | null>(null);
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [busyId, setBusyId] = useState<Id<"stars"> | null>(null);
   const [customTime, setCustomTime] = useState("07:30");
@@ -112,6 +116,7 @@ export default function Dashboard() {
     colorKey: string;
   }) => {
     setQuizOpen(false);
+    setDeepOpen(null);
     setEditing(null);
     setEditorTarget(undefined);
     setEditorDraft(draft);
@@ -404,6 +409,55 @@ export default function Dashboard() {
           </div>
         </div>
 
+        {/* Go deeper — the personality quizzes */}
+        <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-5">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
+                Go deeper
+              </p>
+              <p className="mt-1 max-w-xl text-sm text-muted-foreground">
+                Three honest readings of how you move through the world — each
+                one ends with intentions cut to fit what you learn.
+              </p>
+            </div>
+          </div>
+          <div className="mt-4 grid gap-3 md:grid-cols-3">
+            {QUIZ_PACKS.map((pack) => {
+              const saved = deepResults.find((r) => r.kind === pack.kind);
+              const savedResult = saved ? resultById(pack, saved.resultId) : null;
+              return (
+                <button
+                  key={pack.kind}
+                  type="button"
+                  onClick={() => setDeepOpen(pack.kind)}
+                  className="group rounded-2xl border border-white/10 bg-white/[0.03] p-4 text-left transition-all hover:border-amber-300/40 hover:bg-amber-300/[0.06]"
+                >
+                  <div className="flex items-start justify-between gap-2">
+                    <span className="text-2xl">{pack.emoji}</span>
+                    {savedResult && (
+                      <span
+                        className={`rounded-full border border-white/10 bg-white/5 px-2 py-0.5 text-[10px] font-semibold ${savedResult.hue}`}
+                      >
+                        {savedResult.name}
+                      </span>
+                    )}
+                  </div>
+                  <p className="mt-2 font-bold tracking-tight">{pack.title}</p>
+                  <p className="mt-0.5 line-clamp-2 text-xs leading-relaxed text-muted-foreground">
+                    {savedResult
+                      ? savedResult.tagline
+                      : `${pack.questions.length} questions · ${pack.subtitle}`}
+                  </p>
+                  <p className="mt-2 text-[11px] font-semibold text-amber-200/70 transition-colors group-hover:text-amber-200">
+                    {savedResult ? "Retake →" : "Take the quiz →"}
+                  </p>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
         {/* Reminders */}
         <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-5">
           <div className="flex flex-wrap items-start justify-between gap-4">
@@ -561,6 +615,16 @@ export default function Dashboard() {
         onOpenChange={setQuizOpen}
         onHangIntention={handleQuizIntention}
       />
+
+      {QUIZ_PACKS.map((pack) => (
+        <PersonalityQuiz
+          key={pack.kind}
+          pack={pack}
+          open={deepOpen === pack.kind}
+          onOpenChange={(next) => setDeepOpen(next ? pack.kind : null)}
+          onHangIntention={handleQuizIntention}
+        />
+      ))}
 
       <AlertDialog open={deleteOpen} onOpenChange={setDeleteOpen}>
         <AlertDialogContent className="border-white/12 bg-[#0b1322]/95 backdrop-blur-xl">
