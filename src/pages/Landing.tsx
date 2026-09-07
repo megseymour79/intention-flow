@@ -17,6 +17,7 @@ import {
   STAR_COLORS,
   SUGGESTED_STARS,
 } from "@/lib/shift-data";
+import { RANK_EMOJI, RANK_TIERS, UPGRADES } from "@/lib/unlocks";
 
 function FadeUp({
   children,
@@ -486,6 +487,64 @@ export default function Landing() {
                     <p className="text-sm font-bold">{s.title}</p>
                     <p className="mt-1 line-clamp-3 text-xs leading-relaxed text-foreground/60">
                       {s.body}
+                    </p>
+                  </div>
+                </div>
+              </FadeUp>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ---- Ranks: the reason to come back ---- */}
+      <section className="relative py-20">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6">
+          <FadeUp>
+            <div className="flex flex-wrap items-end justify-between gap-4">
+              <div>
+                <p className="text-xs font-bold uppercase tracking-[0.25em] text-amber-200/80">
+                  Sky ranks
+                </p>
+                <h2 className="mt-3 max-w-xl text-3xl font-extrabold tracking-tight sm:text-4xl">
+                  The more you show up, the more your sky opens
+                </h2>
+              </div>
+              <p className="max-w-sm text-sm text-foreground/60">
+                Stars hung, nights kept, days visited, quizzes taken — every
+                bit of light feeds your rank, and each rank unlocks something
+                real in your sky.
+              </p>
+            </div>
+          </FadeUp>
+
+          <FadeUp delay={0.1}>
+            <div className="mt-10 flex flex-wrap items-center gap-2.5">
+              {RANK_TIERS.map((t) => (
+                <div
+                  key={t.level}
+                  className="flex items-center gap-2 rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3 transition-colors hover:border-amber-300/30"
+                >
+                  <span className="text-xl">{RANK_EMOJI[t.level]}</span>
+                  <div>
+                    <p className="text-sm font-bold tracking-tight">{t.name}</p>
+                    <p className="text-[10px] uppercase tracking-wider text-muted-foreground">
+                      {t.score}+ light
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </FadeUp>
+
+          <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {UPGRADES.slice(0, 3).map((u, i) => (
+              <FadeUp key={u.id} delay={i * 0.07}>
+                <div className="flex h-full items-start gap-3 rounded-2xl border border-white/8 bg-white/[0.03] p-4 transition-colors hover:border-amber-300/25 hover:bg-amber-300/[0.04]">
+                  <span className="text-xl">{u.emoji}</span>
+                  <div>
+                    <p className="text-sm font-bold">{u.title}</p>
+                    <p className="mt-1 text-xs leading-relaxed text-foreground/60">
+                      {u.body}
                     </p>
                   </div>
                 </div>

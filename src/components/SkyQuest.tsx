@@ -2,11 +2,17 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useQuery } from "convex/react";
 import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
-import { Check, ChevronDown, MoonStar, Sparkles, Star, X } from "lucide-react";
+import { Check, ChevronDown, Lock, MoonStar, Sparkles, Star, X } from "lucide-react";
 
 import { api } from "@/convex/_generated/api";
 import { Button } from "@/components/ui/button";
 import { dayKeyFor } from "@/lib/shift-data";
+import {
+  RANK_TIERS,
+  UPGRADES,
+  rankNameForLevel,
+  useSkyRank,
+} from "@/lib/unlocks";
 
 /* ------------------------------------------------------------------ */
 /* First Light — the three-move quest for a brand-new sky              */
@@ -361,6 +367,160 @@ export function ConstellationProgress() {
           </>
         )}
       </p>
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/* Rank — sky ranks & upgrades, earned by coming back and engaging     */
+/* ------------------------------------------------------------------ */
+
+const BREAKDOWN = [
+  { key: "stars", emoji: "✦", label: "stars hung" },
+  { key: "keptNights", emoji: "🌙", label: "nights kept" },
+  { key: "visits", emoji: "🔁", label: "days visited" },
+  { key: "quizCount", emoji: "🧭", label: "quizzes taken" },
+] as const;
+
+export function RankPanel() {
+  const rank = useSkyRank();
+  if (rank.loading) return null;
+
+  const progress = rank.next
+    ? Math.min(100, Math.round((rank.score / rank.next.score) * 100))
+    : 100;
+  const maxScore = RANK_TIERS[RANK_TIERS.length - 1].score;
+
+  return (
+    <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-5">
+      <div className="flex flex-wrap items-start justify-between gap-4">
+        <div className="flex items-start gap-3">
+          <span
+            className="animate-glow-pulse flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-amber-300/25 to-sky-400/15 text-xl ring-1 ring-amber-300/30"
+            title={`Rank ${rank.level} of ${RANK_TIERS.length}`}
+          >
+            {rank.emoji}
+          </span>
+          <div>
+            <p className="font-bold">
+              Sky rank ·{" "}
+              <span className="text-amber-200">{rank.name}</span>
+            </p>
+            <p className="mt-0.5 max-w-md text-xs leading-relaxed text-muted-foreground">
+              {rank.blurb} Every star hung, night kept, day visited and quiz
+              taken adds light to your rank.
+            </p>
+          </div>
+        </div>
+        <div className="text-right">
+          <p className="text-2xl font-extrabold tracking-tight text-amber-200">
+            {rank.score}
+            <span className="ml-1 text-sm font-semibold text-muted-foreground">
+              / {maxScore} light
+            </span>
+          </p>
+          <p className="text-[10px] uppercase tracking-widest text-muted-foreground">
+            engagement score
+          </p>
+        </div>
+      </div>
+
+      {/* Progress to the next rank */}
+      <div className="mt-4">
+        <div className="flex items-center justify-between text-[11px] text-muted-foreground">
+          <span>
+            {rank.next ? (
+              <>
+                {rank.next.score - rank.score} light until{" "}
+                <span className="font-semibold text-foreground/80">
+                  {rank.next.name}
+                </span>
+              </>
+            ) : (
+              <span className="text-amber-200/90">
+                ✦ Final rank reached — the sky bends around you now.
+              </span>
+            )}
+          </span>
+          <span className="tabular-nums">{rank.next ? `${progress}%` : "100%"}</span>
+        </div>
+        <div className="mt-1.5 h-2 overflow-hidden rounded-full bg-white/8">
+          <div
+            className="h-full rounded-full bg-gradient-to-r from-amber-400/80 to-amber-200 shadow-[0_0_10px_rgba(251,191,36,0.5)] transition-all duration-700"
+            style={{ width: `${progress}%` }}
+          />
+        </div>
+      </div>
+
+      {/* Where the light comes from */}
+      <div className="mt-4 flex flex-wrap items-center gap-2">
+        {BREAKDOWN.map((b) => {
+          const value = rank.breakdown[b.key];
+          return (
+            <span
+              key={b.key}
+              className="flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-[11px] text-muted-foreground"
+            >
+              <span>{b.emoji}</span>
+              <span className="font-semibold text-foreground/85">{value}</span>
+              {b.label}
+            </span>
+          );
+        })}
+      </div>
+
+      {/* Upgrades — unlocked vs still locked */}
+      <div className="mt-5 border-t border-white/8 pt-4">
+        <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
+          Upgrades your rank opens
+        </p>
+        <div className="mt-3 grid gap-2.5 sm:grid-cols-2 lg:grid-cols-3">
+          {UPGRADES.map((u) => {
+            const open = rank.level >= u.level;
+            return (
+              <div
+                key={u.id}
+                className={`rounded-2xl border p-3.5 transition-colors ${
+                  open
+                    ? "border-amber-300/35 bg-amber-300/[0.06]"
+                    : "border-white/8 bg-white/[0.02]"
+                }`}
+              >
+                <div className="flex items-center justify-between gap-2">
+                  <span className={`text-xl ${open ? "" : "opacity-40 grayscale"}`}>
+                    {u.emoji}
+                  </span>
+                  {open ? (
+                    <span className="flex items-center gap-1 rounded-full border border-emerald-300/30 bg-emerald-300/10 px-2 py-0.5 text-[10px] font-semibold text-emerald-200">
+                      <Check className="h-3 w-3" /> Unlocked
+                    </span>
+                  ) : (
+                    <span className="flex items-center gap-1 rounded-full border border-white/10 bg-white/5 px-2 py-0.5 text-[10px] font-semibold text-muted-foreground">
+                      <Lock className="h-3 w-3" /> {rankNameForLevel(u.level)}
+                    </span>
+                  )}
+                </div>
+                <p
+                  className={`mt-2 text-sm font-bold tracking-tight ${
+                    open ? "" : "text-muted-foreground"
+                  }`}
+                >
+                  {u.title}
+                </p>
+                <p className="mt-0.5 text-xs leading-relaxed text-muted-foreground">
+                  {u.body}
+                </p>
+              </div>
+            );
+          })}
+        </div>
+        {rank.next && (
+          <p className="mt-3 text-xs text-muted-foreground">
+            <Sparkles className="mr-1 inline h-3.5 w-3.5 text-amber-300/80" />
+            Come back tomorrow — even a visit alone feeds the next rank.
+          </p>
+        )}
+      </div>
     </div>
   );
 }

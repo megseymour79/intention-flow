@@ -137,13 +137,13 @@ export function upgradesForLevel(level: number): Upgrade[] {
 /** Cosmetics gated behind ranks, consulted by the star editor. */
 export const RARE_COLORS: { key: ColorKey; level: number }[] = [
   { key: "comet", level: 2 },
-  { key: "bloodmoon", level: 3 },
+  { key: "bloodmoon", level: 2 },
 ];
 
 export const RARE_SHAPES: { emoji: string; level: number }[] = [
   { emoji: "☄️", level: 2 },
-  { emoji: "☀️", level: 3 },
-  { emoji: "🌙", level: 4 },
+  { emoji: "☀️", level: 2 },
+  { emoji: "🌙", level: 2 },
 ];
 
 /* ------------------------------------------------------------------ */
@@ -155,7 +155,13 @@ export function useSkyRank() {
   const stats = useQuery(api.reflections.getStats);
   const quizResult = useQuery(api.quiz.getMyResult);
   const deepResults = useQuery(api.personality.myResults) ?? [];
-  const [visits] = useState(visitDays);
+  // Counting today as a visit must happen before we read the count, so do it
+  // in the state initializer. recordVisit is idempotent, so StrictMode's
+  // double render is harmless.
+  const [visits] = useState(() => {
+    recordVisit();
+    return visitDays();
+  });
 
   const loading = streakData === undefined || stats === undefined;
 

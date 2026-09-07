@@ -7,6 +7,7 @@ import {
   Clock,
   Edit3,
   Loader2,
+  Lock,
   Plus,
   Sparkles,
   Trash2,
@@ -43,7 +44,8 @@ import { momentLabel, shiftOfTheDay, starColor, styleById } from "@/lib/shift-da
 import { QUIZ_PACKS, resultById } from "@/lib/quiz-packs";
 import { randomWishStarter } from "@/lib/sky-events";
 import { ReflectionHeroCard, ReflectionLedger } from "@/components/ReflectionLedger";
-import { ConstellationProgress, FirstLight } from "@/components/SkyQuest";
+import { ConstellationProgress, FirstLight, RankPanel } from "@/components/SkyQuest";
+import { rankNameForLevel, useSkyRank } from "@/lib/unlocks";
 
 export default function Dashboard() {
   const { user } = useAuth();
@@ -76,6 +78,9 @@ export default function Dashboard() {
   const shift = useMemo(() => shiftOfTheDay(new Date()), []);
   const style = quizData ? styleById(quizData.styleId) : null;
   const loading = starsData === undefined;
+
+  // Sky rank: the more you come back and engage, the more your sky opens up.
+  const rank = useSkyRank();
 
   const reminders = useReminders(() => activeStar?.text ?? null);
 
@@ -244,6 +249,8 @@ export default function Dashboard() {
               showMoon
               onCatchWish={handleCatchWish}
               onCatchBloom={handleCatchBloom}
+              deepSky={rank.level >= 4}
+              golden={rank.level >= 5}
               className="h-[54vh] min-h-[400px] w-full overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-b from-[#03050e] via-[#071026] to-[#0d1a33]"
               hint={
                 stars.length === 0
@@ -457,6 +464,9 @@ export default function Dashboard() {
           </div>
         </div>
 
+        {/* Sky rank — the reason the sky keeps opening up */}
+        <RankPanel />
+
         {/* Go deeper — the personality quizzes */}
         <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-5">
           <div className="flex flex-wrap items-center justify-between gap-3">
@@ -543,7 +553,7 @@ export default function Dashboard() {
           </div>
 
           <div className="mt-4 flex flex-wrap items-center gap-2 border-t border-white/8 pt-4">
-            {REMINDER_SLOTS.map((slot) => {
+            {REMINDER_SLOTS.filter((s) => !s.level || rank.level >= s.level).map((slot) => {
               const on = reminders.slots.includes(slot.time);
               return (
                 <button
@@ -571,6 +581,19 @@ export default function Dashboard() {
                 </button>
               );
             })}
+            {/* The vigil slot appears once the Ember rank is reached */}
+            {rank.level < 3 && (
+              <span
+                title={`Reach the ${rankNameForLevel(3)} rank to unlock the 22:30 nudge`}
+                className="flex items-center gap-1.5 rounded-full border border-white/8 bg-white/[0.03] px-3 py-1.5 text-xs text-muted-foreground/55"
+              >
+                <Lock className="h-3 w-3" />
+                Late vigil · 22:30
+                <span className="text-[10px] uppercase tracking-wider opacity-70">
+                  {rankNameForLevel(3)}
+                </span>
+              </span>
+            )}
             {/* Custom time */}
             <div className="flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3 py-1.5">
               <Clock className="h-3.5 w-3.5 text-muted-foreground" />

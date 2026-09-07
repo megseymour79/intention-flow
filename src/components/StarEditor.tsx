@@ -20,6 +20,12 @@ import {
   STAR_EMOJIS,
   suggestionsForMoment,
 } from "@/lib/shift-data";
+import {
+  RARE_COLORS,
+  RARE_SHAPES,
+  rankNameForLevel,
+  useSkyRank,
+} from "@/lib/unlocks";
 
 export interface StarEditorDraft {
   text: string;
@@ -58,6 +64,24 @@ export function StarEditor({
 }: StarEditorProps) {
   const createStar = useMutation(api.stars.create);
   const updateStar = useMutation(api.stars.update);
+
+  // Ranks gate the rare glows and shapes — earned by showing up.
+  const rank = useSkyRank();
+  const unlockedColors = RARE_COLORS.filter((r) => rank.level >= r.level).map((r) => r.key);
+  const lockedColors = RARE_COLORS.filter((r) => rank.level < r.level);
+  const colorChoices: ColorKey[] = Array.from(
+    new Set([
+      ...STAR_COLOR_KEYS,
+      ...unlockedColors,
+      // keep a star's own rare glow selectable even if the rank lapsed
+      ...((existing?.colorKey ? [existing.colorKey as ColorKey] : []) as ColorKey[]),
+    ]),
+  );
+  const unlockedShapes = RARE_SHAPES.filter((r) => rank.level >= r.level).map((r) => r.emoji);
+  const lockedShapes = RARE_SHAPES.filter((r) => rank.level < r.level);
+  const shapeChoices: string[] = Array.from(
+    new Set([...STAR_EMOJIS, ...unlockedShapes, ...(existing ? [existing.emoji] : [])]),
+  );
 
   const [text, setText] = useState(existing?.text ?? "");
   const [moment, setMoment] = useState(existing?.moment ?? momentForHour());
@@ -247,7 +271,7 @@ export function StarEditor({
               Color of its glow
             </p>
             <div className="flex flex-wrap gap-2">
-              {STAR_COLOR_KEYS.map((key) => (
+              {colorChoices.map((key) => (
                 <button
                   key={key}
                   type="button"
@@ -278,6 +302,25 @@ export function StarEditor({
                 </button>
               ))}
             </div>
+            {lockedColors.length > 0 && (
+              <div className="mt-2 flex flex-wrap items-center gap-1.5">
+                {lockedColors.map((r) => (
+                  <span
+                    key={r.key}
+                    title={`Reach the ${rankNameForLevel(r.level)} rank to unlock this glow`}
+                    className="flex items-center gap-1.5 rounded-full border border-white/8 bg-white/[0.03] px-2.5 py-1 text-xs text-muted-foreground/60"
+                  >
+                    🔒 {STAR_COLORS[r.key].label}
+                    <span className="text-[10px] uppercase tracking-wider opacity-70">
+                      {rankNameForLevel(r.level)}
+                    </span>
+                  </span>
+                ))}
+                <span className="text-[10px] leading-tight text-muted-foreground/50">
+                  Rare glows are earned by showing up — see your rank below the sky.
+                </span>
+              </div>
+            )}
           </div>
 
           {/* Emoji glyph */}
@@ -285,8 +328,8 @@ export function StarEditor({
             <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
               Shape of the star
             </p>
-            <div className="flex gap-1.5">
-              {STAR_EMOJIS.map((g) => (
+            <div className="flex flex-wrap gap-1.5">
+              {shapeChoices.map((g) => (
                 <button
                   key={g}
                   type="button"
@@ -306,6 +349,22 @@ export function StarEditor({
                 </button>
               ))}
             </div>
+            {lockedShapes.length > 0 && (
+              <div className="mt-2 flex flex-wrap items-center gap-1.5">
+                {lockedShapes.map((r) => (
+                  <span
+                    key={r.emoji}
+                    title={`Reach the ${rankNameForLevel(r.level)} rank to unlock this shape`}
+                    className="flex items-center gap-1 rounded-full border border-white/8 bg-white/[0.03] px-2.5 py-1 text-xs text-muted-foreground/60"
+                  >
+                    🔒 {r.emoji}
+                    <span className="text-[10px] uppercase tracking-wider opacity-70">
+                      {rankNameForLevel(r.level)}
+                    </span>
+                  </span>
+                ))}
+              </div>
+            )}
           </div>
 
           {error && (

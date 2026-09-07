@@ -37,6 +37,10 @@ interface StarSkyProps {
   onCatchWish?: (starter: string, x: number, y: number) => void;
   /** Enables tap-able newborn stars on starbloom nights. */
   onCatchBloom?: (x: number, y: number) => void;
+  /** Nova rank: a living nebula wash behind the stars. */
+  deepSky?: boolean;
+  /** Supernova rank: the focused star draws golden constellation lines. */
+  golden?: boolean;
   hint?: string;
   className?: string;
 }
@@ -378,6 +382,31 @@ function SkyVortex({ onDiveIn }: { onDiveIn: () => void }) {
 }
 
 /* ------------------------------------------------------------------ */
+/* Deep-sky backdrop — the Nova-rank nebula wash                        */
+/* ------------------------------------------------------------------ */
+
+/** A slow, living nebula that drifts behind the stars. Rank upgrade. */
+function DeepSkyWash() {
+  return (
+    <div
+      aria-hidden
+      className="animate-nebula pointer-events-none absolute inset-0 z-[1] overflow-hidden"
+    >
+      <div
+        className="absolute inset-0"
+        style={{
+          background:
+            "radial-gradient(55% 42% at 20% 32%, rgba(129,90,220,0.11) 0%, transparent 70%)," +
+            "radial-gradient(48% 38% at 76% 64%, rgba(34,150,190,0.10) 0%, transparent 72%)," +
+            "radial-gradient(38% 32% at 52% 16%, rgba(219,120,180,0.07) 0%, transparent 70%)," +
+            "radial-gradient(30% 26% at 88% 22%, rgba(90,110,220,0.08) 0%, transparent 68%)",
+        }}
+      />
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
 /* Constellation lines for the focused star                           */
 /* ------------------------------------------------------------------ */
 
@@ -385,9 +414,11 @@ function SkyVortex({ onDiveIn }: { onDiveIn: () => void }) {
 function Constellation({
   stars,
   live,
+  golden,
 }: {
   stars: SkyStarLike[];
   live: Record<string, { x: number; y: number }>;
+  golden?: boolean;
 }) {
   const active = stars.find((s) => s.active);
   if (!active || stars.length < 2) return null;
@@ -402,6 +433,7 @@ function Constellation({
     .slice(0, 3);
 
   const color = starColor(active.colorKey);
+  const stroke = golden ? "#fcd34d" : color.hex;
 
   return (
     <svg
@@ -419,11 +451,15 @@ function Constellation({
             y1={`${a.y}%`}
             x2={`${b.x}%`}
             y2={`${b.y}%`}
-            stroke={color.hex}
-            strokeOpacity={0.22}
-            strokeWidth={1}
-            strokeDasharray="3 6"
-            style={{ filter: `drop-shadow(0 0 3px ${color.glow})` }}
+            stroke={stroke}
+            strokeOpacity={golden ? 0.5 : 0.22}
+            strokeWidth={golden ? 1.4 : 1}
+            strokeDasharray={golden ? undefined : "3 6"}
+            style={{
+              filter: golden
+                ? "drop-shadow(0 0 5px rgba(252,211,77,0.65))"
+                : `drop-shadow(0 0 3px ${color.glow})`,
+            }}
           />
         );
       })}
@@ -450,6 +486,8 @@ export function StarSky({
   showMoon,
   onCatchWish,
   onCatchBloom,
+  deepSky,
+  golden,
   hint,
   className,
 }: StarSkyProps) {
@@ -593,8 +631,9 @@ export function StarSky({
       }}
     >
       <SkyDecor />
+      {deepSky && <DeepSkyWash />}
       <ShootingStars />
-      <Constellation stars={stars} live={live} />
+      <Constellation stars={stars} live={live} golden={golden} />
       {showMoon && <MoonPhase phase={moon.phase} />}
       {onCatchWish && !eventDismissed && (
         <TonightEvent event={tonight} onDismiss={() => setEventDismissed(true)} />

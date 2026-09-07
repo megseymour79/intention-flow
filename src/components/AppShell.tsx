@@ -14,6 +14,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useAuth } from "@/hooks/use-auth";
+import { useSkyRank } from "@/lib/unlocks";
 import { cn } from "@/lib/utils";
 
 const NAV = [
@@ -37,6 +38,7 @@ export function AppShell({
 }) {
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
+  const rank = useSkyRank();
 
   const handleSignOut = async () => {
     try {
@@ -112,6 +114,11 @@ export function AppShell({
                     <span className="block truncate text-[11px] text-muted-foreground">
                       {user?.email ?? "anonymous star"}
                     </span>
+                    {!rank.loading && (
+                      <span className="mt-0.5 block truncate text-[10px] font-semibold uppercase tracking-wider text-amber-200/80">
+                        {rank.emoji} {rank.name}
+                      </span>
+                    )}
                   </span>
                 </button>
               </DropdownMenuTrigger>

@@ -456,6 +456,26 @@
   animation-duration: 13s;
 }
 
+/* deep-sky backdrop: the Nova-rank nebula, breathing over half a minute */
+@keyframes nebula-drift {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0.75;
+  }
+  50% {
+    transform: translate(2.5%, -1.5%) scale(1.07);
+    opacity: 1;
+  }
+}
+
+.animate-nebula {
+  animation-name: nebula-drift;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+  animation-duration: 26s;
+}
+
 /* the wish comet: enters from the left, exits right; button spans the full path */
 @keyframes comet-cross {
   0% {

@@ -6,7 +6,10 @@ export type ColorKey =
   | "wave"
   | "surge"
   | "ember"
-  | "orbit";
+  | "orbit"
+  // rank-gated rare glows (see lib/unlocks.ts RARE_COLORS)
+  | "comet"
+  | "bloodmoon";
 
 export interface StarColor {
   label: string;
@@ -52,9 +55,30 @@ export const STAR_COLORS: Record<ColorKey, StarColor> = {
     glow: "rgba(167,139,250,0.45)",
     chip: "border-violet-300/40 bg-violet-300/10 text-violet-100 hover:border-violet-300/80 hover:bg-violet-300/20",
   },
+  // rank-gated rare glows — offered in the editor once earned
+  comet: {
+    label: "Comet silver",
+    hex: "#cbd5e1",
+    glow: "rgba(203,213,225,0.55)",
+    chip: "border-slate-300/40 bg-slate-300/10 text-slate-100 hover:border-slate-300/80 hover:bg-slate-300/20",
+  },
+  bloodmoon: {
+    label: "Blood moon",
+    hex: "#f87171",
+    glow: "rgba(248,113,113,0.5)",
+    chip: "border-red-300/40 bg-red-300/10 text-red-100 hover:border-red-300/80 hover:bg-red-300/20",
+  },
 };
 
-export const STAR_COLOR_KEYS = Object.keys(STAR_COLORS) as ColorKey[];
+/** The always-available palette. Rare glows live in lib/unlocks.ts. */
+export const STAR_COLOR_KEYS: ColorKey[] = [
+  "nova",
+  "pulse",
+  "wave",
+  "surge",
+  "ember",
+  "orbit",
+];
 
 export function starColor(key: string): StarColor {
   return STAR_COLORS[key as ColorKey] ?? STAR_COLORS.nova;

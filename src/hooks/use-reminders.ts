@@ -5,12 +5,16 @@ export interface ReminderSlot {
   time: string; // "HH:MM" 24h
   label: string;
   emoji: string;
+  /** Rank level required to see this slot; undefined = always available. */
+  level?: number;
 }
 
 export const REMINDER_SLOTS: ReminderSlot[] = [
   { time: "08:00", label: "Morning glow", emoji: "🌅" },
   { time: "13:00", label: "Midday spark", emoji: "☀️" },
   { time: "19:00", label: "Dusk reflection", emoji: "🌙" },
+  // Unlocked at the Ember rank — the night owl's nudge.
+  { time: "22:30", label: "Late vigil", emoji: "🌌", level: 3 },
 ];
 
 const PREFS_KEY = "shiftedmind-reminder-prefs";
