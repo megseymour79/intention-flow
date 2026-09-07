@@ -44,6 +44,7 @@ import { momentLabel, shiftOfTheDay, starColor, styleById } from "@/lib/shift-da
 import { QUIZ_PACKS, resultById } from "@/lib/quiz-packs";
 import { randomWishStarter } from "@/lib/sky-events";
 import { ReflectionHeroCard, ReflectionLedger } from "@/components/ReflectionLedger";
+import { ConstellationProgress, FirstLight } from "@/components/SkyQuest";
 
 export default function Dashboard() {
   const { user } = useAuth();
@@ -51,6 +52,7 @@ export default function Dashboard() {
   const starsData = useQuery(api.stars.listForUser);
   const streakData = useQuery(api.stars.getStreak);
   const quizData = useQuery(api.quiz.getMyResult);
+  const todayReflection = useQuery(api.reflections.getToday);
   const deepResults = useQuery(api.personality.myResults) ?? [];
   const setActiveStar = useMutation(api.stars.setActive);
   const moveStar = useMutation(api.stars.update);
@@ -274,6 +276,15 @@ export default function Dashboard() {
             )}
           </div>
         </motion.div>
+
+        {/* First-light quest for new skies, then the running constellation */}
+        <FirstLight
+          hasStar={stars.length > 0}
+          hasQuiz={quizData !== null && quizData !== undefined}
+          hasReflection={todayReflection !== null && todayReflection !== undefined}
+          onHangStar={openFreshEditor}
+          onTakeQuiz={() => setQuizOpen(true)}
+        />
 
         {/* Ledger-so-far summary */}
         <ReflectionHeroCard />
@@ -627,7 +638,12 @@ export default function Dashboard() {
         </div>
 
         {/* Evening reflection ledger */}
-        <ReflectionLedger intentionText={activeStar?.text ?? null} />
+        <div id="evening-ledger">
+          <ReflectionLedger intentionText={activeStar?.text ?? null} />
+        </div>
+
+        {/* Thirty nights, drawn as a constellation */}
+        <ConstellationProgress />
       </div>
 
       <StarEditor
