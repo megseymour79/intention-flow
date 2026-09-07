@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useQuery } from "convex/react";
 import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
@@ -43,14 +43,15 @@ export function FirstLight({
       return false;
     }
   });
-  const [celebrated, setCelebrated] = useState(false);
+  // Ref guard so the celebration fires exactly once, even under StrictMode.
+  const celebratedRef = useRef(false);
 
   const allDone = hasStar && hasQuiz && hasReflection;
 
   // Celebrate once when the quest completes, then remember it forever.
   useEffect(() => {
-    if (!allDone || celebrated) return;
-    setCelebrated(true);
+    if (!allDone || celebratedRef.current) return;
+    celebratedRef.current = true;
     try {
       localStorage.setItem(STORE_KEY, "done");
     } catch {
@@ -61,7 +62,7 @@ export function FirstLight({
     });
     const t = setTimeout(() => setDismissed(true), 7000);
     return () => clearTimeout(t);
-  }, [allDone, celebrated]);
+  }, [allDone]);
 
   const close = () => {
     setDismissed(true);

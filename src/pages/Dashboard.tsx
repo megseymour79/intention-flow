@@ -6,7 +6,6 @@ import {
   Bell,
   Clock,
   Edit3,
-  Flame,
   Loader2,
   Plus,
   Sparkles,
