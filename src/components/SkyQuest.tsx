@@ -272,6 +272,38 @@ export function ConstellationProgress() {
   const reached = MILESTONES.filter((m) => kept >= m.nights);
   const next = MILESTONES.find((m) => kept < m.nights);
 
+  // Celebrate a constellation milestone the first time it is reached — once
+  // per browser. Night one is skipped: the First Light quest already toasts
+  // that moment, so celebrations begin at The Triangle.
+  const celebratedRef = useRef(false);
+  useEffect(() => {
+    if (recent === undefined || celebratedRef.current) return;
+    const KEY = "sm-milestones-seen";
+    let seen: string[] = [];
+    try {
+      seen = JSON.parse(localStorage.getItem(KEY) ?? "[]") as string[];
+    } catch {
+      /* ignore */
+    }
+    const fresh = MILESTONES.filter(
+      (m) => m.nights >= 3 && kept >= m.nights && !seen.includes(String(m.nights)),
+    );
+    if (fresh.length === 0) return;
+    celebratedRef.current = true;
+    const top = fresh[fresh.length - 1];
+    try {
+      localStorage.setItem(
+        KEY,
+        JSON.stringify([...seen, ...fresh.map((m) => String(m.nights))]),
+      );
+    } catch {
+      /* private mode — it may toast again next visit; fine */
+    }
+    toast(`🌟 ${top.name} — complete`, {
+      description: `${top.nights} nights of keeping your word to yourself. The sky remembers.`,
+    });
+  }, [recent, kept]);
+
   // Nothing logged yet at all — stay quiet until there's a story to show.
   if (recent !== undefined && recent.length === 0) return null;
 
@@ -368,6 +400,84 @@ export function ConstellationProgress() {
         )}
       </p>
     </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/* Welcome back — the returning-user vigil banner                      */
+/* ------------------------------------------------------------------ */
+
+export function WelcomeBack() {
+  const rank = useSkyRank();
+  const streakData = useQuery(api.stars.getStreak);
+
+  if (rank.loading || streakData === undefined) return null;
+  // Day-one skies get the First Light quest instead — this banner is for
+  // the second visit onward, when the habit starts to take hold.
+  if (rank.breakdown.visits <= 1 || streakData.total === 0) return null;
+
+  const streak = streakData.streak;
+  const total = streakData.total;
+  const reached = [...MILESTONES].reverse().find((m) => streak >= m.nights) ?? null;
+  const nextMilestone = MILESTONES.find((m) => m.nights > streak) ?? null;
+  const progress = nextMilestone
+    ? Math.min(100, Math.round((streak / nextMilestone.nights) * 100))
+    : 100;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.45 }}
+      className="relative overflow-hidden rounded-3xl border border-sky-300/20 bg-gradient-to-r from-indigo-500/[0.09] via-white/[0.03] to-transparent p-5"
+    >
+      <div className="pointer-events-none absolute -left-8 -top-10 h-32 w-32 rounded-full bg-indigo-400/10 blur-3xl" />
+
+      <div className="flex flex-wrap items-center gap-4">
+        <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-sky-300/15 text-2xl ring-1 ring-sky-300/25">
+          {streak > 0 ? "🌙" : "☁️"}
+        </span>
+
+        <div className="min-w-[220px] flex-1">
+          <p className="text-sm font-bold tracking-tight">
+            {streak > 0
+              ? `Night ${streak} of your vigil`
+              : "Your vigil is dimmed — not out"}
+          </p>
+          <p className="mt-0.5 text-xs leading-relaxed text-muted-foreground">
+            {streak > 0
+              ? reached
+                ? `${reached.name} complete. ${
+                    nextMilestone
+                      ? `${nextMilestone.nights - streak} more night${
+                          nextMilestone.nights - streak === 1 ? "" : "s"
+                        } until ${nextMilestone.name}.`
+                      : "The full constellation is drawn — keep adding to it."
+                  }`
+                : "The sky noticed you came back."
+              : "Hang tonight's star and the constellation picks up where it left off."}
+          </p>
+        </div>
+
+        {nextMilestone && (
+          <div className="w-full max-w-[220px]">
+            <div className="flex items-center justify-between text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">
+              <span>{reached ? reached.name : "First Light"}</span>
+              <span>{nextMilestone.name}</span>
+            </div>
+            <div className="mt-1.5 h-1.5 overflow-hidden rounded-full bg-white/10">
+              <div
+                className="h-full rounded-full bg-gradient-to-r from-sky-400 to-indigo-300 transition-all duration-700"
+                style={{ width: `${progress}%` }}
+              />
+            </div>
+            <p className="mt-1.5 text-[10px] text-muted-foreground/70">
+              {total} star{total === 1 ? "" : "s"} hung all-time · {rank.emoji} {rank.name}
+            </p>
+          </div>
+        )}
+      </div>
+    </motion.div>
   );
 }
 

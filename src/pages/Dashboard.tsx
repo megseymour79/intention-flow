@@ -44,7 +44,12 @@ import { momentLabel, shiftOfTheDay, starColor, styleById } from "@/lib/shift-da
 import { QUIZ_PACKS, resultById } from "@/lib/quiz-packs";
 import { randomWishStarter } from "@/lib/sky-events";
 import { ReflectionHeroCard, ReflectionLedger } from "@/components/ReflectionLedger";
-import { ConstellationProgress, FirstLight, RankPanel } from "@/components/SkyQuest";
+import {
+  ConstellationProgress,
+  FirstLight,
+  RankPanel,
+  WelcomeBack,
+} from "@/components/SkyQuest";
 import { rankNameForLevel, useSkyRank } from "@/lib/unlocks";
 
 export default function Dashboard() {
@@ -283,7 +288,9 @@ export default function Dashboard() {
           </div>
         </motion.div>
 
-        {/* First-light quest for new skies, then the running constellation */}
+        {/* Welcome back for returning skies, then the first-light quest */}
+        <WelcomeBack />
+
         <FirstLight
           hasStar={stars.length > 0}
           hasQuiz={quizData !== null && quizData !== undefined}
