@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { Link } from "react-router";
 import { useMutation, useQuery } from "convex/react";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
@@ -473,6 +474,32 @@ export default function Dashboard() {
 
         {/* Sky rank — the reason the sky keeps opening up */}
         <RankPanel />
+
+        {/* The Observatory — the science behind the sky */}
+        <Link
+          to="/observatory"
+          className="group relative block overflow-hidden rounded-3xl border border-violet-300/20 bg-gradient-to-r from-violet-500/[0.09] via-white/[0.03] to-transparent p-5 transition-colors hover:border-violet-300/40"
+        >
+          <div className="pointer-events-none absolute -right-8 -top-10 h-28 w-28 rounded-full bg-violet-400/10 blur-3xl" />
+          <div className="flex flex-wrap items-center gap-4">
+            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-violet-300/15 text-xl ring-1 ring-violet-300/25">
+              🔭
+            </span>
+            <div className="min-w-[200px] flex-1">
+              <p className="text-sm font-bold tracking-tight">
+                The Observatory — star charts for a changing mind
+              </p>
+              <p className="mt-0.5 text-xs leading-relaxed text-muted-foreground">
+                Hand-picked science on neuroplasticity, breaking engrained loops, and
+                why setting an intention actually rewires your brain. A new chart
+                every night.
+              </p>
+            </div>
+            <span className="text-xs font-bold text-violet-200/80 transition-transform group-hover:translate-x-0.5">
+              Look through →
+            </span>
+          </div>
+        </Link>
 
         {/* Go deeper — the personality quizzes */}
         <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-5">

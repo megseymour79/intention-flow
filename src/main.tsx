@@ -19,6 +19,7 @@ const AuthPage = lazy(() => import("./pages/Auth.tsx"));
 const Dashboard = lazy(() => import("./pages/Dashboard.tsx"));
 const Community = lazy(() => import("./pages/Community.tsx"));
 const Messages = lazy(() => import("./pages/Messages.tsx"));
+const Observatory = lazy(() => import("./pages/Observatory.tsx"));
 const NotFound = lazy(() => import("./pages/NotFound.tsx"));
 
 // Self-heal stale build chunks: if the browser fails to load a module (e.g. after
@@ -173,6 +174,14 @@ createRoot(document.getElementById("root")!).render(
                 element={
                   <RequireAuth>
                     <Messages />
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path="/observatory"
+                element={
+                  <RequireAuth>
+                    <Observatory />
                   </RequireAuth>
                 }
               />

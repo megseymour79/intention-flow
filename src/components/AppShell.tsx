@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { NavLink, useNavigate } from "react-router";
-import { LogOut, MessagesSquare, Send, Sparkles } from "lucide-react";
+import { LogOut, MessagesSquare, Send, Sparkles, Telescope } from "lucide-react";
 
 import { FloatingBackground } from "@/components/FloatingBackground";
 import { StarMark } from "@/components/StarMark";
@@ -19,6 +19,7 @@ import { cn } from "@/lib/utils";
 
 const NAV = [
   { to: "/dashboard", label: "My Sky", icon: Sparkles },
+  { to: "/observatory", label: "Observatory", icon: Telescope },
   { to: "/community", label: "Community", icon: MessagesSquare },
   { to: "/messages", label: "Messages", icon: Send },
 ] as const;
