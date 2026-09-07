@@ -490,9 +490,9 @@ export default function Dashboard() {
                 The Observatory — star charts for a changing mind
               </p>
               <p className="mt-0.5 text-xs leading-relaxed text-muted-foreground">
-                Hand-picked science on neuroplasticity, breaking engrained loops, and
-                why setting an intention actually rewires your brain. A new chart
-                every night.
+                Free, hand-picked science on neuroplasticity, breaking engrained
+                loops, and why setting an intention actually rewires your brain. A
+                new chart every night.
               </p>
             </div>
             <span className="text-xs font-bold text-violet-200/80 transition-transform group-hover:translate-x-0.5">

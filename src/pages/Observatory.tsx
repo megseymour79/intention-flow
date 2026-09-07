@@ -100,10 +100,10 @@ export default function Observatory() {
             <span className="inline-block animate-sway">🔭</span>
           </h1>
           <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-            The science behind why this sky works. Every chart here is hand-picked and
-            real — neuroscientists, psychologists, and researchers on rewiring your
-            mind, catching engrained responses, and choosing who you are, moment by
-            moment.
+            The science behind why this sky works — and it's all free to explore.
+            Every chart is hand-picked and real: neuroscientists, psychologists, and
+            researchers on rewiring your mind, catching engrained responses, and
+            choosing who you are, moment by moment.
           </p>
         </motion.div>
 
