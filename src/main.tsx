@@ -26,15 +26,19 @@ const NotFound = lazy(() => import("./pages/NotFound.tsx"));
 function recoverFromChunkFailure() {
   const KEY = "shiftedmind:chunk-recovery";
   let last = 0;
+  let attempts = 0;
   try {
-    last = Number(sessionStorage.getItem(KEY) ?? 0);
+    const [ts, count] = (sessionStorage.getItem(KEY) ?? "").split("|");
+    last = Number(ts) || 0;
+    attempts = Number(count) || 0;
   } catch {
     // Storage can be blocked in sandboxed iframes — treat as no history.
   }
+  if (attempts >= 2) return; // two self-heals per session, then stop
   const now = Date.now();
   if (now - last < 10_000) return; // avoid reload loops
   try {
-    sessionStorage.setItem(KEY, String(now));
+    sessionStorage.setItem(KEY, `${now}|${attempts + 1}`);
   } catch {
     // Ignore — recovery still proceeds without the guard.
   }
@@ -44,7 +48,15 @@ function recoverFromChunkFailure() {
 const CHUNK_FAIL = /importing a module script failed|failed to fetch dynamically imported module|error loading dynamically imported module/i;
 window.addEventListener("error", (e) => {
   try {
-    if (CHUNK_FAIL.test(e.message ?? "")) recoverFromChunkFailure();
+    const msg = e.message ?? "";
+    if (CHUNK_FAIL.test(msg)) return recoverFromChunkFailure();
+    // Cross-origin proxies mask real errors as a bare "Script error." with no
+    // filename and no detail. During the first moments of a page load, that is
+    // almost always a stale or briefly-missing module — not app logic — so
+    // self-heal the same way (capped at two reloads per session).
+    if (msg === "Script error." && !e.filename && performance.now() < 6000) {
+      recoverFromChunkFailure();
+    }
   } catch {
     // never let the recovery path itself throw
   }
