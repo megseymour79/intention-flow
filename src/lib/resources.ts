@@ -1,12 +1,12 @@
 /* ------------------------------------------------------------------ */
 /* The Observatory — star charts for a changing mind                   */
 /* Curated links on neuroplasticity, habit loops, perspective shifts   */
-/* and the science of setting intentions. All links hand-verified.     */
+/* and reprogramming the mind. All links hand-verified.                */
 /* ------------------------------------------------------------------ */
 
 export type ResourceKind = "Watch" | "Listen" | "Read" | "Practice" | "Explore";
 
-export type CategoryId = "rewire" | "loops" | "lens" | "intention";
+export type CategoryId = "rewire" | "loops" | "lens" | "reprogram";
 
 export interface ResourceCategory {
   id: CategoryId;
@@ -35,10 +35,10 @@ export const CATEGORIES: ResourceCategory[] = [
     tagline: "Perspective is a dial, not a fate. These turn it.",
   },
   {
-    id: "intention",
-    name: "The science of intention",
-    emoji: "🎯",
-    tagline: "What actually happens in the brain when you choose who you'll be.",
+    id: "reprogram",
+    name: "Reprogramming the mind",
+    emoji: "💭",
+    tagline: "Thoughts are the code your reactions run on. These teach you to edit it.",
   },
 ];
 
@@ -246,71 +246,71 @@ export const RESOURCES: MindResource[] = [
     emoji: "🌏",
   },
 
-  /* ---------------- The science of intention ---------------- */
+  /* ---------------- Reprogramming the mind ---------------- */
   {
-    id: "huberman-goals",
-    title: "The Science of Setting & Achieving Goals",
+    id: "huberman-habits",
+    title: "The Science of Making & Breaking Habits",
     by: "Huberman Lab",
     kind: "Listen",
     length: "~2 hr",
     blurb:
-      "The neural circuitry of goal pursuit — why specific, vivid intentions outperform vague ones, and the protocol for making them stick.",
-    take: "Vague wishes fizzle. Specific intentions recruit the brain.",
-    url: "https://www.hubermanlab.com/episode/the-science-of-setting-and-achieving-goals",
-    category: "intention",
+      "How loops get wired into your brain in the first place — and the specific protocol for dissolving an old one and installing a new one on top of it.",
+    take: "Your defaults were installed. They can be reinstalled.",
+    url: "https://www.hubermanlab.com/episode/the-science-of-making-and-breaking-habits",
+    category: "reprogram",
     emoji: "🎧",
   },
   {
-    id: "woop",
-    title: "WOOP — Wish, Outcome, Obstacle, Plan",
-    by: "Gabriele Oettingen · NYU",
+    id: "hanson-tedx",
+    title: "Hardwiring Happiness",
+    by: "Rick Hanson · TEDxMarin",
+    kind: "Watch",
+    length: "14 min",
+    blurb:
+      "Your brain is Teflon for the good, Velcro for the bad. A neuropsychologist shows how to deliberately install helpful experiences until they become who you are.",
+    take: "What you repeatedly feel, you slowly become.",
+    url: "https://www.youtube.com/watch?v=jpuDyGgIeh0",
+    category: "reprogram",
+    emoji: "🎬",
+  },
+  {
+    id: "struggle-switch",
+    title: "The Struggle Switch",
+    by: "Russ Harris · ACT",
+    kind: "Watch",
+    length: "3 min",
+    blurb:
+      "The beloved three-minute animation: fighting a thought amplifies it. Flip the switch instead, and old reactions pass through you instead of steering you.",
+    take: "Don't wrestle the thought. Unhook from it.",
+    url: "https://www.youtube.com/watch?v=rCp1l16GCXI",
+    category: "reprogram",
+    emoji: "🎬",
+  },
+  {
+    id: "happiness-trap-resources",
+    title: "Free ACT worksheets & videos",
+    by: "Russ Harris · The Happiness Trap",
     kind: "Practice",
-    length: "5 min",
-    blurb:
-      "The mental-contrasting method from 20 years of research: picture the outcome, face the obstacle, make an if-then plan. Positive thinking alone doesn't work — this does.",
-    take: "Name the obstacle and it loses half its power.",
-    url: "https://woopmylife.org/",
-    category: "intention",
-    emoji: "🪄",
-  },
-  {
-    id: "woop-science",
-    title: "The WOOP research — read it yourself",
-    by: "PMC / NIH",
-    kind: "Read",
-    length: "~30 min",
-    blurb:
-      "A peer-reviewed pilot study on the Wish-Outcome-Obstacle-Plan strategy — for when you want the primary source, not the summary.",
-    take: "The method this app borrows from, with receipts.",
-    url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC8893137/",
-    category: "intention",
-    emoji: "🔬",
-  },
-  {
-    id: "implementation-intentions",
-    title: "Implementation intentions — “if-then” plans",
-    by: "Peter Gollwitzer · NYU",
-    kind: "Read",
-    length: "10 min",
-    blurb:
-      "The most robust finding in goal psychology: pre-deciding “if situation X, then I do Y” roughly doubles follow-through by handing control to the moment.",
-    take: "Decide once, in advance, so the moment doesn't have to.",
-    url: "https://en.wikipedia.org/wiki/Implementation_intention",
-    category: "intention",
-    emoji: "📖",
-  },
-  {
-    id: "ellen-langer",
-    title: "The mindlessness of “mindlessness”",
-    by: "Ellen Langer · Harvard",
-    kind: "Explore",
     length: "self-paced",
     blurb:
-      "Harvard's “mother of mindfulness” on intentionality: most of life is run on autopilot, and simply noticing — making the implicit explicit — changes outcomes.",
-    take: "An intention is an autopilot, deliberately switched off.",
-    url: "https://www.ellenlanger.com/",
-    category: "intention",
-    emoji: "🧘",
+      "Free worksheets, audios, and clips on cognitive defusion — the skill of seeing thoughts as passing weather instead of commands you have to obey.",
+    take: "You are not your thoughts. You're the one noticing them.",
+    url: "https://thehappinesstrap.com/free-resources/",
+    category: "reprogram",
+    emoji: "🧩",
+  },
+  {
+    id: "crum-tedx",
+    title: "Change your mindset, change the game",
+    by: "Alia Crum · TEDxTraverseCity",
+    kind: "Watch",
+    length: "18 min",
+    blurb:
+      "A Stanford psychologist shows mindsets aren't just attitudes — they change your body's literal response. The script you carry edits your reality; you can rewrite it.",
+    take: "The meaning you assign is a lever, not a fact.",
+    url: "https://www.youtube.com/watch?v=0tqq66zwa7g",
+    category: "reprogram",
+    emoji: "🎬",
   },
 ];
 
