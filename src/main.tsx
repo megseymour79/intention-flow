@@ -24,27 +24,43 @@ const NotFound = lazy(() => import("./pages/NotFound.tsx"));
 
 // Self-heal stale build chunks: if the browser fails to load a module (e.g. after
 // a redeploy or a stale Vite dep cache), hard-reload once to pick up fresh assets.
+const CHUNK_RECOVERY_KEY = "shiftedmind:chunk-recovery";
+
 function recoverFromChunkFailure() {
-  const KEY = "shiftedmind:chunk-recovery";
   let last = 0;
   let attempts = 0;
   try {
-    const [ts, count] = (sessionStorage.getItem(KEY) ?? "").split("|");
+    const [ts, count] = (sessionStorage.getItem(CHUNK_RECOVERY_KEY) ?? "").split("|");
     last = Number(ts) || 0;
     attempts = Number(count) || 0;
   } catch {
     // Storage can be blocked in sandboxed iframes — treat as no history.
   }
-  if (attempts >= 2) return; // two self-heals per session, then stop
+  if (attempts >= 2) return; // two self-heals per load, then stop
   const now = Date.now();
   if (now - last < 10_000) return; // avoid reload loops
   try {
-    sessionStorage.setItem(KEY, `${now}|${attempts + 1}`);
+    sessionStorage.setItem(CHUNK_RECOVERY_KEY, `${now}|${attempts + 1}`);
   } catch {
     // Ignore — recovery still proceeds without the guard.
   }
   window.location.reload();
 }
+
+// A successful mount earns back the recovery budget: once React has rendered
+// and the app has been up for a while, clear the counter so a *later* stale
+// chunk load still gets its own two self-heal attempts instead of being
+// stranded for the rest of the session. Only clears when the app actually
+// mounted — a page that loaded but failed to render keeps its cap.
+window.setTimeout(() => {
+  try {
+    if (document.getElementById("root")?.childElementCount) {
+      sessionStorage.removeItem(CHUNK_RECOVERY_KEY);
+    }
+  } catch {
+    // Storage blocked — nothing to reset.
+  }
+}, 20_000);
 
 const CHUNK_FAIL = /importing a module script failed|failed to fetch dynamically imported module|error loading dynamically imported module/i;
 window.addEventListener("error", (e) => {
