@@ -40,12 +40,12 @@ export function FloatingBackground({ count = 18 }: { count?: number }) {
       aria-hidden
       className="pointer-events-none fixed inset-0 -z-10 overflow-hidden"
     >
-      {/* Sky base — zenith near-black navy, lightening toward the horizon */}
+      {/* Sky base — deep zenith, easing through dusk to a lighter horizon */}
       <div
         className="absolute inset-0"
         style={{
           background:
-            "linear-gradient(to bottom, #03050e 0%, #050a1c 38%, #081127 68%, #0d1a33 88%, #12203c 100%)",
+            "linear-gradient(to bottom, #03050e 0%, #050a1c 32%, #0a1631 58%, #122142 80%, #1d3358 93%, #27406b 100%)",
         }}
       />
 

@@ -18,6 +18,7 @@ import {
 import { api } from "@/convex/_generated/api";
 import type { Id } from "@/convex/_generated/dataModel";
 import { AppShell } from "@/components/AppShell";
+import { BreathOrb } from "@/components/BreathOrb";
 import { DiveInDialog } from "@/components/DiveInDialog";
 import { PersonalityQuiz } from "@/components/PersonalityQuiz";
 import { StarEditor } from "@/components/StarEditor";
@@ -470,6 +471,20 @@ export default function Dashboard() {
               </div>
             )}
           </div>
+        </div>
+
+        {/* Pocket reset — the same guided breath, one tap away */}
+        <div className="flex flex-wrap items-center justify-between gap-5 rounded-3xl border border-amber-300/15 bg-gradient-to-r from-amber-300/[0.07] via-white/[0.03] to-transparent p-5">
+          <div className="min-w-[220px] flex-1">
+            <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
+              Pocket reset · 4-7-8
+            </p>
+            <p className="mt-2 max-w-md text-sm leading-relaxed text-muted-foreground">
+              Feeling the old pattern pull? One guided minute moves you from
+              reaction to choice — in for four, hold for seven, out for eight.
+            </p>
+          </div>
+          <BreathOrb compact />
         </div>
 
         {/* Sky rank — the reason the sky keeps opening up */}

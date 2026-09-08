@@ -121,7 +121,7 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
           >
             <StarMark size={52} />
             <span>
-              <span className="block text-2xl font-extrabold tracking-tight">
+              <span className="font-display block text-2xl font-bold tracking-tight">
                 Shifted<span className="text-amber-300">Mind</span>
               </span>
               <span className="block text-[10px] uppercase tracking-[0.22em] text-muted-foreground">

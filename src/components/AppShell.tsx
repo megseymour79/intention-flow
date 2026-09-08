@@ -77,7 +77,7 @@ export function AppShell({
           <NavLink to="/" className="mb-8 flex items-center gap-2.5">
             <StarMark size={38} />
             <div className="leading-tight">
-              <p className="text-[15px] font-extrabold tracking-tight">
+              <p className="font-display text-[15px] font-bold tracking-tight">
                 Shifted<span className="text-amber-300">Mind</span>
               </p>
               <p className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
@@ -142,7 +142,7 @@ export function AppShell({
           <div className="flex items-center justify-between px-4 py-3">
             <NavLink to="/" className="flex items-center gap-2">
               <StarMark size={32} />
-              <span className="text-base font-extrabold tracking-tight">
+              <span className="font-display text-base font-bold tracking-tight">
                 Shifted<span className="text-amber-300">Mind</span>
               </span>
             </NavLink>

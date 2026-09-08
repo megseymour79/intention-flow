@@ -1,8 +1,14 @@
 /* DO NOT CHANGE */
 @import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&display=swap");
 @import "tailwindcss";
 @import "tw-animate-css";
 @custom-variant dark (&:is(.dark *));
+
+/* Display serif for headings — the storybook voice of the sky */
+@theme {
+  --font-display: "Fraunces", "Iowan Old Style", Georgia, serif;
+}
 
 /* DO NOT CHANGE */
 @theme inline {
@@ -120,6 +126,12 @@
     @apply bg-background text-foreground;
     font-family: var(--font-sans);
     font-feature-settings: "ss01";
+  }
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    font-optical-sizing: auto;
   }
   button:not([disabled]),
   [role="button"]:not([disabled]) {
@@ -456,7 +468,17 @@
   animation-duration: 13s;
 }
 
-/* deep-sky backdrop: the Nova-rank nebula, breathing over half a minute */
+/* Sky gradient — configurable: deep zenith fading to a lighter horizon */
+.sky-gradient {
+  background: linear-gradient(
+    to bottom,
+    #03050e 0%,
+    #071026 38%,
+    #0d1a33 68%,
+    #16294d 86%,
+    #233d68 100%
+  );
+}
 @keyframes nebula-drift {
   0%,
   100% {

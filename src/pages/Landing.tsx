@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Link } from "react-router";
 import { motion } from "framer-motion";
-import { ArrowRight, Bell, Sparkles, Star } from "lucide-react";
+import { ArrowRight, Bell, Shuffle, Sparkles, Star } from "lucide-react";
 
+import { BreathOrb } from "@/components/BreathOrb";
 import { FloatingBackground } from "@/components/FloatingBackground";
 import { StarMark } from "@/components/StarMark";
 import { StarSky, SkyStarLike } from "@/components/StarSky";
@@ -84,7 +85,7 @@ function HeroSky() {
         onPick={() => undefined}
         onDrop={() => undefined}
         onRequestCreate={hang}
-        className="h-[380px] w-full overflow-hidden rounded-[28px] border border-white/12 bg-gradient-to-b from-[#03050e] via-[#071026] to-[#0d1a33] sm:h-[440px]"
+        className="h-[380px] w-full overflow-hidden rounded-[28px] border border-white/12 sky-gradient sm:h-[440px]"
         hint="tap the sky & type a way you want to be"
       />
       <div className="relative z-10 -mt-8 mx-auto w-[92%] rounded-2xl border border-white/12 bg-[#0b1322]/90 p-2 shadow-[0_18px_50px_-20px_rgba(0,0,0,0.7)] backdrop-blur-xl">
@@ -130,6 +131,181 @@ const STEPS = [
     body: "Gentle reminders arrive at the moments you chose. A streak grows. Your sky becomes a mirror of who you keep choosing to be.",
   },
 ];
+
+/* ------------------------------------------------------------------ */
+/* Interactive: the surprise star                                       */
+/* ------------------------------------------------------------------ */
+
+/** One tap — a random real intention lights up, ready to steal. */
+function SurpriseStar() {
+  const [pick, setPick] = useState<number | null>(null);
+
+  const draw = () => {
+    setPick((cur) => {
+      let next = Math.floor(Math.random() * SUGGESTED_STARS.length);
+      if (next === cur && SUGGESTED_STARS.length > 1) {
+        next = (next + 1) % SUGGESTED_STARS.length;
+      }
+      return next;
+    });
+  };
+
+  const star = pick !== null ? SUGGESTED_STARS[pick] : null;
+  const color = star ? STAR_COLORS[star.colorKey] : null;
+
+  return (
+    <div className="flex flex-col items-center gap-4">
+      <div
+        className={`relative flex h-44 w-44 items-center justify-center overflow-hidden rounded-full border transition-all duration-500 sm:h-52 sm:w-52 ${
+          star ? "" : "animate-glow-pulse"
+        }`}
+        style={
+          star && color
+            ? {
+                borderColor: `${color.hex}55`,
+                background: `radial-gradient(circle at 40% 34%, ${color.hex}22 0%, rgba(10,17,34,0.9) 68%)`,
+                boxShadow: `0 0 40px -6px ${color.glow}`,
+              }
+            : {
+                borderColor: "rgba(251,191,36,0.3)",
+                background:
+                  "radial-gradient(circle at 40% 34%, rgba(251,191,36,0.12) 0%, rgba(10,17,34,0.9) 68%)",
+              }
+        }
+      >
+        {star ? (
+          <motion.div
+            key={star.text}
+            initial={{ scale: 0.4, opacity: 0, rotate: -14 }}
+            animate={{ scale: 1, opacity: 1, rotate: 0 }}
+            transition={{ type: "spring", stiffness: 240, damping: 15 }}
+            className="px-6 text-center"
+          >
+            <span
+              className="block text-3xl"
+              style={{
+                color: color!.hex,
+                textShadow: `0 0 18px ${color!.glow}`,
+              }}
+            >
+              {star.emoji}
+            </span>
+            <p className="mt-2 font-display text-[15px] font-medium leading-snug text-foreground/95">
+              “{star.text}”
+            </p>
+          </motion.div>
+        ) : (
+          <div className="px-6 text-center">
+            <span className="animate-floaty inline-block text-4xl">✦</span>
+            <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
+              One tap. One real intention. No sign-up.
+            </p>
+          </div>
+        )}
+      </div>
+      <button
+        type="button"
+        onClick={draw}
+        className="group inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-5 py-2.5 text-sm font-bold text-foreground/85 transition-all hover:scale-105 hover:border-amber-300/50 hover:text-amber-100"
+      >
+        <Shuffle className="h-4 w-4 text-amber-300/80 transition-transform group-hover:rotate-180" />
+        {star ? "Draw another" : "Surprise me"}
+      </button>
+      <p className="max-w-[220px] text-center text-[11px] leading-relaxed text-muted-foreground/80">
+        {star
+          ? "Steal it as-is — or sign in and hang it in your own sky."
+          : "Every draw is a real intention somebody hung."}
+      </p>
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/* Interactive: tap-to-reveal micro-shifts with a shuffle               */
+/* ------------------------------------------------------------------ */
+
+function ShiftCard({
+  shift,
+  index,
+}: {
+  shift: (typeof SHIFTS)[number];
+  index: number;
+}) {
+  const [open, setOpen] = useState(false);
+  return (
+    <motion.button
+      type="button"
+      onClick={() => setOpen((o) => !o)}
+      initial={{ opacity: 0, y: 14 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-40px" }}
+      transition={{ duration: 0.4, delay: (index % 4) * 0.06 }}
+      className="flex h-full min-h-[104px] flex-col items-start gap-2 rounded-2xl border border-white/8 bg-white/[0.03] p-4 text-left transition-colors hover:border-amber-300/30 hover:bg-amber-300/[0.05]"
+    >
+      <div className="flex w-full items-center justify-between gap-2">
+        <span className="text-xl">{shift.emoji}</span>
+        <span
+          className={`text-[10px] font-bold uppercase tracking-widest transition-colors ${
+            open ? "text-amber-200/90" : "text-muted-foreground/50"
+          }`}
+        >
+          {open ? "−" : "+ tap"}
+        </span>
+      </div>
+      <p className="text-sm font-bold">{shift.title}</p>
+      <p
+        className={`text-xs leading-relaxed text-foreground/70 transition-all ${
+          open
+            ? "line-clamp-none opacity-100"
+            : "line-clamp-1 text-foreground/45"
+        }`}
+      >
+        {shift.body}
+      </p>
+    </motion.button>
+  );
+}
+
+function ShiftWall() {
+  const [seed, setSeed] = useState(0);
+  const shown = useMemo(() => {
+    const offset = (seed * 4) % SHIFTS.length;
+    return [...SHIFTS.slice(offset), ...SHIFTS.slice(0, offset)].slice(0, 8);
+  }, [seed]);
+
+  return (
+    <div>
+      <div className="flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <p className="text-xs font-bold uppercase tracking-[0.25em] text-amber-200/80">
+            Micro-shifts
+          </p>
+          <h2 className="mt-3 text-3xl font-extrabold tracking-tight">
+            Pocket resets for when it goes sideways
+          </h2>
+        </div>
+        <div className="flex items-center gap-3">
+          <p className="max-w-[240px] text-sm text-foreground/60">
+            Tap one to open it. One lands in your sky every day.
+          </p>
+          <button
+            type="button"
+            onClick={() => setSeed((s) => s + 1)}
+            title="Show me four different ones"
+            className="group inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/15 bg-white/5 transition-all hover:scale-110 hover:border-amber-300/50"
+          >
+            <Shuffle className="h-4 w-4 text-amber-300/80 transition-transform duration-300 group-hover:rotate-180" />
+          </button>
+        </div>
+      </div>
+      <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        {shown.map((s, i) => (
+          <ShiftCard key={`${seed}-${s.title}`} shift={s} index={i} />
+        ))}
+      </div>
+    </div>
+  );
+}
 
 const VOICES = [
   {
@@ -181,7 +357,7 @@ export default function Landing() {
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 sm:px-6">
           <a href="#top" className="flex items-center gap-2.5">
             <StarMark size={36} />
-            <span className="text-lg font-extrabold tracking-tight">
+            <span className="font-display text-lg font-bold tracking-tight">
               Shifted<span className="text-amber-300">Mind</span>
             </span>
           </a>
@@ -350,6 +526,33 @@ export default function Landing() {
         </div>
       </section>
 
+      {/* ---- Try it: surprise star + breathe ---- */}
+      <section className="relative py-16">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6">
+          <FadeUp>
+            <div className="grid items-center gap-10 rounded-[32px] border border-white/10 bg-gradient-to-br from-[#0a1120] via-[#0e1728] to-[#14203a] p-8 sm:p-12 lg:grid-cols-2">
+              <div>
+                <p className="text-xs font-bold uppercase tracking-[0.25em] text-amber-200/80">
+                  Try it right now
+                </p>
+                <h2 className="mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl">
+                  No account needed for this part
+                </h2>
+                <p className="mt-4 max-w-md text-sm leading-relaxed text-foreground/70 sm:text-base">
+                  Pull a real intention out of the sky and breathe through one
+                  guided reset. If either one lands, that's the whole app in
+                  miniature — hang it, get nudged, keep choosing.
+                </p>
+              </div>
+              <div className="grid items-center gap-8 sm:grid-cols-2">
+                <SurpriseStar />
+                <BreathOrb />
+              </div>
+            </div>
+          </FadeUp>
+        </div>
+      </section>
+
       {/* ---- Intentions people borrow ---- */}
       <section id="moments" className="relative scroll-mt-20 py-20">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
@@ -459,40 +662,37 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* ---- Micro-shifts ---- */}
+      {/* ---- Micro-shifts: tap to reveal, shuffle for more ---- */}
       <section className="relative py-16">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <FadeUp>
-            <div className="flex flex-wrap items-end justify-between gap-4">
-              <div>
-                <p className="text-xs font-bold uppercase tracking-[0.25em] text-amber-200/80">
-                  Micro-shifts
-                </p>
-                <h2 className="mt-3 text-3xl font-extrabold tracking-tight">
-                  Pocket resets for when it goes sideways
-                </h2>
-              </div>
-              <p className="max-w-sm text-sm text-foreground/60">
-                One lands in your sky every day. A tiny, weird, effective
-                move — ninety seconds max.
+            <ShiftWall />
+          </FadeUp>
+        </div>
+      </section>
+
+      {/* ---- Breathe with the sky ---- */}
+      <section className="relative py-20">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6">
+          <FadeUp>
+            <div className="relative overflow-hidden rounded-[32px] border border-amber-300/20 bg-gradient-to-b from-[#0a1120] via-[#101a30] to-[#1a2a4a] p-10 text-center sm:p-14">
+              <div className="pointer-events-none absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-amber-300/10 to-transparent" />
+              <p className="text-xs font-bold uppercase tracking-[0.25em] text-amber-200/80">
+                Breathe with the sky
               </p>
+              <h2 className="mx-auto mt-3 max-w-xl text-3xl font-extrabold tracking-tight sm:text-4xl">
+                The 4-7-8 reset, guided
+              </h2>
+              <p className="mx-auto mt-4 max-w-lg text-sm leading-relaxed text-foreground/70 sm:text-base">
+                The same pocket reset your sky nudges you with — here it is,
+                playable. In for four, hold for seven, out for eight. Reaction
+                to choice, in about a minute.
+              </p>
+              <div className="mt-10 flex justify-center">
+                <BreathOrb />
+              </div>
             </div>
           </FadeUp>
-          <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            {SHIFTS.slice(0, 8).map((s, i) => (
-              <FadeUp key={s.title} delay={(i % 4) * 0.06}>
-                <div className="flex h-full items-start gap-3 rounded-2xl border border-white/8 bg-white/[0.03] p-4 transition-colors hover:border-amber-300/25 hover:bg-amber-300/[0.04]">
-                  <span className="text-xl">{s.emoji}</span>
-                  <div>
-                    <p className="text-sm font-bold">{s.title}</p>
-                    <p className="mt-1 line-clamp-3 text-xs leading-relaxed text-foreground/60">
-                      {s.body}
-                    </p>
-                  </div>
-                </div>
-              </FadeUp>
-            ))}
-          </div>
         </div>
       </section>
 
@@ -624,7 +824,7 @@ export default function Landing() {
           <div className="flex items-center gap-2.5">
             <StarMark size={30} />
             <div>
-              <p className="text-sm font-extrabold tracking-tight">
+              <p className="font-display text-sm font-bold tracking-tight">
                 Shifted<span className="text-amber-300">Mind</span>
               </p>
               <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
