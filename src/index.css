@@ -651,8 +651,39 @@
   animation-fill-mode: forwards;
 }
 
-/* soft scrollbar to match the theme */
+/* Soft scrollbar to match the theme */
 * {
   scrollbar-width: thin;
   scrollbar-color: oklch(0.85 0.14 85 / 0.35) transparent;
+}
+
+/* A soft elliptical darkening placed behind headline text so the moving sky
+   (comets, haze, wisps) reads as backdrop, never as an overlay on the words. */
+.text-clearing {
+  position: relative;
+}
+
+.text-clearing::before {
+  content: "";
+  position: absolute;
+  inset: -0.9em -1.4em;
+  z-index: -1;
+  border-radius: 50%;
+  background: radial-gradient(
+    ellipse 70% 62% at 50% 50%,
+    rgba(2, 3, 9, 0.78) 0%,
+    rgba(3, 6, 16, 0.55) 55%,
+    rgba(4, 8, 20, 0) 100%
+  );
+  pointer-events: none;
+}
+
+/* Lighter clearing for text on already-dark cards. */
+.text-clearing-soft::before {
+  background: radial-gradient(
+    ellipse 70% 62% at 50% 50%,
+    rgba(2, 3, 9, 0.55) 0%,
+    rgba(3, 6, 16, 0.38) 55%,
+    rgba(4, 8, 20, 0) 100%
+  );
 }

@@ -281,7 +281,7 @@ function ShiftWall() {
           <p className="text-xs font-bold uppercase tracking-[0.25em] text-amber-200/80">
             Micro-shifts
           </p>
-          <h2 className="mt-3 text-3xl font-extrabold tracking-tight">
+          <h2 className="mt-3 text-clearing-soft text-3xl font-extrabold tracking-tight">
             Pocket resets for when it goes sideways
           </h2>
         </div>
@@ -353,6 +353,16 @@ export default function Landing() {
     <div className="relative min-h-screen overflow-x-clip">
       <FloatingBackground count={22} />
 
+      {/* top scrim — keeps the nav and hero readable under the moving sky */}
+      <div
+        aria-hidden
+        className="pointer-events-none fixed inset-x-0 top-0 z-0 h-72"
+        style={{
+          background:
+            "linear-gradient(to bottom, rgba(2,3,9,0.9) 0%, rgba(2,4,12,0.55) 45%, rgba(3,6,16,0) 100%)",
+        }}
+      />
+
       {/* ---- Nav ---- */}
       <header className="absolute inset-x-0 top-0 z-50">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 sm:px-6">
@@ -420,7 +430,7 @@ export default function Landing() {
               initial={{ opacity: 0, y: 22 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.55, delay: 0.08 }}
-              className="mt-5 text-4xl font-extrabold leading-[1.05] tracking-tight sm:text-6xl"
+              className="text-clearing-soft mt-5 text-4xl font-extrabold leading-[1.05] tracking-tight sm:text-6xl"
             >
               Choose how you{" "}
               <span className="bg-gradient-to-r from-amber-200 via-amber-100 to-sky-200 bg-clip-text text-transparent">
@@ -448,7 +458,7 @@ export default function Landing() {
               {cta}
               <a
                 href="#how"
-                className="group inline-flex items-center gap-1.5 text-sm font-semibold text-foreground/70 transition-colors hover:text-amber-200"
+                className="relative z-10 text-sm font-semibold text-foreground/70 transition-colors hover:text-amber-200"
               >
                 See it in action
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
@@ -486,7 +496,7 @@ export default function Landing() {
               <p className="text-xs font-bold uppercase tracking-[0.25em] text-amber-200/80">
                 How it works
               </p>
-              <h2 className="mx-auto mt-3 max-w-2xl text-3xl font-extrabold tracking-tight sm:text-4xl">
+              <h2 className="mx-auto mt-3 max-w-2xl text-clearing-soft text-3xl font-extrabold tracking-tight sm:text-4xl">
                 Three small moves, one different day
               </h2>
             </div>
@@ -539,7 +549,7 @@ export default function Landing() {
                 <p className="text-xs font-bold uppercase tracking-[0.25em] text-amber-200/80">
                   Try it right now
                 </p>
-                <h2 className="mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl">
+                <h2 className="mt-3 text-clearing-soft text-3xl font-extrabold tracking-tight sm:text-4xl">
                   No account needed for this part
                 </h2>
                 <p className="mt-4 max-w-md text-sm leading-relaxed text-foreground/70 sm:text-base">
@@ -566,7 +576,7 @@ export default function Landing() {
                 <p className="text-xs font-bold uppercase tracking-[0.25em] text-amber-200/80">
                   The constellation wall
                 </p>
-                <h2 className="mt-3 max-w-xl text-3xl font-extrabold tracking-tight sm:text-4xl">
+                <h2 className="mt-3 max-w-xl text-clearing-soft text-3xl font-extrabold tracking-tight sm:text-4xl">
                   Intentions people actually hang
                 </h2>
               </div>
@@ -623,7 +633,7 @@ export default function Landing() {
                   <p className="text-xs font-bold uppercase tracking-[0.25em] text-amber-200/80">
                     The archetype quiz
                   </p>
-                  <h2 className="mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl">
+                  <h2 className="mt-3 text-clearing-soft text-3xl font-extrabold tracking-tight sm:text-4xl">
                     Which celestial body are you?
                   </h2>
                   <p className="mt-4 text-sm leading-relaxed text-foreground/70 sm:text-base">
@@ -675,7 +685,7 @@ export default function Landing() {
                 <p className="text-xs font-bold uppercase tracking-[0.25em] text-amber-200/80">
                   The mind gym
                 </p>
-                <h2 className="mt-3 max-w-xl text-3xl font-extrabold tracking-tight sm:text-4xl">
+                <h2 className="mt-3 max-w-xl text-clearing-soft text-3xl font-extrabold tracking-tight sm:text-4xl">
                   Five tiny workouts for the space between stimulus and response
                 </h2>
               </div>
@@ -709,7 +719,7 @@ export default function Landing() {
               <p className="text-xs font-bold uppercase tracking-[0.25em] text-amber-200/80">
                 Breathe with the sky
               </p>
-              <h2 className="mx-auto mt-3 max-w-xl text-3xl font-extrabold tracking-tight sm:text-4xl">
+              <h2 className="mx-auto mt-3 max-w-xl text-clearing-soft text-3xl font-extrabold tracking-tight sm:text-4xl">
                 The 4-7-8 reset, guided
               </h2>
               <p className="mx-auto mt-4 max-w-lg text-sm leading-relaxed text-foreground/70 sm:text-base">
@@ -734,7 +744,7 @@ export default function Landing() {
                 <p className="text-xs font-bold uppercase tracking-[0.25em] text-amber-200/80">
                   Sky ranks
                 </p>
-                <h2 className="mt-3 max-w-xl text-3xl font-extrabold tracking-tight sm:text-4xl">
+                <h2 className="mt-3 max-w-xl text-clearing-soft text-3xl font-extrabold tracking-tight sm:text-4xl">
                   The more you show up, the more your sky opens
                 </h2>
               </div>
@@ -791,7 +801,7 @@ export default function Landing() {
               <p className="text-xs font-bold uppercase tracking-[0.25em] text-amber-200/80">
                 Voices from the sky
               </p>
-              <h2 className="mx-auto mt-3 max-w-2xl text-3xl font-extrabold tracking-tight sm:text-4xl">
+              <h2 className="mx-auto mt-3 max-w-2xl text-clearing-soft text-3xl font-extrabold tracking-tight sm:text-4xl">
                 Small stars, hung daily, change how people meet their moments
               </h2>
             </div>
@@ -821,7 +831,7 @@ export default function Landing() {
             <div className="relative overflow-hidden rounded-[32px] border border-amber-300/25 bg-gradient-to-br from-amber-300/10 via-[#0c1424] to-[#152238] p-10 text-center sm:p-14">
               <div className="pointer-events-none absolute -top-16 left-1/2 h-48 w-96 -translate-x-1/2 rounded-full bg-amber-300/20 blur-3xl" />
               <span className="animate-floaty inline-block text-4xl">🌌</span>
-              <h2 className="mx-auto mt-4 max-w-xl text-3xl font-extrabold tracking-tight sm:text-5xl">
+              <h2 className="mx-auto mt-4 max-w-xl text-clearing-soft text-3xl font-extrabold tracking-tight sm:text-5xl">
                 Your first star takes{" "}
                 <span className="text-amber-300">ten seconds</span>
               </h2>

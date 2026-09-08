@@ -632,11 +632,11 @@ export function StarSky({
     >
       <SkyDecor />
       {deepSky && <DeepSkyWash />}
-      {/* starlit clouds drifting through the panel's dusk band */}
+      {/* soft starlit haze drifting through the panel's dusk band */}
       {[
-        { top: "62%", scale: 1.15, opacity: 0.14, delay: 0, duration: 95 },
-        { top: "74%", scale: 0.8, opacity: 0.1, delay: 40, duration: 120 },
-        { top: "55%", scale: 0.65, opacity: 0.09, delay: 70, duration: 150 },
+        { top: "62%", scale: 1.15, opacity: 0.1, delay: 0, duration: 95 },
+        { top: "74%", scale: 0.8, opacity: 0.075, delay: 40, duration: 120 },
+        { top: "55%", scale: 0.65, opacity: 0.065, delay: 70, duration: 150 },
       ].map((c, i) => (
         <div
           key={`panel-cloud-${i}`}
@@ -655,46 +655,84 @@ export function StarSky({
               height: 38 * c.scale,
               opacity: c.opacity,
               animationDuration: `${7 + i * 2}s`,
+              background:
+                "radial-gradient(50% 60% at 35% 55%, rgba(196,208,235,0.7) 0%, rgba(196,208,235,0.28) 55%, transparent 100%)," +
+                "radial-gradient(45% 55% at 68% 40%, rgba(210,220,242,0.5) 0%, transparent 90%)",
+              filter: "blur(6px)",
             }}
-          >
-            <span className="absolute left-0 top-1/3 h-2/3 w-2/5 rounded-full bg-[#cdd6ee]" />
-            <span className="absolute left-1/5 top-0 h-full w-1/2 rounded-full bg-[#dfe6f7]" />
-            <span className="absolute left-1/2 top-1/4 h-3/4 w-2/5 rounded-full bg-[#c3cde8]" />
-            <span className="absolute inset-x-0 bottom-0 h-1/3 rounded-full bg-[#9aa8cd]" />
-          </div>
+          />
         </div>
       ))}
-      {/* a small ringed sentinel, drifting in the panel's upper-left dark */}
+      {/* a small ringed sentinel, low in the dusk band away from the cards */}
       <div
         aria-hidden
-        className="animate-planet-drift pointer-events-none absolute left-[6%] top-[14%] z-[1]"
+        className="animate-planet-drift pointer-events-none absolute left-[9%] top-[58%] z-[1]"
         style={{ animationDuration: "30s" }}
       >
-        <div className="relative h-9 w-9">
-          <div
-            className="absolute inset-0 rounded-full"
-            style={{
-              background:
-                "radial-gradient(circle at 34% 30%, #ead2a4 0%, #b97f45 40%, #6b3f20 75%, #33200f 100%)",
-              boxShadow:
-                "0 0 12px 2px rgba(230,170,110,0.18), inset -3px -3px 8px rgba(0,0,10,0.55)",
-            }}
+        <svg
+          width="52"
+          height="52"
+          viewBox="0 0 100 100"
+          className="block drop-shadow-[0_0_10px_rgba(235,205,160,0.14)]"
+        >
+          <defs>
+            <radialGradient id="panel-p-body" cx="34%" cy="30%" r="80%">
+              <stop offset="0%" stopColor="#e9dab9" />
+              <stop offset="38%" stopColor="#c49a6b" />
+              <stop offset="70%" stopColor="#7d5f3d" />
+              <stop offset="100%" stopColor="#241a10" />
+            </radialGradient>
+            <radialGradient id="panel-p-shade" cx="64%" cy="42%" r="75%">
+              <stop offset="0%" stopColor="rgba(2,3,10,0)" />
+              <stop offset="55%" stopColor="rgba(2,3,10,0)" />
+              <stop offset="84%" stopColor="rgba(2,3,10,0.6)" />
+              <stop offset="100%" stopColor="rgba(2,3,10,0.9)" />
+            </radialGradient>
+            <linearGradient id="panel-p-ring" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stopColor="rgba(244,232,206,0.08)" />
+              <stop offset="30%" stopColor="rgba(244,232,206,0.4)" />
+              <stop offset="55%" stopColor="rgba(252,244,224,0.55)" />
+              <stop offset="100%" stopColor="rgba(244,232,206,0.08)" />
+            </linearGradient>
+            <clipPath id="panel-p-clip">
+              <circle cx="50" cy="50" r="30" />
+            </clipPath>
+            <clipPath id="panel-p-front">
+              <rect x="0" y="50" width="100" height="50" />
+            </clipPath>
+          </defs>
+          <ellipse
+            cx="50"
+            cy="50"
+            rx="48"
+            ry="12"
+            fill="none"
+            stroke="url(#panel-p-ring)"
+            strokeWidth="3"
+            opacity="0.38"
+            transform="rotate(-14 50 50)"
           />
-          <div
-            className="absolute left-1/2 top-1/2 h-[22px] w-[46px] -translate-x-1/2 -translate-y-1/2 rotate-[-18deg] rounded-[50%]"
-            style={{
-              border: "1.5px solid rgba(240,220,180,0.42)",
-              clipPath: "polygon(0 0, 100% 0, 100% 48%, 0 48%)",
-            }}
+          <circle cx="50" cy="50" r="30" fill="url(#panel-p-body)" />
+          <g clipPath="url(#panel-p-clip)" transform="rotate(10 50 50)">
+            <rect x="-20" y="30" width="140" height="4" fill="rgba(90,64,40,0.22)" />
+            <rect x="-20" y="40" width="140" height="5" fill="rgba(240,222,190,0.12)" />
+            <rect x="-20" y="55" width="140" height="6" fill="rgba(78,56,36,0.2)" />
+            <rect x="-20" y="66" width="140" height="4" fill="rgba(66,47,31,0.16)" />
+          </g>
+          <circle cx="50" cy="50" r="30" fill="url(#panel-p-shade)" />
+          <ellipse
+            cx="50"
+            cy="50"
+            rx="48"
+            ry="12"
+            fill="none"
+            stroke="url(#panel-p-ring)"
+            strokeWidth="3"
+            opacity="0.85"
+            transform="rotate(-14 50 50)"
+            clipPath="url(#panel-p-front)"
           />
-          <div
-            className="absolute left-1/2 top-1/2 h-[22px] w-[46px] -translate-x-1/2 -translate-y-1/2 rotate-[-18deg] rounded-[50%]"
-            style={{
-              border: "1.5px solid rgba(250,235,200,0.6)",
-              clipPath: "polygon(0 50%, 100% 50%, 100% 100%, 0 100%)",
-            }}
-          />
-        </div>
+        </svg>
       </div>
       <ShootingStars />
       <Constellation stars={stars} live={live} golden={golden} />

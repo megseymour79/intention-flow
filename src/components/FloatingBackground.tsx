@@ -1,5 +1,11 @@
 import { useMemo } from "react";
 
+/* Deterministic pseudo-random so the sky is stable across renders */
+function seeded(i: number, salt: number) {
+  const x = Math.sin(i * 127.1 + salt * 311.7) * 43758.5453;
+  return x - Math.floor(x);
+}
+
 interface SkyStar {
   left: string;
   top: string;
@@ -28,20 +34,6 @@ interface PageComet {
   silver: boolean;
 }
 
-interface Cloud {
-  top: string;
-  delay: string;
-  duration: string;
-  scale: number;
-  opacity: number;
-}
-
-// Deterministic pseudo-random so the sky is stable across renders
-function seeded(i: number, salt: number) {
-  const x = Math.sin(i * 127.1 + salt * 311.7) * 43758.5453;
-  return x - Math.floor(x);
-}
-
 const WISP_HUES = [
   "rgba(167,139,250,", // violet
   "rgba(125,211,252,", // sky
@@ -49,107 +41,44 @@ const WISP_HUES = [
   "rgba(244,164,255,", // orchid
 ];
 
-/* A tiny spiral galaxy — two blurred conic arms on a bright core, turning once
-   every few minutes. Sits high in the zenith where nothing competes with it. */
-function Galaxy() {
-  return (
-    <div
-      aria-hidden
-      className="animate-planet-drift pointer-events-none absolute left-[6%] top-[10%]"
-      style={{ animationDuration: "26s" }}
-    >
-      {/* the turning disc */}
-      <div
-        className="animate-galaxy-swirl relative h-40 w-40 rounded-full"
-        style={{
-          background:
-            "conic-gradient(from 20deg, transparent 0deg, rgba(196,181,253,0.10) 60deg, rgba(255,244,214,0.16) 110deg, rgba(147,197,253,0.07) 180deg, transparent 240deg, rgba(196,181,253,0.09) 320deg, transparent 360deg)",
-          filter: "blur(5px)",
-        }}
-      />
-      {/* the bright core, slightly off-axis like a real barred spiral */}
-      <div
-        className="animate-nebula-pulse absolute left-1/2 top-1/2 h-8 w-12 -translate-x-1/2 -translate-y-1/2 rounded-full"
-        style={{
-          background:
-            "radial-gradient(ellipse at 40% 45%, rgba(255,250,225,0.85) 0%, rgba(255,238,190,0.35) 45%, transparent 75%)",
-          boxShadow: "0 0 28px 8px rgba(255,240,200,0.2)",
-        }}
-      />
-    </div>
-  );
-}
+/* ------------------------------------------------------------------ */
+/* Deep-sky objects — realistic, photographic, never cartoonish        */
+/* ------------------------------------------------------------------ */
 
-/* A ringed sentinel planet — softly banded, tilted ring catching the light. */
-function RingedPlanet() {
+/** A soft unresolved galaxy: layered nebulosity around a bright, tiny core. */
+function GalaxyHaze() {
   return (
     <div
       aria-hidden
-      className="animate-planet-drift pointer-events-none absolute right-[8%] top-[12%]"
-      style={{ animationDuration: "34s" }}
-    >
-      <div className="relative h-16 w-16">
-        {/* the planet: a dusk-lit marble */}
-        <div
-          className="absolute inset-0 rounded-full"
-          style={{
-            background:
-              "radial-gradient(circle at 34% 30%, #f2d8a8 0%, #c98d4e 38%, #7a4a26 72%, #3c2413 100%)",
-            boxShadow:
-              "0 0 18px 3px rgba(230,170,110,0.22), inset -6px -6px 14px rgba(0,0,10,0.55)",
-          }}
-        />
-        {/* faint latitudinal bands */}
-        <div
-          className="absolute inset-0 rounded-full opacity-50"
-          style={{
-            background:
-              "repeating-linear-gradient(172deg, transparent 0 5px, rgba(255,235,200,0.10) 5px 7px, transparent 7px 12px)",
-          }}
-        />
-        {/* the ring: back half behind the globe */}
-        <div
-          className="absolute left-1/2 top-1/2 h-[46px] w-[92px] -translate-x-1/2 -translate-y-1/2 rotate-[-16deg] rounded-[50%]"
-          style={{
-            border: "2.5px solid rgba(240,220,180,0.4)",
-            clipPath: "polygon(0 0, 100% 0, 100% 50%, 0 50%)",
-          }}
-        />
-        {/* front half of the ring, drawn over the planet */}
-        <div
-          className="absolute left-1/2 top-1/2 h-[46px] w-[92px] -translate-x-1/2 -translate-y-1/2 rotate-[-16deg] rounded-[50%]"
-          style={{
-            border: "2.5px solid rgba(250,235,200,0.65)",
-            clipPath: "polygon(0 50%, 100% 50%, 100% 100%, 0 100%)",
-          }}
-        />
-      </div>
-    </div>
-  );
-}
-
-/* A crisp crescent moon — the lit sliver of a shadowed disc. */
-function CrescentMoon() {
-  return (
-    <div
-      aria-hidden
-      className="animate-floaty pointer-events-none absolute right-[26%] top-[40%]"
-      style={{ animationDuration: "11s" }}
+      className="animate-planet-drift pointer-events-none absolute left-[7%] top-[7%]"
+      style={{ animationDuration: "46s" }}
     >
       <div
-        className="relative h-10 w-10 overflow-hidden rounded-full"
-        style={{
-          boxShadow: "0 0 16px 3px rgba(235,232,210,0.22)",
-        }}
+        className="animate-nebula-pulse relative h-56 w-72 opacity-70"
+        style={{ animationDuration: "13s" }}
       >
-        {/* the shadowed disc */}
-        <div className="absolute inset-0 rounded-full bg-[#0a0f1e]" />
-        {/* the lit crescent: an offset lit disc bleeding in */}
         <div
           className="absolute inset-0 rounded-full"
           style={{
             background:
-              "radial-gradient(circle at 72% 40%, #fdf9ea 0%, #e8e0c2 34%, transparent 62%)",
+              "radial-gradient(42% 34% at 62% 38%, rgba(196,186,236,0.12) 0%, transparent 100%)",
+            filter: "blur(10px)",
+          }}
+        />
+        <div
+          className="absolute inset-0 rounded-full"
+          style={{
+            background:
+              "radial-gradient(30% 24% at 42% 58%, rgba(186,204,240,0.1) 0%, transparent 100%)",
+            filter: "blur(12px)",
+          }}
+        />
+        <div
+          className="absolute inset-0 rounded-full"
+          style={{
+            background:
+              "radial-gradient(16% 13% at 54% 47%, rgba(244,238,220,0.32) 0%, transparent 100%)",
+            filter: "blur(3px)",
           }}
         />
       </div>
@@ -157,28 +86,227 @@ function CrescentMoon() {
   );
 }
 
-/* A far blue ice giant — small, dim, patient. */
+/** A photographic-feel ringed planet: limb-shaded globe, bands, 3-D ring. */
+function RealisticPlanet() {
+  return (
+    <div
+      aria-hidden
+      className="animate-planet-drift pointer-events-none absolute left-[10%] top-[26%]"
+      style={{ animationDuration: "38s" }}
+    >
+      <div className="relative h-[120px] w-[120px]">
+        {/* faint ambient glow so the disc sits in the sky, not on it */}
+        <div
+          className="absolute -inset-6 rounded-full"
+          style={{
+            background:
+              "radial-gradient(circle, rgba(235,205,160,0.08) 0%, transparent 70%)",
+          }}
+        />
+        <svg
+          width="120"
+          height="120"
+          viewBox="0 0 100 100"
+          className="relative block"
+        >
+          <defs>
+            <radialGradient id="pg-body" cx="34%" cy="30%" r="80%">
+              <stop offset="0%" stopColor="#e9dab9" />
+              <stop offset="38%" stopColor="#c49a6b" />
+              <stop offset="66%" stopColor="#8a6a44" />
+              <stop offset="88%" stopColor="#463623" />
+              <stop offset="100%" stopColor="#20180f" />
+            </radialGradient>
+            <radialGradient id="pg-shade" cx="64%" cy="42%" r="75%">
+              <stop offset="0%" stopColor="rgba(2,3,10,0)" />
+              <stop offset="55%" stopColor="rgba(2,3,10,0)" />
+              <stop offset="82%" stopColor="rgba(2,3,10,0.55)" />
+              <stop offset="100%" stopColor="rgba(2,3,10,0.85)" />
+            </radialGradient>
+            <linearGradient id="pg-ring" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stopColor="rgba(244,232,206,0.05)" />
+              <stop offset="30%" stopColor="rgba(244,232,206,0.42)" />
+              <stop offset="55%" stopColor="rgba(252,244,224,0.55)" />
+              <stop offset="80%" stopColor="rgba(244,232,206,0.28)" />
+              <stop offset="100%" stopColor="rgba(244,232,206,0.05)" />
+            </linearGradient>
+            <clipPath id="pg-clip">
+              <circle cx="50" cy="50" r="34" />
+            </clipPath>
+            <clipPath id="pg-front">
+              <rect x="0" y="50" width="100" height="50" />
+            </clipPath>
+          </defs>
+
+          {/* far side of the ring, behind the globe */}
+          <ellipse
+            cx="50"
+            cy="50"
+            rx="56"
+            ry="15"
+            fill="none"
+            stroke="url(#pg-ring)"
+            strokeWidth="3.2"
+            opacity="0.4"
+            transform="rotate(-12 50 50)"
+          />
+
+          {/* the globe */}
+          <circle cx="50" cy="50" r="34" fill="url(#pg-body)" />
+
+          {/* latitudinal bands, clipped to the disc */}
+          <g clipPath="url(#pg-clip)" transform="rotate(12 50 50)">
+            <rect x="-20" y="22" width="140" height="4.5" fill="rgba(90,64,40,0.2)" />
+            <rect x="-20" y="30" width="140" height="6" fill="rgba(240,222,190,0.1)" />
+            <rect x="-20" y="40" width="140" height="4" fill="rgba(255,236,205,0.08)" />
+            <rect x="-20" y="51" width="140" height="7" fill="rgba(78,56,36,0.18)" />
+            <rect x="-20" y="62" width="140" height="5" fill="rgba(66,47,31,0.14)" />
+          </g>
+
+          {/* terminator — the night side creeps in from the right */}
+          <circle cx="50" cy="50" r="34" fill="url(#pg-shade)" />
+
+          {/* near side of the ring, passing in front of the globe */}
+          <ellipse
+            cx="50"
+            cy="50"
+            rx="56"
+            ry="15"
+            fill="none"
+            stroke="url(#pg-ring)"
+            strokeWidth="3.2"
+            opacity="0.85"
+            transform="rotate(-12 50 50)"
+            clipPath="url(#pg-front)"
+          />
+        </svg>
+      </div>
+    </div>
+  );
+}
+
+/** A cratered crescent moon rendered as a masked SVG disc. */
+function RealisticMoon() {
+  return (
+    <div
+      aria-hidden
+      className="animate-planet-drift pointer-events-none absolute right-[29%] top-[20%]"
+      style={{ animationDuration: "17s" }}
+    >
+      <svg
+        width="66"
+        height="66"
+        viewBox="0 0 100 100"
+        className="block drop-shadow-[0_0_14px_rgba(238,233,214,0.22)]"
+      >
+        <defs>
+          <radialGradient id="pm-body" cx="30%" cy="32%" r="80%">
+            <stop offset="0%" stopColor="#f5f2e6" />
+            <stop offset="42%" stopColor="#e2dcc6" />
+            <stop offset="100%" stopColor="#97917c" />
+          </radialGradient>
+          <radialGradient id="pm-night" cx="62%" cy="42%" r="72%">
+            <stop offset="0%" stopColor="#05070f" />
+            <stop offset="100%" stopColor="#0b1120" />
+          </radialGradient>
+          <mask id="pm-mask">
+            <rect width="100" height="100" fill="black" />
+            <circle cx="59" cy="50" r="24" fill="white" />
+          </mask>
+        </defs>
+        {/* the sunlit disc */}
+        <circle cx="50" cy="50" r="30" fill="url(#pm-body)" />
+        {/* night shadow, masked so only a lit crescent survives */}
+        <circle
+          cx="50"
+          cy="50"
+          r="30"
+          fill="url(#pm-night)"
+          mask="url(#pm-mask)"
+          opacity="0.94"
+        />
+        {/* faint maria on the lit sliver */}
+        <g opacity="0.5">
+          <circle cx="27" cy="43" r="4" fill="rgba(120,112,92,0.5)" />
+          <circle cx="24" cy="55" r="2.4" fill="rgba(120,112,92,0.42)" />
+          <circle cx="31" cy="59" r="1.6" fill="rgba(120,112,92,0.38)" />
+        </g>
+      </svg>
+    </div>
+  );
+}
+
+/** A dim far ice giant — small, cold, steady. */
 function DistantPlanet() {
   return (
     <div
       aria-hidden
-      className="animate-planet-drift pointer-events-none absolute left-[30%] top-[8%]"
-      style={{ animationDuration: "40s" }}
+      className="animate-planet-drift pointer-events-none absolute right-[6%] top-[50%]"
+      style={{ animationDuration: "41s" }}
     >
-      <div
-        className="h-6 w-6 rounded-full"
-        style={{
-          background:
-            "radial-gradient(circle at 36% 32%, #bfe3f2 0%, #6fa7c9 45%, #2f5d7c 80%, #1b3a52 100%)",
-          boxShadow:
-            "0 0 12px 2px rgba(140,190,220,0.25), inset -3px -3px 8px rgba(0,0,15,0.5)",
-        }}
-      />
+      <svg width="30" height="30" viewBox="0 0 100 100">
+        <defs>
+          <radialGradient id="pg-ice" cx="36%" cy="32%" r="80%">
+            <stop offset="0%" stopColor="#cfe9f4" />
+            <stop offset="45%" stopColor="#6fa3c7" />
+            <stop offset="80%" stopColor="#2c5878" />
+            <stop offset="100%" stopColor="#152e42" />
+          </radialGradient>
+        </defs>
+        <circle cx="50" cy="50" r="42" fill="url(#pg-ice)" />
+      </svg>
     </div>
   );
 }
 
-/* A soft haze streak — blurred starlit vapor drifting across the dusk. */
+/* ------------------------------------------------------------------ */
+/* Comets — a bright head with a layered tapering tail                 */
+/* ------------------------------------------------------------------ */
+
+/** A realistic comet: tight glowing head, faint coma, tapered dust tail. */
+function Comet({ silver, size }: { silver: boolean; size: number }) {
+  const head = silver ? "rgba(236,242,255,0.95)" : "rgba(255,244,214,0.95)";
+  const glow = silver ? "rgba(205,220,255,0.55)" : "rgba(255,226,150,0.55)";
+  const tail = silver
+    ? "linear-gradient(to right, rgba(226,236,255,0.8) 0%, rgba(190,208,250,0.3) 34%, rgba(160,180,235,0.1) 64%, transparent 100%)"
+    : "linear-gradient(to right, rgba(255,238,190,0.82) 0%, rgba(255,220,150,0.32) 34%, rgba(240,190,120,0.1) 64%, transparent 100%)";
+  return (
+    <span aria-hidden className="relative block" style={{ width: 134, height: 12 }}>
+      {/* the dust tail, tapering away behind the head */}
+      <span
+        className="absolute left-1 top-1/2 block h-[2px] w-[128px] -translate-y-1/2 rounded-full"
+        style={{ background: tail, filter: "blur(0.4px)" }}
+      />
+      <span
+        className="absolute left-1 top-1/2 block h-[7px] w-[64px] -translate-y-1/2 rounded-full"
+        style={{ background: tail, filter: "blur(3px)", opacity: 0.65 }}
+      />
+      {/* the coma — soft light surrounding the nucleus */}
+      <span
+        className="absolute left-[-6px] top-1/2 block h-[18px] w-[18px] -translate-y-1/2 rounded-full"
+        style={{
+          background: `radial-gradient(circle, ${glow} 0%, transparent 65%)`,
+          opacity: 0.7,
+        }}
+      />
+      {/* the nucleus itself */}
+      <span
+        className="absolute left-0 top-1/2 block -translate-y-1/2 rounded-full"
+        style={{
+          width: 6 * size,
+          height: 6 * size,
+          background: head,
+          boxShadow: `0 0 9px 3px ${glow}, 0 0 24px 8px rgba(255,255,255,0.12)`,
+        }}
+      />
+    </span>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/* Starlit haze — barely-there vapor                                    */
+/* ------------------------------------------------------------------ */
+
 function CloudHaze({
   scale,
   opacity,
@@ -217,9 +345,9 @@ function CloudHaze({
 
 /**
  * The mystical night sky behind every page: a vivid twilight gradient from
- * deep space to rose dusk, a turning spiral galaxy, ringed and ice planets,
- * a crescent moon, drifting starlit haze, rising wisps, and a steady
- * parade of comets.
+ * deep space to rose dusk, a soft galaxy glow, a ringed planet, a cratered
+ * crescent moon, an ice giant, tailed comets, rising wisps and drifting haze.
+ * Everything is tuned to read as depth behind content — never over the words.
  */
 export function FloatingBackground({ count = 18 }: { count?: number }) {
   const stars = useMemo<SkyStar[]>(
@@ -238,38 +366,38 @@ export function FloatingBackground({ count = 18 }: { count?: number }) {
 
   const wisps = useMemo<Wisp[]>(
     () =>
-      Array.from({ length: 7 }, (_, i) => ({
+      Array.from({ length: 5 }, (_, i) => ({
         left: `${(seeded(i, 81) * 92 + 4).toFixed(1)}%`,
         delay: `${(seeded(i, 82) * 46).toFixed(1)}s`,
         duration: `${(44 + seeded(i, 83) * 30).toFixed(1)}s`,
         size: 2 + seeded(i, 84) * 2.4,
         hue: WISP_HUES[i % WISP_HUES.length],
-        opacity: 0.28 + seeded(i, 85) * 0.3,
+        opacity: 0.14 + seeded(i, 85) * 0.12,
       })),
     [],
   );
 
   const comets = useMemo<PageComet[]>(
     () =>
-      Array.from({ length: 6 }, (_, i) => ({
-        top: `${(seeded(i, 91) * 34 + 2).toFixed(1)}%`,
-        delay: `${(seeded(i, 92) * 40).toFixed(1)}s`,
-        duration: `${(16 + seeded(i, 93) * 10).toFixed(1)}s`,
-        size: 1.4 + seeded(i, 94) * 1.4,
-        tilt: 10 + seeded(i, 95) * 10,
-        silver: seeded(i, 96) > 0.5,
+      Array.from({ length: 5 }, (_, i) => ({
+        top: `${(seeded(i, 91) * 28 + 2).toFixed(1)}%`,
+        delay: `${(seeded(i, 92) * 38).toFixed(1)}s`,
+        duration: `${(14 + seeded(i, 93) * 8).toFixed(1)}s`,
+        size: 0.9 + seeded(i, 94) * 0.5,
+        tilt: 8 + seeded(i, 95) * 8,
+        silver: seeded(i, 96) > 0.45,
       })),
     [],
   );
 
-  const clouds = useMemo<Cloud[]>(
+  const clouds = useMemo(
     () =>
-      Array.from({ length: 4 }, (_, i) => ({
-        top: `${(18 + seeded(i, 61) * 45).toFixed(0)}%`,
+      Array.from({ length: 3 }, (_, i) => ({
+        top: `${(16 + seeded(i, 61) * 28).toFixed(0)}%`,
         delay: `${(seeded(i, 62) * 90).toFixed(0)}s`,
         duration: `${(110 + seeded(i, 63) * 70).toFixed(0)}s`,
-        scale: 0.7 + seeded(i, 64) * 0.9,
-        opacity: 0.16 + seeded(i, 65) * 0.12,
+        scale: 0.9 + seeded(i, 64) * 0.5,
+        opacity: 0.05 + seeded(i, 65) * 0.04,
       })),
     [],
   );
@@ -297,9 +425,18 @@ export function FloatingBackground({ count = 18 }: { count?: number }) {
         }}
       />
 
-      <Galaxy />
-      <RingedPlanet />
-      <CrescentMoon />
+      {/* gentle vignette — frames the viewport and keeps edges calm */}
+      <div
+        className="absolute inset-0"
+        style={{
+          background:
+            "radial-gradient(120% 90% at 50% 42%, transparent 58%, rgba(2,3,9,0.32) 100%)",
+        }}
+      />
+
+      <GalaxyHaze />
+      <RealisticPlanet />
+      <RealisticMoon />
       <DistantPlanet />
 
       {/* Milky Way band — unresolved starlight across the upper sky */}
@@ -323,7 +460,7 @@ export function FloatingBackground({ count = 18 }: { count?: number }) {
         />
       ))}
 
-      {/* Rising starlight wisps — motes of colored light climbing the sky */}
+      {/* Rising starlight wisps — faint motes of colored light climbing the sky */}
       {wisps.map((w, i) => (
         <span
           key={`wisp-${i}`}
@@ -367,7 +504,7 @@ export function FloatingBackground({ count = 18 }: { count?: number }) {
         );
       })}
 
-      {/* Comets — silver and gold travelers crossing the sky every few seconds */}
+      {/* Comets — tailed travelers crossing the upper sky every few seconds */}
       {comets.map((c, i) => (
         <div
           key={`comet-${i}`}
@@ -380,17 +517,7 @@ export function FloatingBackground({ count = 18 }: { count?: number }) {
             ["--drift-tilt" as string]: `${c.tilt}deg`,
           }}
         >
-          <span
-            className="block rounded-full"
-            style={{
-              width: c.size,
-              height: c.size,
-              background: c.silver ? "#eef3ff" : "#fff3cf",
-              boxShadow: c.silver
-                ? "0 0 10px 2px rgba(220,232,255,0.8), 0 0 24px 6px rgba(190,210,255,0.3)"
-                : "0 0 10px 2px rgba(255,235,170,0.8), 0 0 24px 6px rgba(255,215,130,0.3)",
-            }}
-          />
+          <Comet silver={c.silver} size={c.size} />
         </div>
       ))}
     </div>

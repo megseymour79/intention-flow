@@ -69,7 +69,7 @@ export function AppShell({
   );
 
   return (
-    <div className="relative min-h-screen">
+    <div className="relative min-h-screen overflow-x-clip">
       <FloatingBackground count={10} />
       <div className="mx-auto flex min-h-screen w-full max-w-[1400px] flex-col lg:flex-row">
         {/* Desktop sidebar */}
