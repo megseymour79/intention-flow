@@ -178,35 +178,8 @@ function DistantPlanet() {
   );
 }
 
-/* A hot-air lantern balloon floating up through the dusk with a swaying glow. */
-function Lantern() {
-  return (
-    <div
-      aria-hidden
-      className="animate-lantern-rise pointer-events-none absolute bottom-0 left-[64%] z-[1]"
-      style={{ animationDelay: "14s", animationDuration: "46s" }}
-    >
-      <div
-        className="animate-sway relative h-12 w-8 rounded-[45%]"
-        style={{
-          background:
-            "radial-gradient(circle at 40% 34%, #fff4c8 0%, #ffcf6e 40%, #d98a3a 78%, #8a4d1e 100%)",
-          boxShadow:
-            "0 0 22px 6px rgba(255,190,90,0.35), 0 0 48px 14px rgba(255,170,70,0.12)",
-          animationDuration: "3.6s",
-        }}
-      >
-        <span
-          className="absolute bottom-1 left-1/2 h-1 w-4 -translate-x-1/2 rounded-full"
-          style={{ background: "rgba(120,60,20,0.8)" }}
-        />
-      </div>
-    </div>
-  );
-}
-
-/* A soft cloud puff — several overlapping discs, drifting the whole way. */
-function CloudPuff({
+/* A soft haze streak — blurred starlit vapor drifting across the dusk. */
+function CloudHaze({
   scale,
   opacity,
   delay,
@@ -219,20 +192,25 @@ function CloudPuff({
   duration: string;
   top: string;
 }) {
-  const w = 140 * scale;
-  const h = 44 * scale;
   return (
     <div
       aria-hidden
       className="animate-cloud-drift pointer-events-none absolute z-[1]"
       style={{ top, animationDelay: delay, animationDuration: duration }}
     >
-      <div className="animate-cloud-breathe relative" style={{ width: w, height: h, animationDuration: `${6 + scale * 4}s`, opacity }}>
-        <span className="absolute left-0 top-1/3 h-2/3 w-2/5 rounded-full bg-[#cdd6ee]" />
-        <span className="absolute left-1/5 top-0 h-full w-1/2 rounded-full bg-[#dfe6f7]" />
-        <span className="absolute left-1/2 top-1/4 h-3/4 w-2/5 rounded-full bg-[#c3cde8]" />
-        <span className="absolute inset-x-0 bottom-0 h-1/3 rounded-full bg-[#9aa8cd]" />
-      </div>
+      <div
+        className="animate-cloud-breathe relative"
+        style={{
+          width: 340 * scale,
+          height: 58 * scale,
+          opacity,
+          animationDuration: `${9 + scale * 5}s`,
+          background:
+            "radial-gradient(50% 60% at 35% 55%, rgba(196,208,235,0.55) 0%, rgba(196,208,235,0.22) 55%, transparent 100%)," +
+            "radial-gradient(45% 55% at 68% 40%, rgba(210,220,242,0.4) 0%, transparent 90%)",
+          filter: "blur(6px)",
+        }}
+      />
     </div>
   );
 }
@@ -240,8 +218,8 @@ function CloudPuff({
 /**
  * The mystical night sky behind every page: a vivid twilight gradient from
  * deep space to rose dusk, a turning spiral galaxy, ringed and ice planets,
- * a crescent moon, drifting starlit clouds, rising wisps and a floating
- * lantern, and a steady parade of comets.
+ * a crescent moon, drifting starlit haze, rising wisps, and a steady
+ * parade of comets.
  */
 export function FloatingBackground({ count = 18 }: { count?: number }) {
   const stars = useMemo<SkyStar[]>(
@@ -323,7 +301,6 @@ export function FloatingBackground({ count = 18 }: { count?: number }) {
       <RingedPlanet />
       <CrescentMoon />
       <DistantPlanet />
-      <Lantern />
 
       {/* Milky Way band — unresolved starlight across the upper sky */}
       <div
@@ -334,9 +311,9 @@ export function FloatingBackground({ count = 18 }: { count?: number }) {
         }}
       />
 
-      {/* Starlit clouds drifting across the whole sky */}
+      {/* Starlit haze drifting across the whole sky */}
       {clouds.map((c, i) => (
-        <CloudPuff
+        <CloudHaze
           key={`cloud-${i}`}
           scale={c.scale}
           opacity={c.opacity}
