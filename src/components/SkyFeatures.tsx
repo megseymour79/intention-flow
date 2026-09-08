@@ -105,7 +105,7 @@ export function AuroraBand() {
   return (
     <div
       aria-hidden
-      className="animate-aurora pointer-events-none absolute inset-x-0 bottom-0 z-[1] h-2/5"
+      className="animate-aura pointer-events-none absolute inset-x-0 bottom-0 z-[1] h-2/5"
       style={{
         background:
           "linear-gradient(to top, rgba(52,211,153,0.16) 0%, rgba(45,180,160,0.09) 30%, rgba(56,130,190,0.05) 60%, transparent 100%)",

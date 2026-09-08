@@ -632,6 +632,38 @@ export function StarSky({
     >
       <SkyDecor />
       {deepSky && <DeepSkyWash />}
+      {/* a small ringed sentinel, drifting in the panel's upper-left dark */}
+      <div
+        aria-hidden
+        className="animate-planet-drift pointer-events-none absolute left-[6%] top-[14%] z-[1]"
+        style={{ animationDuration: "30s" }}
+      >
+        <div className="relative h-9 w-9">
+          <div
+            className="absolute inset-0 rounded-full"
+            style={{
+              background:
+                "radial-gradient(circle at 34% 30%, #ead2a4 0%, #b97f45 40%, #6b3f20 75%, #33200f 100%)",
+              boxShadow:
+                "0 0 12px 2px rgba(230,170,110,0.18), inset -3px -3px 8px rgba(0,0,10,0.55)",
+            }}
+          />
+          <div
+            className="absolute left-1/2 top-1/2 h-[22px] w-[46px] -translate-x-1/2 -translate-y-1/2 rotate-[-18deg] rounded-[50%]"
+            style={{
+              border: "1.5px solid rgba(240,220,180,0.42)",
+              clipPath: "polygon(0 0, 100% 0, 100% 48%, 0 48%)",
+            }}
+          />
+          <div
+            className="absolute left-1/2 top-1/2 h-[22px] w-[46px] -translate-x-1/2 -translate-y-1/2 rotate-[-18deg] rounded-[50%]"
+            style={{
+              border: "1.5px solid rgba(250,235,200,0.6)",
+              clipPath: "polygon(0 50%, 100% 50%, 100% 100%, 0 100%)",
+            }}
+          />
+        </div>
+      </div>
       <ShootingStars />
       <Constellation stars={stars} live={live} golden={golden} />
       {showMoon && <MoonPhase phase={moon.phase} />}
