@@ -5,6 +5,7 @@ import { ArrowRight, Bell, Shuffle, Sparkles, Star } from "lucide-react";
 
 import { BreathOrb } from "@/components/BreathOrb";
 import { FloatingBackground } from "@/components/FloatingBackground";
+import { MindGym } from "@/components/MindGym";
 import { StarMark } from "@/components/StarMark";
 import { StarSky, SkyStarLike } from "@/components/StarSky";
 import { Button } from "@/components/ui/button";
@@ -371,6 +372,9 @@ export default function Landing() {
             <a href="#quiz" className="transition-colors hover:text-amber-200">
               Your style
             </a>
+            <a href="#gym" className="transition-colors hover:text-amber-200">
+              Mind gym
+            </a>
             <a href="#voices" className="transition-colors hover:text-amber-200">
               Voices
             </a>
@@ -659,6 +663,31 @@ export default function Landing() {
               </div>
             </div>
           </FadeUp>
+        </div>
+      </section>
+
+      {/* ---- Mind gym — five tiny exercises, no account ---- */}
+      <section id="gym" className="relative scroll-mt-20 py-20">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6">
+          <FadeUp>
+            <div className="flex flex-wrap items-end justify-between gap-4">
+              <div>
+                <p className="text-xs font-bold uppercase tracking-[0.25em] text-amber-200/80">
+                  The mind gym
+                </p>
+                <h2 className="mt-3 max-w-xl text-3xl font-extrabold tracking-tight sm:text-4xl">
+                  Five tiny workouts for the space between stimulus and response
+                </h2>
+              </div>
+              <p className="max-w-sm text-sm text-foreground/60">
+                Each one takes under a minute. No sign-up, no score to post —
+                just reps for the part of you that chooses.
+              </p>
+            </div>
+          </FadeUp>
+          <div className="mt-10">
+            <MindGym />
+          </div>
         </div>
       </section>
 

@@ -20,6 +20,7 @@ import type { Id } from "@/convex/_generated/dataModel";
 import { AppShell } from "@/components/AppShell";
 import { BreathOrb } from "@/components/BreathOrb";
 import { DiveInDialog } from "@/components/DiveInDialog";
+import { MindGym } from "@/components/MindGym";
 import { PersonalityQuiz } from "@/components/PersonalityQuiz";
 import { StarEditor } from "@/components/StarEditor";
 import { StarSky, SkyStarLike } from "@/components/StarSky";
@@ -470,6 +471,24 @@ export default function Dashboard() {
                 </Button>
               </div>
             )}
+          </div>
+        </div>
+
+        {/* Mind gym — daily reps between the reflection and the rank */}
+        <div className="rounded-3xl border border-white/10 bg-white/[0.02] p-5">
+          <div className="flex flex-wrap items-end justify-between gap-3">
+            <div>
+              <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
+                The mind gym
+              </p>
+              <p className="mt-1 max-w-xl text-sm text-muted-foreground">
+                One-minute reps for the choosing muscle — catch an urge, unhook
+                a thought, ground your senses, turn a lens, find your pull.
+              </p>
+            </div>
+          </div>
+          <div className="mt-4">
+            <MindGym />
           </div>
         </div>
 
