@@ -259,7 +259,7 @@ export default function Dashboard() {
               onCatchBloom={handleCatchBloom}
               deepSky={rank.level >= 4}
               golden={rank.level >= 5}
-              className="h-[54vh] min-h-[400px] w-full overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-b from-[#03050e] via-[#071026] to-[#0d1a33]"
+              className="h-[54vh] min-h-[400px] w-full overflow-hidden rounded-3xl border border-white/10 sky-gradient"
               hint={
                 stars.length === 0
                   ? undefined

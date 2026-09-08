@@ -206,10 +206,10 @@ function ShootingStars() {
       schedule();
     };
     const schedule = () => {
-      const wait = 9_000 + Math.random() * 14_000;
+      const wait = 4_000 + Math.random() * 6_000;
       timer = setTimeout(spawn, wait);
     };
-    let timer: ReturnType<typeof setTimeout> = setTimeout(spawn, 4_500);
+    let timer: ReturnType<typeof setTimeout> = setTimeout(spawn, 2_500);
     return () => {
       alive = false;
       clearTimeout(timer);
@@ -605,7 +605,7 @@ export function StarSky({
       ref={containerRef}
       className={
         className ??
-        "relative h-full w-full overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-b from-[#03050e] via-[#071026] to-[#0d1a33]"
+        "relative h-full w-full overflow-hidden rounded-3xl border border-white/10 sky-gradient"
       }
       onPointerDown={(e) => {
         // Remember where a press on empty sky began, so scrolls don't open the composer
@@ -632,6 +632,38 @@ export function StarSky({
     >
       <SkyDecor />
       {deepSky && <DeepSkyWash />}
+      {/* starlit clouds drifting through the panel's dusk band */}
+      {[
+        { top: "62%", scale: 1.15, opacity: 0.14, delay: 0, duration: 95 },
+        { top: "74%", scale: 0.8, opacity: 0.1, delay: 40, duration: 120 },
+        { top: "55%", scale: 0.65, opacity: 0.09, delay: 70, duration: 150 },
+      ].map((c, i) => (
+        <div
+          key={`panel-cloud-${i}`}
+          aria-hidden
+          className="animate-cloud-drift pointer-events-none absolute z-[1]"
+          style={{
+            top: c.top,
+            animationDelay: `${c.delay}s`,
+            animationDuration: `${c.duration}s`,
+          }}
+        >
+          <div
+            className="animate-cloud-breathe relative"
+            style={{
+              width: 120 * c.scale,
+              height: 38 * c.scale,
+              opacity: c.opacity,
+              animationDuration: `${7 + i * 2}s`,
+            }}
+          >
+            <span className="absolute left-0 top-1/3 h-2/3 w-2/5 rounded-full bg-[#cdd6ee]" />
+            <span className="absolute left-1/5 top-0 h-full w-1/2 rounded-full bg-[#dfe6f7]" />
+            <span className="absolute left-1/2 top-1/4 h-3/4 w-2/5 rounded-full bg-[#c3cde8]" />
+            <span className="absolute inset-x-0 bottom-0 h-1/3 rounded-full bg-[#9aa8cd]" />
+          </div>
+        </div>
+      ))}
       {/* a small ringed sentinel, drifting in the panel's upper-left dark */}
       <div
         aria-hidden

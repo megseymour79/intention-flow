@@ -89,7 +89,7 @@ function HeroSky() {
         className="h-[380px] w-full overflow-hidden rounded-[28px] border border-white/12 sky-gradient sm:h-[440px]"
         hint="tap the sky & type a way you want to be"
       />
-      <div className="relative z-10 -mt-8 mx-auto w-[92%] rounded-2xl border border-white/12 bg-[#0b1322]/90 p-2 shadow-[0_18px_50px_-20px_rgba(0,0,0,0.7)] backdrop-blur-xl">
+      <div className="relative mt-3 mx-auto w-[96%] rounded-2xl border border-white/12 bg-[#0b1322]/90 p-2 shadow-[0_18px_50px_-20px_rgba(0,0,0,0.7)] backdrop-blur-xl">
         <div className="flex items-center gap-2">
           <span className="pl-2 text-lg">✍️</span>
           <Input

@@ -28,6 +28,14 @@ interface PageComet {
   silver: boolean;
 }
 
+interface Cloud {
+  top: string;
+  delay: string;
+  duration: string;
+  scale: number;
+  opacity: number;
+}
+
 // Deterministic pseudo-random so the sky is stable across renders
 function seeded(i: number, salt: number) {
   const x = Math.sin(i * 127.1 + salt * 311.7) * 43758.5453;
@@ -47,7 +55,7 @@ function Galaxy() {
   return (
     <div
       aria-hidden
-      className="animate-planet-drift pointer-events-none absolute left-[7%] top-[16%]"
+      className="animate-planet-drift pointer-events-none absolute left-[6%] top-[10%]"
       style={{ animationDuration: "26s" }}
     >
       {/* the turning disc */}
@@ -77,7 +85,7 @@ function RingedPlanet() {
   return (
     <div
       aria-hidden
-      className="animate-planet-drift pointer-events-none absolute right-[10%] top-[30%]"
+      className="animate-planet-drift pointer-events-none absolute right-[8%] top-[12%]"
       style={{ animationDuration: "34s" }}
     >
       <div className="relative h-16 w-16">
@@ -99,18 +107,15 @@ function RingedPlanet() {
               "repeating-linear-gradient(172deg, transparent 0 5px, rgba(255,235,200,0.10) 5px 7px, transparent 7px 12px)",
           }}
         />
-        {/* the ring, drawn as a squashed ellipse slicing behind the globe */}
+        {/* the ring: back half behind the globe */}
         <div
           className="absolute left-1/2 top-1/2 h-[46px] w-[92px] -translate-x-1/2 -translate-y-1/2 rotate-[-16deg] rounded-[50%]"
           style={{
             border: "2.5px solid rgba(240,220,180,0.4)",
-            boxShadow:
-              "0 0 10px rgba(240,220,180,0.18), inset 0 0 8px rgba(240,220,180,0.12)",
-            clipPath:
-              "polygon(0 0, 100% 0, 100% 100%, 100% 100%, 0 100%, 0 50%)",
+            clipPath: "polygon(0 0, 100% 0, 100% 50%, 0 50%)",
           }}
         />
-        {/* the front half of the ring, above the planet so it reads as passing in front */}
+        {/* front half of the ring, drawn over the planet */}
         <div
           className="absolute left-1/2 top-1/2 h-[46px] w-[92px] -translate-x-1/2 -translate-y-1/2 rotate-[-16deg] rounded-[50%]"
           style={{
@@ -128,7 +133,7 @@ function CrescentMoon() {
   return (
     <div
       aria-hidden
-      className="animate-floaty pointer-events-none absolute right-[24%] top-[9%]"
+      className="animate-floaty pointer-events-none absolute right-[26%] top-[40%]"
       style={{ animationDuration: "11s" }}
     >
       <div
@@ -157,7 +162,7 @@ function DistantPlanet() {
   return (
     <div
       aria-hidden
-      className="animate-planet-drift pointer-events-none absolute left-[26%] top-[42%]"
+      className="animate-planet-drift pointer-events-none absolute left-[30%] top-[8%]"
       style={{ animationDuration: "40s" }}
     >
       <div
@@ -173,11 +178,70 @@ function DistantPlanet() {
   );
 }
 
+/* A hot-air lantern balloon floating up through the dusk with a swaying glow. */
+function Lantern() {
+  return (
+    <div
+      aria-hidden
+      className="animate-lantern-rise pointer-events-none absolute bottom-0 left-[64%] z-[1]"
+      style={{ animationDelay: "14s", animationDuration: "46s" }}
+    >
+      <div
+        className="animate-sway relative h-12 w-8 rounded-[45%]"
+        style={{
+          background:
+            "radial-gradient(circle at 40% 34%, #fff4c8 0%, #ffcf6e 40%, #d98a3a 78%, #8a4d1e 100%)",
+          boxShadow:
+            "0 0 22px 6px rgba(255,190,90,0.35), 0 0 48px 14px rgba(255,170,70,0.12)",
+          animationDuration: "3.6s",
+        }}
+      >
+        <span
+          className="absolute bottom-1 left-1/2 h-1 w-4 -translate-x-1/2 rounded-full"
+          style={{ background: "rgba(120,60,20,0.8)" }}
+        />
+      </div>
+    </div>
+  );
+}
+
+/* A soft cloud puff — several overlapping discs, drifting the whole way. */
+function CloudPuff({
+  scale,
+  opacity,
+  delay,
+  duration,
+  top,
+}: {
+  scale: number;
+  opacity: number;
+  delay: string;
+  duration: string;
+  top: string;
+}) {
+  const w = 140 * scale;
+  const h = 44 * scale;
+  return (
+    <div
+      aria-hidden
+      className="animate-cloud-drift pointer-events-none absolute z-[1]"
+      style={{ top, animationDelay: delay, animationDuration: duration }}
+    >
+      <div className="animate-cloud-breathe relative" style={{ width: w, height: h, animationDuration: `${6 + scale * 4}s`, opacity }}>
+        <span className="absolute left-0 top-1/3 h-2/3 w-2/5 rounded-full bg-[#cdd6ee]" />
+        <span className="absolute left-1/5 top-0 h-full w-1/2 rounded-full bg-[#dfe6f7]" />
+        <span className="absolute left-1/2 top-1/4 h-3/4 w-2/5 rounded-full bg-[#c3cde8]" />
+        <span className="absolute inset-x-0 bottom-0 h-1/3 rounded-full bg-[#9aa8cd]" />
+      </div>
+    </div>
+  );
+}
+
 /**
- * The mystical night sky behind every page: a deep zenith easing to a lighter
- * horizon, a slowly turning spiral galaxy, a ringed planet and a distant ice
- * giant, a crisp crescent moon, drifting starlight wisps, and the occasional
- * silver-and-gold comet crossing the whole sky.
+ * The mystical night sky behind every page: a vivid twilight gradient from
+ * deep space to rose dusk, a turning spiral galaxy, ringed and ice planets,
+ * a crescent moon, drifting starlit clouds, rising wisps and a floating
+ * lantern, and a steady parade of comets.
  */
 export function FloatingBackground({ count = 18 }: { count?: number }) {
   const stars = useMemo<SkyStar[]>(
@@ -209,13 +273,25 @@ export function FloatingBackground({ count = 18 }: { count?: number }) {
 
   const comets = useMemo<PageComet[]>(
     () =>
-      Array.from({ length: 3 }, (_, i) => ({
-        top: `${(seeded(i, 91) * 30 + 4).toFixed(1)}%`,
-        delay: `${(18 + seeded(i, 92) * 52).toFixed(1)}s`,
-        duration: `${(24 + seeded(i, 93) * 14).toFixed(1)}s`,
-        size: 1.4 + seeded(i, 94) * 1.2,
+      Array.from({ length: 6 }, (_, i) => ({
+        top: `${(seeded(i, 91) * 34 + 2).toFixed(1)}%`,
+        delay: `${(seeded(i, 92) * 40).toFixed(1)}s`,
+        duration: `${(16 + seeded(i, 93) * 10).toFixed(1)}s`,
+        size: 1.4 + seeded(i, 94) * 1.4,
         tilt: 10 + seeded(i, 95) * 10,
         silver: seeded(i, 96) > 0.5,
+      })),
+    [],
+  );
+
+  const clouds = useMemo<Cloud[]>(
+    () =>
+      Array.from({ length: 4 }, (_, i) => ({
+        top: `${(18 + seeded(i, 61) * 45).toFixed(0)}%`,
+        delay: `${(seeded(i, 62) * 90).toFixed(0)}s`,
+        duration: `${(110 + seeded(i, 63) * 70).toFixed(0)}s`,
+        scale: 0.7 + seeded(i, 64) * 0.9,
+        opacity: 0.16 + seeded(i, 65) * 0.12,
       })),
     [],
   );
@@ -225,12 +301,21 @@ export function FloatingBackground({ count = 18 }: { count?: number }) {
       aria-hidden
       className="pointer-events-none fixed inset-0 -z-10 overflow-hidden"
     >
-      {/* Sky base — deep zenith, easing through dusk to a lighter horizon */}
+      {/* Sky base — deep space easing through royal blue into rose dusk */}
       <div
         className="absolute inset-0"
         style={{
           background:
-            "linear-gradient(to bottom, #03050e 0%, #050a1c 32%, #0a1631 58%, #122142 80%, #1d3358 93%, #27406b 100%)",
+            "linear-gradient(to bottom, #020309 0%, #071130 34%, #14295c 58%, #2c4a8f 78%, #46639f 89%, #6f6a9e 96%, #8a6f93 100%)",
+        }}
+      />
+
+      {/* vivid dusk bloom along the horizon */}
+      <div
+        className="absolute inset-x-0 bottom-0 h-[36%]"
+        style={{
+          background:
+            "radial-gradient(120% 90% at 50% 118%, rgba(255,163,102,0.28) 0%, rgba(196,110,150,0.16) 42%, transparent 75%)",
         }}
       />
 
@@ -238,6 +323,7 @@ export function FloatingBackground({ count = 18 }: { count?: number }) {
       <RingedPlanet />
       <CrescentMoon />
       <DistantPlanet />
+      <Lantern />
 
       {/* Milky Way band — unresolved starlight across the upper sky */}
       <div
@@ -247,6 +333,18 @@ export function FloatingBackground({ count = 18 }: { count?: number }) {
             "radial-gradient(140% 55% at 72% -12%, rgba(190,200,225,0.055) 0%, rgba(190,200,225,0.022) 38%, transparent 65%)",
         }}
       />
+
+      {/* Starlit clouds drifting across the whole sky */}
+      {clouds.map((c, i) => (
+        <CloudPuff
+          key={`cloud-${i}`}
+          scale={c.scale}
+          opacity={c.opacity}
+          delay={c.delay}
+          duration={c.duration}
+          top={c.top}
+        />
+      ))}
 
       {/* Rising starlight wisps — motes of colored light climbing the sky */}
       {wisps.map((w, i) => (
@@ -266,15 +364,6 @@ export function FloatingBackground({ count = 18 }: { count?: number }) {
           }}
         />
       ))}
-
-      {/* Horizon airglow — the faint light band a dark sky shows at ground level */}
-      <div
-        className="absolute inset-x-0 bottom-0 h-[28%]"
-        style={{
-          background:
-            "linear-gradient(to top, rgba(28,42,66,0.55) 0%, rgba(20,32,52,0.22) 45%, transparent 100%)",
-        }}
-      />
 
       {/* Stars — three depth layers; smaller = farther */}
       {stars.map((s, i) => {
@@ -301,7 +390,7 @@ export function FloatingBackground({ count = 18 }: { count?: number }) {
         );
       })}
 
-      {/* Comets — long-tailed travelers crossing the sky every minute or so */}
+      {/* Comets — silver and gold travelers crossing the sky every few seconds */}
       {comets.map((c, i) => (
         <div
           key={`comet-${i}`}
