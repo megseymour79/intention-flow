@@ -162,7 +162,7 @@ export function ReflectionLedger({
             onClick={() => setMood(m.value)}
             className={`flex h-10 w-10 items-center justify-center rounded-xl border text-lg transition-all ${
               effMood === m.value
-                ? "scale-110 border-amber-300/70 bg-amber-300/10"
+                ? "scale-110 border-emerald-300/60 bg-emerald-300/10"
                 : "border-white/10 bg-white/5 opacity-70 hover:opacity-100"
             }`}
           >
@@ -189,7 +189,7 @@ export function ReflectionLedger({
           size="sm"
           onClick={handleSave}
           disabled={!canSave}
-          className="rounded-full bg-amber-300 font-bold text-amber-950 hover:bg-amber-200"
+          className="rounded-full bg-foreground font-semibold text-background hover:bg-foreground/85"
         >
           {saving ? (
             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -213,7 +213,7 @@ export function ReflectionLedger({
               const color = !d.r
                 ? "bg-white/10"
                 : d.r.honored
-                  ? "bg-gradient-to-t from-amber-400/80 to-amber-200"
+                  ? "bg-gradient-to-t from-emerald-400/80 to-emerald-200"
                   : "bg-gradient-to-t from-rose-400/70 to-rose-300";
               return (
                 <div
@@ -230,7 +230,7 @@ export function ReflectionLedger({
                     style={{ height }}
                   />
                   <span
-                    className={`text-[9px] ${d.isToday ? "font-bold text-amber-200" : "text-muted-foreground/60"}`}
+                    className={`text-[9px] ${d.isToday ? "font-semibold text-emerald-200" : "text-muted-foreground/60"}`}
                   >
                     {d.label}
                   </span>
@@ -257,7 +257,7 @@ export function ReflectionHeroCard() {
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4 }}
-      className="flex flex-wrap items-center justify-between gap-4 rounded-3xl border border-amber-300/20 bg-amber-300/[0.06] p-5"
+      className="panel flex flex-wrap items-center justify-between gap-4 p-5"
     >
       <div className="flex items-center gap-3">
         <span className="text-2xl">🌠</span>
@@ -270,7 +270,7 @@ export function ReflectionHeroCard() {
         </div>
       </div>
       <div className="text-right">
-        <p className="text-2xl font-extrabold tracking-tight text-amber-200">
+        <p className="text-2xl font-extrabold tracking-tight text-emerald-200">
           {honoredPct}%
         </p>
         <p className="text-[10px] uppercase tracking-widest text-muted-foreground">

@@ -34,7 +34,7 @@ const FILE_TYPES = ["image/png", "image/jpeg", "image/webp", "image/gif"];
 
 function avatarHue(seed: string): string {
   const palettes = [
-    "from-amber-300/80 to-orange-400/80",
+    "from-emerald-300/80 to-teal-400/80",
     "from-cyan-300/80 to-blue-400/80",
     "from-fuchsia-300/80 to-purple-400/80",
     "from-lime-300/80 to-emerald-400/80",
@@ -151,7 +151,7 @@ export default function Community() {
       <div className="mx-auto max-w-2xl space-y-6">
         <div>
           <h1 className="text-3xl font-extrabold tracking-tight sm:text-4xl">
-            The community <span className="text-amber-300">sky</span>
+            The community <span className="text-emerald-200/90">sky</span>
           </h1>
           <p className="mt-1.5 text-sm text-muted-foreground">
             Share the intention you're holding this week — and see what other
@@ -182,7 +182,7 @@ export default function Community() {
                   onClick={() => setGlyph(g)}
                   className={`flex h-8 w-8 items-center justify-center rounded-lg border text-base transition-all ${
                     glyph === g
-                      ? "border-amber-300/70 bg-amber-300/10 scale-110"
+                      ? "border-emerald-300/60 bg-emerald-300/10 scale-110"
                       : "border-transparent hover:border-white/20"
                   }`}
                   style={
@@ -236,7 +236,7 @@ export default function Community() {
                 size="sm"
                 disabled={posting || (text.trim().length === 0 && !image)}
                 onClick={() => void handlePost()}
-                className="h-8 rounded-full bg-amber-300 font-bold text-amber-950 hover:bg-amber-200"
+                className="h-8 rounded-full bg-foreground font-semibold text-background hover:bg-foreground/85"
               >
                 {posting ? (
                   <Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" />
@@ -383,12 +383,12 @@ export default function Community() {
                           }
                           className={`h-8 text-xs ${
                             post.glowed
-                              ? "text-amber-300"
-                              : "text-muted-foreground hover:text-amber-200"
+                              ? "text-emerald-300"
+                              : "text-muted-foreground hover:text-emerald-200"
                           }`}
                         >
                           <Sparkles
-                            className={`mr-1.5 h-4 w-4 ${post.glowed ? "fill-amber-300" : ""}`}
+                            className={`mr-1.5 h-4 w-4 ${post.glowed ? "fill-emerald-300" : ""}`}
                           />
                           {post.glowCount} glow{post.glowCount === 1 ? "" : "s"}
                         </Button>

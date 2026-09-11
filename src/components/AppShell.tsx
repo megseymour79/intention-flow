@@ -56,14 +56,14 @@ export function AppShell({
       to={item.to}
       className={({ isActive }) =>
         cn(
-          "flex items-center gap-3 rounded-xl border border-transparent px-3.5 py-2.5 text-sm font-medium transition-all",
+          "flex items-center gap-3 rounded-lg border border-transparent px-3.5 py-2.5 text-sm font-medium transition-all",
           isActive
-            ? "border-amber-300/25 bg-amber-300/10 text-amber-100 shadow-[0_0_18px_-6px_rgba(251,191,36,0.4)]"
-            : "text-foreground/65 hover:bg-white/5 hover:text-foreground",
+            ? "border-white/12 bg-white/[0.06] text-foreground shadow-[inset_0_1px_0_0_rgba(255,255,255,0.05)]"
+            : "text-foreground/60 hover:bg-white/[0.03] hover:text-foreground",
         )
       }
     >
-      <item.icon className="h-4.5 w-4.5 shrink-0" />
+      <item.icon className="h-4 w-4 shrink-0 text-muted-foreground" />
       {item.label}
     </NavLink>
   );
@@ -75,12 +75,12 @@ export function AppShell({
         {/* Desktop sidebar */}
         <aside className="sticky top-0 hidden h-screen w-60 shrink-0 flex-col border-r border-white/8 px-4 py-6 lg:flex">
           <NavLink to="/" className="mb-8 flex items-center gap-2.5">
-            <StarMark size={38} />
+            <StarMark size={36} />
             <div className="leading-tight">
-              <p className="font-display text-[15px] font-bold tracking-tight">
-                Shifted<span className="text-amber-300">Mind</span>
+              <p className="font-display text-[15px] font-semibold tracking-tight">
+                Shifted<span className="text-emerald-200/90">Mind</span>
               </p>
-              <p className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
+              <p className="font-eyebrow text-muted-foreground">
                 choose your responses
               </p>
             </div>
@@ -89,12 +89,12 @@ export function AppShell({
           <nav className="space-y-1.5">{NAV.map(sidebarLink)}</nav>
 
           <div className="mt-auto space-y-3">
-            <div className="rounded-2xl border border-white/8 bg-white/4 p-3 text-center">
-              <p className="text-[11px] leading-relaxed text-muted-foreground">
+            <div className="panel p-3 text-center">
+              <p className="font-display text-[12px] italic leading-relaxed text-muted-foreground">
                 “Between stimulus and response there is a space. In that space is
                 our power.”
               </p>
-              <p className="mt-1 text-[10px] uppercase tracking-widest text-amber-200/70">
+              <p className="font-eyebrow mt-1.5 text-emerald-200/60">
                 — Viktor Frankl
               </p>
             </div>
@@ -105,7 +105,7 @@ export function AppShell({
                   type="button"
                   className="flex w-full items-center gap-3 rounded-xl border border-white/8 bg-white/4 px-3 py-2 text-left transition-colors hover:bg-white/8"
                 >
-                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-amber-300/70 to-sky-400/70 text-sm font-bold text-[#0a1120]">
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-emerald-200/25 bg-emerald-200/10 font-mono text-xs font-semibold text-emerald-100">
                     {initialsOf(user?.name)}
                   </span>
                   <span className="min-w-0 flex-1">
@@ -116,7 +116,7 @@ export function AppShell({
                       {user?.email ?? "anonymous star"}
                     </span>
                     {!rank.loading && (
-                      <span className="mt-0.5 block truncate text-[10px] font-semibold uppercase tracking-wider text-amber-200/80">
+                      <span className="font-eyebrow mt-0.5 block truncate text-emerald-200/70">
                         {rank.emoji} {rank.name}
                       </span>
                     )}
@@ -142,8 +142,8 @@ export function AppShell({
           <div className="flex items-center justify-between px-4 py-3">
             <NavLink to="/" className="flex items-center gap-2">
               <StarMark size={32} />
-              <span className="font-display text-base font-bold tracking-tight">
-                Shifted<span className="text-amber-300">Mind</span>
+              <span className="font-display text-base font-semibold tracking-tight">
+                Shifted<span className="text-emerald-200/90">Mind</span>
               </span>
             </NavLink>
             <div className="flex items-center gap-1.5">
@@ -155,7 +155,7 @@ export function AppShell({
                     cn(
                       "flex h-10 w-10 items-center justify-center rounded-xl transition-colors",
                       isActive
-                        ? "bg-amber-300/15 text-amber-200"
+                        ? "bg-white/[0.07] text-emerald-200"
                         : "text-muted-foreground hover:bg-white/5 hover:text-foreground",
                     )
                   }

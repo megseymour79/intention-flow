@@ -128,13 +128,13 @@ export function FirstLight({
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -10 }}
           transition={{ duration: 0.4 }}
-          className="relative overflow-hidden rounded-3xl border border-amber-300/25 bg-gradient-to-br from-amber-300/[0.08] via-white/[0.03] to-transparent p-5"
+          className="relative overflow-hidden rounded-3xl border border-emerald-300/20 bg-gradient-to-br from-emerald-300/[0.06] via-white/[0.03] to-transparent p-5"
         >
-          <div className="pointer-events-none absolute -right-10 -top-10 h-36 w-36 rounded-full bg-amber-300/10 blur-3xl" />
+          <div className="pointer-events-none absolute -right-10 -top-10 h-36 w-36 rounded-full bg-emerald-300/10 blur-3xl" />
 
           <div className="flex items-start justify-between gap-3">
             <div className="flex items-center gap-2.5">
-              <span className="flex h-9 w-9 items-center justify-center rounded-2xl bg-amber-300/15 text-lg ring-1 ring-amber-300/30">
+              <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-300/12 text-lg ring-1 ring-emerald-300/25">
                 {allDone ? "🌌" : "🗺️"}
               </span>
               <div>
@@ -163,7 +163,7 @@ export function FirstLight({
               <span
                 key={r.key}
                 className={`h-1.5 flex-1 rounded-full transition-colors duration-500 ${
-                  r.done ? "bg-amber-300" : "bg-white/10"
+                  r.done ? "bg-emerald-300" : "bg-white/10"
                 }`}
               />
             ))}
@@ -207,7 +207,7 @@ export function FirstLight({
                   <Button
                     size="sm"
                     onClick={r.action.onClick}
-                    className="h-8 shrink-0 rounded-full bg-amber-300 text-xs font-bold text-amber-950 hover:bg-amber-200"
+                    className="h-8 shrink-0 rounded-full bg-foreground text-xs font-semibold text-background hover:bg-foreground/85"
                   >
                     {r.action.label}
                   </Button>
@@ -374,11 +374,11 @@ export function ConstellationProgress() {
               key={m.nights}
               className={`flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[11px] font-semibold transition-colors ${
                 got
-                  ? "border-amber-300/50 bg-amber-300/10 text-amber-100"
+                  ? "border-emerald-300/45 bg-emerald-300/10 text-emerald-100"
                   : "border-white/10 bg-white/5 text-muted-foreground/70"
               }`}
             >
-              {got ? <Sparkles className="h-3 w-3 text-amber-300" /> : <MoonStar className="h-3 w-3 opacity-50" />}
+              {got ? <Sparkles className="h-3 w-3 text-emerald-300" /> : <MoonStar className="h-3 w-3 opacity-50" />}
               {m.nights} · {m.name}
             </span>
           );
@@ -388,9 +388,9 @@ export function ConstellationProgress() {
       <p className="mt-3 flex items-center gap-1.5 text-xs text-muted-foreground">
         {next ? (
           <>
-            <ChevronDown className="h-3.5 w-3.5 text-amber-200/70" />
+            <ChevronDown className="h-3.5 w-3.5 text-emerald-200/70" />
             {next.nights - kept} more kept night{next.nights - kept === 1 ? "" : "s"} until{" "}
-            <span className="font-semibold text-amber-200/90">“{next.name}”</span>
+            <span className="font-semibold text-emerald-200/90">“{next.name}”</span>
           </>
         ) : (
           <>
@@ -506,7 +506,7 @@ export function RankPanel() {
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div className="flex items-start gap-3">
           <span
-            className="animate-glow-pulse flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-amber-300/25 to-sky-400/15 text-xl ring-1 ring-amber-300/30"
+            className="animate-glow-pulse flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-300/20 to-sky-400/12 text-xl ring-1 ring-emerald-300/25"
             title={`Rank ${rank.level} of ${RANK_TIERS.length}`}
           >
             {rank.emoji}
@@ -514,7 +514,7 @@ export function RankPanel() {
           <div>
             <p className="font-bold">
               Sky rank ·{" "}
-              <span className="text-amber-200">{rank.name}</span>
+              <span className="text-emerald-200">{rank.name}</span>
             </p>
             <p className="mt-0.5 max-w-md text-xs leading-relaxed text-muted-foreground">
               {rank.blurb} Every star hung, night kept, day visited and quiz
@@ -523,7 +523,7 @@ export function RankPanel() {
           </div>
         </div>
         <div className="text-right">
-          <p className="text-2xl font-extrabold tracking-tight text-amber-200">
+          <p className="text-2xl font-extrabold tracking-tight text-emerald-200">
             {rank.score}
             <span className="ml-1 text-sm font-semibold text-muted-foreground">
               / {maxScore} light
@@ -547,7 +547,7 @@ export function RankPanel() {
                 </span>
               </>
             ) : (
-              <span className="text-amber-200/90">
+              <span className="text-emerald-200/90">
                 ✦ Final rank reached — the sky bends around you now.
               </span>
             )}
@@ -556,7 +556,7 @@ export function RankPanel() {
         </div>
         <div className="mt-1.5 h-2 overflow-hidden rounded-full bg-white/8">
           <div
-            className="h-full rounded-full bg-gradient-to-r from-amber-400/80 to-amber-200 shadow-[0_0_10px_rgba(251,191,36,0.5)] transition-all duration-700"
+            className="h-full rounded-full bg-gradient-to-r from-emerald-400/80 to-emerald-200 shadow-[0_0_10px_rgba(110,231,183,0.45)] transition-all duration-700"
             style={{ width: `${progress}%` }}
           />
         </div>
@@ -592,7 +592,7 @@ export function RankPanel() {
                 key={u.id}
                 className={`rounded-2xl border p-3.5 transition-colors ${
                   open
-                    ? "border-amber-300/35 bg-amber-300/[0.06]"
+                    ? "border-emerald-300/30 bg-emerald-300/[0.05]"
                     : "border-white/8 bg-white/[0.02]"
                 }`}
               >
@@ -626,7 +626,7 @@ export function RankPanel() {
         </div>
         {rank.next && (
           <p className="mt-3 text-xs text-muted-foreground">
-            <Sparkles className="mr-1 inline h-3.5 w-3.5 text-amber-300/80" />
+            <Sparkles className="mr-1 inline h-3.5 w-3.5 text-emerald-300/80" />
             Come back tomorrow — even a visit alone feeds the next rank.
           </p>
         )}

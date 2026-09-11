@@ -118,7 +118,7 @@ export default function Messages() {
           >
             <div className="border-b border-white/8 p-4">
               <h2 className="flex items-center gap-2 text-lg font-extrabold tracking-tight">
-                <MessageCircle className="h-5 w-5 text-amber-300" /> Messages
+                <MessageCircle className="h-5 w-5 text-emerald-200" /> Messages
               </h2>
               <p className="mt-0.5 text-xs text-muted-foreground">
                 Notes between star-hangers
@@ -142,7 +142,7 @@ export default function Messages() {
                   onClick={() => setOpenId(c._id)}
                   className={`flex w-full items-center gap-3 rounded-2xl px-3 py-3 text-left transition-colors ${
                     openId === c._id
-                      ? "bg-amber-300/12"
+                      ? "bg-emerald-300/10"
                       : "hover:bg-white/5"
                   }`}
                 >
@@ -230,14 +230,14 @@ export default function Messages() {
                         <div
                           className={`max-w-[78%] rounded-2xl px-3.5 py-2 ${
                             mine
-                              ? "rounded-br-sm bg-amber-300/90 text-amber-950"
+                              ? "rounded-br-sm bg-emerald-300/90 text-emerald-950"
                               : "rounded-bl-sm bg-white/8 text-foreground/90"
                           }`}
                         >
                           <p className="text-sm leading-relaxed">{m.text}</p>
                           <p
                             className={`mt-1 text-right text-[10px] ${
-                              mine ? "text-amber-900/60" : "text-muted-foreground"
+                              mine ? "text-emerald-900/60" : "text-muted-foreground"
                             }`}
                           >
                             {convoTimeLabel(m.createdAt)}
@@ -259,13 +259,13 @@ export default function Messages() {
                     }}
                     placeholder="Write to the sky…"
                     maxLength={1000}
-                    className="h-10 min-w-0 flex-1 rounded-full border border-white/12 bg-white/5 px-4 text-sm placeholder:text-foreground/35 focus:border-amber-300/50 focus:outline-none"
+                    className="h-10 min-w-0 flex-1 rounded-full border border-white/12 bg-white/5 px-4 text-sm placeholder:text-foreground/35 focus:border-emerald-300/40 focus:outline-none"
                   />
                   <Button
                     size="icon"
                     disabled={sending || draft.trim().length === 0}
                     onClick={() => void handleSend()}
-                    className="h-10 w-10 shrink-0 rounded-full bg-amber-300 text-amber-950 hover:bg-amber-200"
+                    className="h-10 w-10 shrink-0 rounded-full bg-foreground text-background hover:bg-foreground/85"
                     aria-label="Send message"
                   >
                     {sending ? (

@@ -122,7 +122,7 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
             <StarMark size={52} />
             <span>
               <span className="font-display block text-2xl font-bold tracking-tight">
-                Shifted<span className="text-amber-300">Mind</span>
+                Shifted<span className="text-emerald-200/90">Mind</span>
               </span>
               <span className="block text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
                 choose your responses
@@ -160,7 +160,7 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
                         type="submit"
                         variant="outline"
                         size="icon"
-                        className="border-amber-300/40 bg-amber-300/10 text-amber-200 hover:bg-amber-300/20"
+                        className="border-emerald-300/40 bg-emerald-300/10 text-emerald-200 hover:bg-emerald-300/20"
                         disabled={isLoading}
                       >
                         {isLoading ? (
@@ -246,7 +246,7 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
                       Didn't receive a code?{" "}
                       <Button
                         variant="link"
-                        className="p-0 h-auto text-amber-300"
+                        className="p-0 h-auto text-emerald-300"
                         onClick={() => setStep("signIn")}
                       >
                         Try again
@@ -256,7 +256,7 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
                   <CardFooter className="flex-col gap-2">
                     <Button
                       type="submit"
-                      className="w-full rounded-full bg-amber-300 font-extrabold text-amber-950 hover:bg-amber-200"
+                      className="w-full rounded-full bg-foreground font-semibold text-background hover:bg-foreground/85"
                       disabled={isLoading || otp.length !== 6}
                     >
                       {isLoading ? (
@@ -291,7 +291,7 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
                 href="https://freebuff.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="underline hover:text-amber-300 transition-colors"
+                className="underline hover:text-emerald-300 transition-colors"
               >
                 freebuff.com
               </a>

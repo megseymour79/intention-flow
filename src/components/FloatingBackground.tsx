@@ -111,11 +111,11 @@ function RealisticPlanet() {
         >
           <defs>
             <radialGradient id="pg-body" cx="34%" cy="30%" r="80%">
-              <stop offset="0%" stopColor="#e9dab9" />
-              <stop offset="38%" stopColor="#c49a6b" />
-              <stop offset="66%" stopColor="#8a6a44" />
-              <stop offset="88%" stopColor="#463623" />
-              <stop offset="100%" stopColor="#20180f" />
+              <stop offset="0%" stopColor="#e9e6d8" />
+              <stop offset="38%" stopColor="#b3a68c" />
+              <stop offset="66%" stopColor="#77705e" />
+              <stop offset="88%" stopColor="#3d3a30" />
+              <stop offset="100%" stopColor="#1d1b15" />
             </radialGradient>
             <radialGradient id="pg-shade" cx="64%" cy="42%" r="75%">
               <stop offset="0%" stopColor="rgba(2,3,10,0)" />
@@ -124,11 +124,11 @@ function RealisticPlanet() {
               <stop offset="100%" stopColor="rgba(2,3,10,0.85)" />
             </radialGradient>
             <linearGradient id="pg-ring" x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0%" stopColor="rgba(244,232,206,0.05)" />
-              <stop offset="30%" stopColor="rgba(244,232,206,0.42)" />
-              <stop offset="55%" stopColor="rgba(252,244,224,0.55)" />
-              <stop offset="80%" stopColor="rgba(244,232,206,0.28)" />
-              <stop offset="100%" stopColor="rgba(244,232,206,0.05)" />
+              <stop offset="0%" stopColor="rgba(224,232,224,0.05)" />
+              <stop offset="30%" stopColor="rgba(224,232,224,0.4)" />
+              <stop offset="55%" stopColor="rgba(240,244,238,0.52)" />
+              <stop offset="80%" stopColor="rgba(224,232,224,0.26)" />
+              <stop offset="100%" stopColor="rgba(224,232,224,0.05)" />
             </linearGradient>
             <clipPath id="pg-clip">
               <circle cx="50" cy="50" r="34" />
@@ -156,11 +156,11 @@ function RealisticPlanet() {
 
           {/* latitudinal bands, clipped to the disc */}
           <g clipPath="url(#pg-clip)" transform="rotate(12 50 50)">
-            <rect x="-20" y="22" width="140" height="4.5" fill="rgba(90,64,40,0.2)" />
-            <rect x="-20" y="30" width="140" height="6" fill="rgba(240,222,190,0.1)" />
-            <rect x="-20" y="40" width="140" height="4" fill="rgba(255,236,205,0.08)" />
-            <rect x="-20" y="51" width="140" height="7" fill="rgba(78,56,36,0.18)" />
-            <rect x="-20" y="62" width="140" height="5" fill="rgba(66,47,31,0.14)" />
+            <rect x="-20" y="22" width="140" height="4.5" fill="rgba(70,66,52,0.2)" />
+            <rect x="-20" y="30" width="140" height="6" fill="rgba(228,228,214,0.1)" />
+            <rect x="-20" y="40" width="140" height="4" fill="rgba(238,240,226,0.08)" />
+            <rect x="-20" y="51" width="140" height="7" fill="rgba(62,58,46,0.18)" />
+            <rect x="-20" y="62" width="140" height="5" fill="rgba(52,50,40,0.14)" />
           </g>
 
           {/* terminator — the night side creeps in from the right */}
@@ -407,21 +407,21 @@ export function FloatingBackground({ count = 18 }: { count?: number }) {
       aria-hidden
       className="pointer-events-none fixed inset-0 -z-10 overflow-hidden"
     >
-      {/* Sky base — deep space easing through royal blue into rose dusk */}
+      {/* Sky base — deep space easing through royal blue into verdigris dusk */}
       <div
         className="absolute inset-0"
         style={{
           background:
-            "linear-gradient(to bottom, #020309 0%, #071130 34%, #14295c 58%, #2c4a8f 78%, #46639f 89%, #6f6a9e 96%, #8a6f93 100%)",
+            "linear-gradient(to bottom, #02040c 0%, #081231 34%, #122a5c 56%, #1d4a7e 76%, #2a6b7a 88%, #3d8382 96%, #5b9a8f 100%)",
         }}
       />
 
-      {/* vivid dusk bloom along the horizon */}
+      {/* soft moonlit-teal bloom along the horizon */}
       <div
         className="absolute inset-x-0 bottom-0 h-[36%]"
         style={{
           background:
-            "radial-gradient(120% 90% at 50% 118%, rgba(255,163,102,0.28) 0%, rgba(196,110,150,0.16) 42%, transparent 75%)",
+            "radial-gradient(120% 90% at 50% 118%, rgba(140,220,205,0.2) 0%, rgba(90,160,190,0.12) 42%, transparent 75%)",
         }}
       />
 

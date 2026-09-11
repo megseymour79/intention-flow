@@ -8,8 +8,10 @@ import { FloatingBackground } from "@/components/FloatingBackground";
 import { MindGym } from "@/components/MindGym";
 import { StarMark } from "@/components/StarMark";
 import { StarSky, SkyStarLike } from "@/components/StarSky";
+import { ToneDetector } from "@/components/ToneDetector";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { cn } from "@/lib/utils";
 
 import { useAuth } from "@/hooks/use-auth";
 import {
@@ -30,10 +32,10 @@ function FadeUp({
 }) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 26 }}
+      initial={{ opacity: 0, y: 22 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-80px" }}
-      transition={{ duration: 0.55, delay, ease: [0.21, 0.65, 0.35, 1] }}
+      viewport={{ once: true, margin: "-70px" }}
+      transition={{ duration: 0.5, delay, ease: [0.21, 0.65, 0.35, 1] }}
     >
       {children}
     </motion.div>
@@ -45,7 +47,70 @@ function seeded(i: number, salt: number) {
   return x - Math.floor(x);
 }
 
-/** Interactive hero sky: type an intention, hang it, watch it twinkle. */
+/* ------------------------------------------------------------------ */
+/* Layout: the numbered field-log section                              */
+/* ------------------------------------------------------------------ */
+
+function Section({
+  id,
+  index,
+  eyebrow,
+  title,
+  note,
+  center,
+  children,
+}: {
+  id?: string;
+  index?: string;
+  eyebrow: string;
+  title: React.ReactNode;
+  note?: string;
+  center?: boolean;
+  children: React.ReactNode;
+}) {
+  return (
+    <section id={id} className="relative scroll-mt-24 py-12 sm:py-14">
+      <div className="mx-auto w-full max-w-6xl px-4 sm:px-6">
+        <div className="border-t hairline pt-9">
+          <FadeUp>
+            <div
+              className={cn(
+                "flex flex-wrap items-end gap-x-12 gap-y-4",
+                center ? "justify-center text-center" : "justify-between",
+              )}
+            >
+              <div className={cn(center && "max-w-2xl")}>
+                <p className="font-eyebrow text-emerald-200/70">
+                  {index ? `${index} · ` : ""}
+                  {eyebrow}
+                </p>
+                <h2 className="text-clearing-soft mt-3 max-w-2xl font-display text-3xl font-semibold leading-tight tracking-tight sm:text-4xl">
+                  {title}
+                </h2>
+              </div>
+              {note && !center && (
+                <p className="max-w-xs pb-1 text-sm leading-relaxed text-muted-foreground">
+                  {note}
+                </p>
+              )}
+              {note && center && (
+                <p className="mx-auto mt-3 max-w-lg text-sm leading-relaxed text-muted-foreground">
+                  {note}
+                </p>
+              )}
+            </div>
+          </FadeUp>
+          <div className="mt-9">{children}</div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/* Hero observation deck: the interactive sky, framed cleanly          */
+/* ------------------------------------------------------------------ */
+
 function HeroSky() {
   const [typed, setTyped] = useState("");
   const [demos, setDemos] = useState<SkyStarLike[]>(() =>
@@ -80,17 +145,24 @@ function HeroSky() {
   };
 
   return (
-    <div>
+    <div className="panel overflow-hidden">
+      <div className="flex items-center justify-between border-b border-white/8 px-4 py-2.5">
+        <p className="font-eyebrow text-muted-foreground">Observation deck</p>
+        <span className="flex items-center gap-1.5 font-eyebrow text-emerald-200/80">
+          <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-300" />
+          live
+        </span>
+      </div>
       <StarSky
         stars={demos}
         onPick={() => undefined}
         onDrop={() => undefined}
         onRequestCreate={hang}
-        className="h-[380px] w-full overflow-hidden rounded-[28px] border border-white/12 sky-gradient sm:h-[440px]"
+        className="h-[360px] w-full sky-gradient sm:h-[420px]"
         hint="tap the sky & type a way you want to be"
       />
-      <div className="relative mt-3 mx-auto w-[96%] rounded-2xl border border-white/12 bg-[#0b1322]/90 p-2 shadow-[0_18px_50px_-20px_rgba(0,0,0,0.7)] backdrop-blur-xl">
-        <div className="flex items-center gap-2">
+      <div className="border-t border-white/8 p-2.5">
+        <div className="flex items-center gap-2 rounded-lg bg-black/25 px-1">
           <span className="pl-2 text-lg">✍️</span>
           <Input
             value={typed}
@@ -105,9 +177,9 @@ function HeroSky() {
           <Button
             onClick={() => hang()}
             disabled={typed.trim().length === 0}
-            className="shrink-0 rounded-xl bg-amber-300 font-bold text-amber-950 hover:bg-amber-200"
+            className="shrink-0 rounded-md bg-foreground font-semibold text-background hover:bg-foreground/85"
           >
-            Hang it <span className="ml-1">✦</span>
+            Hang it
           </Button>
         </div>
       </div>
@@ -164,13 +236,13 @@ function SurpriseStar() {
           star && color
             ? {
                 borderColor: `${color.hex}55`,
-                background: `radial-gradient(circle at 40% 34%, ${color.hex}22 0%, rgba(10,17,34,0.9) 68%)`,
+                background: `radial-gradient(circle at 40% 34%, ${color.hex}22 0%, rgba(10,15,28,0.92) 68%)`,
                 boxShadow: `0 0 40px -6px ${color.glow}`,
               }
             : {
-                borderColor: "rgba(251,191,36,0.3)",
+                borderColor: "rgba(148,196,180,0.3)",
                 background:
-                  "radial-gradient(circle at 40% 34%, rgba(251,191,36,0.12) 0%, rgba(10,17,34,0.9) 68%)",
+                  "radial-gradient(circle at 40% 34%, rgba(148,196,180,0.1) 0%, rgba(10,15,28,0.92) 68%)",
               }
         }
       >
@@ -207,15 +279,15 @@ function SurpriseStar() {
       <button
         type="button"
         onClick={draw}
-        className="group inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-5 py-2.5 text-sm font-bold text-foreground/85 transition-all hover:scale-105 hover:border-amber-300/50 hover:text-amber-100"
+        className="group inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-5 py-2.5 text-sm font-semibold text-foreground/85 transition-all hover:border-emerald-300/40 hover:text-emerald-100"
       >
-        <Shuffle className="h-4 w-4 text-amber-300/80 transition-transform group-hover:rotate-180" />
+        <Shuffle className="h-4 w-4 text-emerald-200/80 transition-transform group-hover:rotate-180" />
         {star ? "Draw another" : "Surprise me"}
       </button>
-      <p className="max-w-[220px] text-center text-[11px] leading-relaxed text-muted-foreground/80">
+      <p className="max-w-[220px] text-center font-eyebrow text-muted-foreground/70">
         {star
-          ? "Steal it as-is — or sign in and hang it in your own sky."
-          : "Every draw is a real intention somebody hung."}
+          ? "Steal it — or hang it in your own sky"
+          : "Every draw is a real intention somebody hung"}
       </p>
     </div>
   );
@@ -241,25 +313,25 @@ function ShiftCard({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-40px" }}
       transition={{ duration: 0.4, delay: (index % 4) * 0.06 }}
-      className="flex h-full min-h-[104px] flex-col items-start gap-2 rounded-2xl border border-white/8 bg-white/[0.03] p-4 text-left transition-colors hover:border-amber-300/30 hover:bg-amber-300/[0.05]"
+      className="panel panel-hover flex h-full min-h-[104px] flex-col items-start gap-2 p-4 text-left"
     >
       <div className="flex w-full items-center justify-between gap-2">
         <span className="text-xl">{shift.emoji}</span>
         <span
-          className={`text-[10px] font-bold uppercase tracking-widest transition-colors ${
-            open ? "text-amber-200/90" : "text-muted-foreground/50"
-          }`}
+          className={cn(
+            "font-eyebrow transition-colors",
+            open ? "text-emerald-200/90" : "text-muted-foreground/50",
+          )}
         >
-          {open ? "−" : "+ tap"}
+          {open ? "− close" : "+ tap"}
         </span>
       </div>
-      <p className="text-sm font-bold">{shift.title}</p>
+      <p className="text-sm font-semibold">{shift.title}</p>
       <p
-        className={`text-xs leading-relaxed text-foreground/70 transition-all ${
-          open
-            ? "line-clamp-none opacity-100"
-            : "line-clamp-1 text-foreground/45"
-        }`}
+        className={cn(
+          "text-xs leading-relaxed transition-all",
+          open ? "text-foreground/75 line-clamp-none" : "text-foreground/45 line-clamp-1",
+        )}
       >
         {shift.body}
       </p>
@@ -276,30 +348,21 @@ function ShiftWall() {
 
   return (
     <div>
-      <div className="flex flex-wrap items-end justify-between gap-4">
-        <div>
-          <p className="text-xs font-bold uppercase tracking-[0.25em] text-amber-200/80">
-            Micro-shifts
-          </p>
-          <h2 className="mt-3 text-clearing-soft text-3xl font-extrabold tracking-tight">
-            Pocket resets for when it goes sideways
-          </h2>
-        </div>
-        <div className="flex items-center gap-3">
-          <p className="max-w-[240px] text-sm text-foreground/60">
-            Tap one to open it. One lands in your sky every day.
-          </p>
-          <button
-            type="button"
-            onClick={() => setSeed((s) => s + 1)}
-            title="Show me four different ones"
-            className="group inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/15 bg-white/5 transition-all hover:scale-110 hover:border-amber-300/50"
-          >
-            <Shuffle className="h-4 w-4 text-amber-300/80 transition-transform duration-300 group-hover:rotate-180" />
-          </button>
-        </div>
+      <div className="flex flex-wrap items-center justify-end gap-3">
+        <p className="font-eyebrow text-muted-foreground/70">
+          tap to open · one lands in your sky daily
+        </p>
+        <button
+          type="button"
+          onClick={() => setSeed((s) => s + 1)}
+          title="Show me four different ones"
+          className="group inline-flex items-center gap-2 rounded-full border border-white/12 bg-white/[0.03] px-3.5 py-1.5 transition-all hover:border-emerald-300/40"
+        >
+          <Shuffle className="h-3.5 w-3.5 text-emerald-200/80 transition-transform duration-300 group-hover:rotate-180" />
+          <span className="font-eyebrow text-foreground/70">shuffle</span>
+        </button>
       </div>
-      <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         {shown.map((s, i) => (
           <ShiftCard key={`${seed}-${s.title}`} shift={s} index={i} />
         ))}
@@ -340,7 +403,7 @@ export default function Landing() {
     <Button
       asChild
       size="lg"
-      className="h-12 rounded-full bg-amber-300 px-7 text-base font-bold text-amber-950 shadow-[0_0_30px_-8px_rgba(251,191,36,0.7)] transition-transform hover:scale-[1.03] hover:bg-amber-200"
+      className="h-12 rounded-full bg-foreground px-8 text-base font-semibold text-background shadow-[0_10px_36px_-14px_rgba(240,235,220,0.5)] transition-transform hover:scale-[1.02] hover:bg-foreground/90"
     >
       <Link to={authHref}>
         {isAuthenticated ? "Open my sky" : "Start your sky"}
@@ -356,37 +419,37 @@ export default function Landing() {
       {/* top scrim — keeps the nav and hero readable under the moving sky */}
       <div
         aria-hidden
-        className="pointer-events-none fixed inset-x-0 top-0 z-0 h-72"
+        className="pointer-events-none fixed inset-x-0 top-0 z-0 h-80"
         style={{
           background:
-            "linear-gradient(to bottom, rgba(2,3,9,0.9) 0%, rgba(2,4,12,0.55) 45%, rgba(3,6,16,0) 100%)",
+            "linear-gradient(to bottom, rgba(2,4,10,0.92) 0%, rgba(2,4,12,0.6) 45%, rgba(3,6,16,0) 100%)",
         }}
       />
 
-      {/* ---- Nav ---- */}
-      <header className="absolute inset-x-0 top-0 z-50">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 sm:px-6">
+      {/* ---- Nav: a thin instrument bar ---- */}
+      <header className="fixed inset-x-0 top-0 z-50 border-b border-white/8 bg-[#04070f]/70 backdrop-blur-md">
+        <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 sm:px-6">
           <a href="#top" className="flex items-center gap-2.5">
-            <StarMark size={36} />
-            <span className="font-display text-lg font-bold tracking-tight">
-              Shifted<span className="text-amber-300">Mind</span>
+            <StarMark size={34} />
+            <span className="font-display text-lg font-semibold tracking-tight">
+              Shifted<span className="text-emerald-200/90">Mind</span>
             </span>
           </a>
-          <nav className="hidden items-center gap-6 text-sm text-foreground/70 md:flex">
-            <a href="#how" className="transition-colors hover:text-amber-200">
-              How it works
+          <nav className="hidden items-center gap-6 font-eyebrow text-muted-foreground md:flex">
+            <a href="#how" className="transition-colors hover:text-emerald-200">
+              01 Practice
             </a>
-            <a href="#moments" className="transition-colors hover:text-amber-200">
-              Intentions
+            <a href="#tone" className="transition-colors hover:text-emerald-200">
+              02 Tone lab
             </a>
-            <a href="#quiz" className="transition-colors hover:text-amber-200">
-              Your style
+            <a href="#quiz" className="transition-colors hover:text-emerald-200">
+              03 Archetype
             </a>
-            <a href="#gym" className="transition-colors hover:text-amber-200">
-              Mind gym
+            <a href="#gym" className="transition-colors hover:text-emerald-200">
+              04 Mind gym
             </a>
-            <a href="#voices" className="transition-colors hover:text-amber-200">
-              Voices
+            <a href="#voices" className="transition-colors hover:text-emerald-200">
+              05 Field notes
             </a>
           </nav>
           <div className="flex items-center gap-2">
@@ -403,7 +466,7 @@ export default function Landing() {
             )}
             <Button
               asChild
-              className="rounded-full bg-amber-300 font-bold text-amber-950 hover:bg-amber-200"
+              className="rounded-full bg-foreground font-semibold text-background hover:bg-foreground/85"
             >
               <Link to={authHref}>Start free</Link>
             </Button>
@@ -414,26 +477,26 @@ export default function Landing() {
       <div id="top" />
 
       {/* ---- Hero ---- */}
-      <section className="relative mx-auto max-w-6xl px-4 pb-16 pt-28 sm:px-6 sm:pt-36">
-        <div className="grid items-center gap-12 lg:grid-cols-2">
+      <section className="relative mx-auto max-w-6xl px-4 pb-14 pt-32 sm:px-6 sm:pt-40">
+        <div className="grid items-center gap-12 lg:grid-cols-[1.02fr_1fr]">
           <div>
             <motion.div
-              initial={{ opacity: 0, y: 18 }}
+              initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
-              className="inline-flex items-center gap-2 rounded-full border border-amber-300/30 bg-amber-300/10 px-3.5 py-1.5 text-xs font-semibold text-amber-100"
+              className="inline-flex items-center gap-2.5 font-eyebrow text-emerald-200/80"
             >
-              <Sparkles className="h-3.5 w-3.5" />
-              Intentions for real-life moments
+              <span className="h-px w-8 bg-emerald-200/40" />
+              A field guide to the moment
             </motion.div>
             <motion.h1
               initial={{ opacity: 0, y: 22 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.55, delay: 0.08 }}
-              className="text-clearing-soft mt-5 text-4xl font-extrabold leading-[1.05] tracking-tight sm:text-6xl"
+              className="text-clearing-soft mt-5 font-display text-5xl font-semibold leading-[1.04] tracking-tight sm:text-6xl"
             >
               Choose how you{" "}
-              <span className="bg-gradient-to-r from-amber-200 via-amber-100 to-sky-200 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-emerald-100 via-teal-100 to-sky-200 bg-clip-text text-transparent">
                 show up
               </span>{" "}
               — before life chooses for you.
@@ -442,7 +505,7 @@ export default function Landing() {
               initial={{ opacity: 0, y: 22 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.55, delay: 0.16 }}
-              className="mt-5 max-w-xl text-base leading-relaxed text-foreground/75 sm:text-lg"
+              className="mt-5 max-w-xl text-base leading-relaxed text-foreground/70 sm:text-lg"
             >
               ShiftedMind turns your intentions into stars. Pick the moment —
               the hard conversation, the slow morning, the meeting that drags —
@@ -453,33 +516,32 @@ export default function Landing() {
               initial={{ opacity: 0, y: 22 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.55, delay: 0.24 }}
-              className="mt-8 flex flex-wrap items-center gap-4"
+              className="mt-8 flex flex-wrap items-center gap-5"
             >
               {cta}
               <a
                 href="#how"
-                className="relative z-10 text-sm font-semibold text-foreground/70 transition-colors hover:text-amber-200"
+                className="relative z-10 font-eyebrow text-foreground/60 transition-colors hover:text-emerald-200"
               >
-                See it in action
-                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+                See it in action ↓
               </a>
             </motion.div>
             <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.4 }}
-              className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-1 text-xs text-muted-foreground"
+              className="mt-7 flex flex-wrap items-center gap-x-5 gap-y-1 font-eyebrow text-muted-foreground"
             >
               <span>Free to start</span>
               <span>·</span>
               <span>No credit card</span>
               <span>·</span>
-              <span>About 90 seconds a day</span>
+              <span>90 seconds a day</span>
             </motion.p>
           </div>
 
           <motion.div
-            initial={{ opacity: 0, scale: 0.96, y: 14 }}
+            initial={{ opacity: 0, scale: 0.97, y: 14 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
@@ -488,354 +550,300 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* ---- How it works ---- */}
-      <section id="how" className="relative scroll-mt-20 py-20">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6">
-          <FadeUp>
-            <div className="text-center">
-              <p className="text-xs font-bold uppercase tracking-[0.25em] text-amber-200/80">
-                How it works
-              </p>
-              <h2 className="mx-auto mt-3 max-w-2xl text-clearing-soft text-3xl font-extrabold tracking-tight sm:text-4xl">
-                Three small moves, one different day
-              </h2>
-            </div>
-          </FadeUp>
-          <div className="mt-12 grid gap-5 md:grid-cols-3">
-            {STEPS.map((step, i) => (
-              <FadeUp key={step.title} delay={i * 0.1}>
-                <div className="group relative h-full overflow-hidden rounded-3xl border border-white/10 bg-white/[0.04] p-6 transition-all hover:-translate-y-1 hover:border-amber-300/30">
-                  <span className="absolute -right-3 -top-5 text-[90px] font-extrabold text-white/[0.05] transition-colors group-hover:text-amber-300/10">
-                    {i + 1}
-                  </span>
-                  <span className="inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-white/10 to-white/[0.03] text-3xl ring-1 ring-white/10">
-                    {step.emoji}
-                  </span>
-                  <h3 className="mt-5 text-lg font-bold tracking-tight">
-                    {step.title}
-                  </h3>
-                  <p className="mt-2 text-sm leading-relaxed text-foreground/65">
-                    {step.body}
-                  </p>
-                </div>
-              </FadeUp>
+      {/* ---- 01 How it works ---- */}
+      <Section
+        id="how"
+        index="01"
+        eyebrow="How it works"
+        title="Three small moves, one different day"
+        note="Intentions stick when they point at a real moment. Everything here is built around that."
+      >
+        <div className="grid gap-4 md:grid-cols-3">
+          {STEPS.map((step, i) => (
+            <FadeUp key={step.title} delay={i * 0.1}>
+              <div className="panel panel-hover relative h-full overflow-hidden p-6">
+                <span className="font-eyebrow absolute right-4 top-4 text-muted-foreground/40">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <span className="inline-flex h-12 w-12 items-center justify-center rounded-xl border border-white/10 bg-white/[0.04] text-2xl">
+                  {step.emoji}
+                </span>
+                <h3 className="mt-5 font-display text-lg font-semibold tracking-tight">
+                  {step.title}
+                </h3>
+                <p className="mt-2 text-sm leading-relaxed text-foreground/65">
+                  {step.body}
+                </p>
+              </div>
+            </FadeUp>
+          ))}
+        </div>
+
+        <FadeUp delay={0.15}>
+          <div className="mt-8 flex flex-wrap items-center gap-2">
+            <span className="mr-1 font-eyebrow text-muted-foreground">
+              Pick your moment —
+            </span>
+            {MOMENTS.map((m) => (
+              <span
+                key={m.id}
+                className="rounded-full border border-white/10 bg-white/[0.03] px-3 py-1 text-xs text-foreground/65"
+              >
+                {m.emoji} {m.label.replace(/^(in|on|when|before|while)\s+/i, "")}
+              </span>
             ))}
           </div>
+        </FadeUp>
+      </Section>
 
-          <FadeUp delay={0.15}>
-            <div className="mt-8 flex flex-wrap items-center justify-center gap-2">
-              <span className="mr-1 text-xs uppercase tracking-widest text-muted-foreground">
-                Pick your moment —
-              </span>
-              {MOMENTS.map((m) => (
-                <span
-                  key={m.id}
-                  className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-foreground/70"
+      {/* ---- 02 Tone lab ---- */}
+      <Section
+        id="tone"
+        index="02"
+        eyebrow="The tone lab"
+        title="Read the room before you hit send"
+        note="Type any message. The instrument reads its tone, flags the patterns, and offers ways to say it differently."
+      >
+        <FadeUp>
+          <ToneDetector />
+        </FadeUp>
+      </Section>
+
+      {/* ---- 03 Try it right now ---- */}
+      <Section
+        index="03"
+        eyebrow="Try it right now"
+        title="No account needed for this part"
+        note="Pull a real intention out of the sky and breathe through one guided reset. If either lands, that's the whole app in miniature."
+      >
+        <FadeUp>
+          <div className="panel grid items-center gap-10 p-8 sm:p-10 lg:grid-cols-2">
+            <SurpriseStar />
+            <BreathOrb />
+          </div>
+        </FadeUp>
+      </Section>
+
+      {/* ---- 04 Constellation wall ---- */}
+      <Section
+        id="moments"
+        index="04"
+        eyebrow="The constellation wall"
+        title="Intentions people actually hang"
+        note="Borrow one as-is, or make it yours. Every star here started as someone's honest answer to “who do I want to be in this?”"
+      >
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          {SUGGESTED_STARS.map((s, i) => {
+            const color = STAR_COLORS[s.colorKey];
+            return (
+              <FadeUp key={s.text} delay={(i % 3) * 0.08}>
+                <div
+                  className="panel panel-hover flex items-start gap-3 p-4"
+                  style={{
+                    borderColor: `${color.hex}2b`,
+                    background: `linear-gradient(to bottom, ${color.hex}10, rgba(10,15,28,0.72))`,
+                  }}
                 >
-                  {m.emoji} {m.label.replace(/^(in|on|when|before|while)\s+/i, "")}
-                </span>
-              ))}
-            </div>
-          </FadeUp>
-        </div>
-      </section>
-
-      {/* ---- Try it: surprise star + breathe ---- */}
-      <section className="relative py-16">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6">
-          <FadeUp>
-            <div className="grid items-center gap-10 rounded-[32px] border border-white/10 bg-gradient-to-br from-[#0a1120] via-[#0e1728] to-[#14203a] p-8 sm:p-12 lg:grid-cols-2">
-              <div>
-                <p className="text-xs font-bold uppercase tracking-[0.25em] text-amber-200/80">
-                  Try it right now
-                </p>
-                <h2 className="mt-3 text-clearing-soft text-3xl font-extrabold tracking-tight sm:text-4xl">
-                  No account needed for this part
-                </h2>
-                <p className="mt-4 max-w-md text-sm leading-relaxed text-foreground/70 sm:text-base">
-                  Pull a real intention out of the sky and breathe through one
-                  guided reset. If either one lands, that's the whole app in
-                  miniature — hang it, get nudged, keep choosing.
-                </p>
-              </div>
-              <div className="grid items-center gap-8 sm:grid-cols-2">
-                <SurpriseStar />
-                <BreathOrb />
-              </div>
-            </div>
-          </FadeUp>
-        </div>
-      </section>
-
-      {/* ---- Intentions people borrow ---- */}
-      <section id="moments" className="relative scroll-mt-20 py-20">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6">
-          <FadeUp>
-            <div className="flex flex-wrap items-end justify-between gap-4">
-              <div>
-                <p className="text-xs font-bold uppercase tracking-[0.25em] text-amber-200/80">
-                  The constellation wall
-                </p>
-                <h2 className="mt-3 max-w-xl text-clearing-soft text-3xl font-extrabold tracking-tight sm:text-4xl">
-                  Intentions people actually hang
-                </h2>
-              </div>
-              <p className="max-w-sm text-sm text-foreground/60">
-                Borrow one as-is, or make it yours. Every star here started as
-                someone's honest answer to “who do I want to be in this?”
-              </p>
-            </div>
-          </FadeUp>
-          <div className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {SUGGESTED_STARS.map((s, i) => {
-              const color = STAR_COLORS[s.colorKey];
-              return (
-                <FadeUp key={s.text} delay={(i % 3) * 0.08}>
-                  <div
-                    className="flex items-start gap-3 rounded-2xl border px-4 py-3.5 transition-all hover:-translate-y-0.5"
+                  <span
+                    className="mt-0.5 text-lg leading-none"
                     style={{
-                      borderColor: `${color.hex}30`,
-                      background: `${color.hex}0d`,
+                      color: color.hex,
+                      textShadow: `0 0 12px ${color.glow}`,
                     }}
                   >
-                    <span
-                      className="mt-0.5 text-lg leading-none"
-                      style={{
-                        color: color.hex,
-                        textShadow: `0 0 12px ${color.glow}`,
-                      }}
-                    >
-                      {s.emoji}
-                    </span>
-                    <div className="min-w-0">
-                      <p className="text-sm font-medium leading-snug text-foreground/90">
-                        “{s.text}”
-                      </p>
-                      <p className="mt-1 text-[11px] uppercase tracking-wider text-muted-foreground">
-                        {MOMENTS.find((m) => m.id === s.moment)?.label}
-                      </p>
-                    </div>
+                    {s.emoji}
+                  </span>
+                  <div className="min-w-0">
+                    <p className="text-sm font-medium leading-snug text-foreground/90">
+                      “{s.text}”
+                    </p>
+                    <p className="mt-1.5 font-eyebrow text-muted-foreground">
+                      {MOMENTS.find((m) => m.id === s.moment)?.label}
+                    </p>
+                  </div>
+                </div>
+              </FadeUp>
+            );
+          })}
+        </div>
+      </Section>
+
+      {/* ---- 05 Archetype quiz ---- */}
+      <Section
+        id="quiz"
+        index="05"
+        eyebrow="The archetype quiz"
+        title="Which celestial body are you?"
+        note="Eight introspective questions, one honest reading — your natural energy, its shadow, and a practice to keep it lit."
+      >
+        <FadeUp>
+          <div className="panel overflow-hidden p-8 sm:p-10">
+            <div className="flex flex-wrap items-end justify-between gap-6">
+              <div className="max-w-xl">
+                <p className="text-sm leading-relaxed text-foreground/70 sm:text-base">
+                  Discover your archetype — the way your energy naturally
+                  moves, the shadow that shadows it, and a practice to keep it
+                  lit.
+                </p>
+                <Button
+                  asChild
+                  size="lg"
+                  className="mt-7 h-11 rounded-full bg-foreground px-6 font-semibold text-background hover:bg-foreground/85"
+                >
+                  <Link to={authHref}>
+                    Take the quiz <ArrowRight className="ml-2 h-4 w-4" />
+                  </Link>
+                </Button>
+              </div>
+            </div>
+
+            <div className="mt-9 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {RESPONSE_STYLES.map((st, i) => (
+                <FadeUp key={st.id} delay={i * 0.07}>
+                  <div className="group h-full rounded-xl border border-white/8 bg-black/20 p-5 transition-all hover:-translate-y-1 hover:border-white/20">
+                    <span className="text-4xl">{st.emoji}</span>
+                    <h3 className={`mt-4 font-display text-lg font-semibold ${st.glow}`}>
+                      {st.name}
+                    </h3>
+                    <p className="mt-1.5 text-xs leading-relaxed text-foreground/65">
+                      {st.tagline}
+                    </p>
+                    <div
+                      className={`mt-4 h-0.5 w-10 rounded-full ${st.bar} transition-all group-hover:w-full`}
+                    />
                   </div>
                 </FadeUp>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* ---- Archetype quiz teaser ---- */}
-      <section id="quiz" className="relative scroll-mt-20 py-20">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6">
-          <FadeUp>
-            <div className="overflow-hidden rounded-[32px] border border-white/10 bg-gradient-to-br from-[#0a1120] via-[#0e1728] to-[#14203a] p-8 sm:p-12">
-              <div className="flex flex-wrap items-end justify-between gap-6">
-                <div className="max-w-xl">
-                  <p className="text-xs font-bold uppercase tracking-[0.25em] text-amber-200/80">
-                    The archetype quiz
-                  </p>
-                  <h2 className="mt-3 text-clearing-soft text-3xl font-extrabold tracking-tight sm:text-4xl">
-                    Which celestial body are you?
-                  </h2>
-                  <p className="mt-4 text-sm leading-relaxed text-foreground/70 sm:text-base">
-                    Eight introspective questions, one honest reading. Discover
-                    your archetype — the way your energy naturally moves, the
-                    shadow that shadows it, and a practice to keep it lit.
-                  </p>
-                  <Button
-                    asChild
-                    size="lg"
-                    className="mt-7 h-12 rounded-full bg-amber-300 px-6 text-base font-bold text-amber-950 hover:bg-amber-200"
-                  >
-                    <Link to={authHref}>
-                      Take the quiz <ArrowRight className="ml-2 h-4 w-4" />
-                    </Link>
-                  </Button>
-                </div>
-              </div>
-
-              <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                {RESPONSE_STYLES.map((st, i) => (
-                  <FadeUp key={st.id} delay={i * 0.07}>
-                    <div className="group h-full rounded-3xl border border-white/10 bg-black/20 p-5 backdrop-blur-sm transition-all hover:-translate-y-1.5 hover:border-white/25">
-                      <span className="text-4xl">{st.emoji}</span>
-                      <h3 className={`mt-4 text-lg font-extrabold ${st.glow}`}>
-                        {st.name}
-                      </h3>
-                      <p className="mt-1.5 text-xs leading-relaxed text-foreground/65">
-                        {st.tagline}
-                      </p>
-                      <div
-                        className={`mt-4 h-1 w-10 rounded-full ${st.bar} transition-all group-hover:w-full`}
-                      />
-                    </div>
-                  </FadeUp>
-                ))}
-              </div>
-            </div>
-          </FadeUp>
-        </div>
-      </section>
-
-      {/* ---- Mind gym — five tiny exercises, no account ---- */}
-      <section id="gym" className="relative scroll-mt-20 py-20">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6">
-          <FadeUp>
-            <div className="flex flex-wrap items-end justify-between gap-4">
-              <div>
-                <p className="text-xs font-bold uppercase tracking-[0.25em] text-amber-200/80">
-                  The mind gym
-                </p>
-                <h2 className="mt-3 max-w-xl text-clearing-soft text-3xl font-extrabold tracking-tight sm:text-4xl">
-                  Five tiny workouts for the space between stimulus and response
-                </h2>
-              </div>
-              <p className="max-w-sm text-sm text-foreground/60">
-                Each one takes under a minute. No sign-up, no score to post —
-                just reps for the part of you that chooses.
-              </p>
-            </div>
-          </FadeUp>
-          <div className="mt-10">
-            <MindGym />
-          </div>
-        </div>
-      </section>
-
-      {/* ---- Micro-shifts: tap to reveal, shuffle for more ---- */}
-      <section className="relative py-16">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6">
-          <FadeUp>
-            <ShiftWall />
-          </FadeUp>
-        </div>
-      </section>
-
-      {/* ---- Breathe with the sky ---- */}
-      <section className="relative py-20">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6">
-          <FadeUp>
-            <div className="relative overflow-hidden rounded-[32px] border border-amber-300/20 bg-gradient-to-b from-[#0a1120] via-[#101a30] to-[#1a2a4a] p-10 text-center sm:p-14">
-              <div className="pointer-events-none absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-amber-300/10 to-transparent" />
-              <p className="text-xs font-bold uppercase tracking-[0.25em] text-amber-200/80">
-                Breathe with the sky
-              </p>
-              <h2 className="mx-auto mt-3 max-w-xl text-clearing-soft text-3xl font-extrabold tracking-tight sm:text-4xl">
-                The 4-7-8 reset, guided
-              </h2>
-              <p className="mx-auto mt-4 max-w-lg text-sm leading-relaxed text-foreground/70 sm:text-base">
-                The same pocket reset your sky nudges you with — here it is,
-                playable. In for four, hold for seven, out for eight. Reaction
-                to choice, in about a minute.
-              </p>
-              <div className="mt-10 flex justify-center">
-                <BreathOrb />
-              </div>
-            </div>
-          </FadeUp>
-        </div>
-      </section>
-
-      {/* ---- Ranks: the reason to come back ---- */}
-      <section className="relative py-20">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6">
-          <FadeUp>
-            <div className="flex flex-wrap items-end justify-between gap-4">
-              <div>
-                <p className="text-xs font-bold uppercase tracking-[0.25em] text-amber-200/80">
-                  Sky ranks
-                </p>
-                <h2 className="mt-3 max-w-xl text-clearing-soft text-3xl font-extrabold tracking-tight sm:text-4xl">
-                  The more you show up, the more your sky opens
-                </h2>
-              </div>
-              <p className="max-w-sm text-sm text-foreground/60">
-                Stars hung, nights kept, days visited, quizzes taken — every
-                bit of light feeds your rank, and each rank unlocks something
-                real in your sky.
-              </p>
-            </div>
-          </FadeUp>
-
-          <FadeUp delay={0.1}>
-            <div className="mt-10 flex flex-wrap items-center gap-2.5">
-              {RANK_TIERS.map((t) => (
-                <div
-                  key={t.level}
-                  className="flex items-center gap-2 rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3 transition-colors hover:border-amber-300/30"
-                >
-                  <span className="text-xl">{RANK_EMOJI[t.level]}</span>
-                  <div>
-                    <p className="text-sm font-bold tracking-tight">{t.name}</p>
-                    <p className="text-[10px] uppercase tracking-wider text-muted-foreground">
-                      {t.score}+ light
-                    </p>
-                  </div>
-                </div>
               ))}
             </div>
-          </FadeUp>
-
-          <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {UPGRADES.slice(0, 3).map((u, i) => (
-              <FadeUp key={u.id} delay={i * 0.07}>
-                <div className="flex h-full items-start gap-3 rounded-2xl border border-white/8 bg-white/[0.03] p-4 transition-colors hover:border-amber-300/25 hover:bg-amber-300/[0.04]">
-                  <span className="text-xl">{u.emoji}</span>
-                  <div>
-                    <p className="text-sm font-bold">{u.title}</p>
-                    <p className="mt-1 text-xs leading-relaxed text-foreground/60">
-                      {u.body}
-                    </p>
-                  </div>
-                </div>
-              </FadeUp>
-            ))}
           </div>
-        </div>
-      </section>
+        </FadeUp>
+      </Section>
 
-      {/* ---- Voices ---- */}
-      <section id="voices" className="relative scroll-mt-20 py-20">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6">
-          <FadeUp>
-            <div className="text-center">
-              <p className="text-xs font-bold uppercase tracking-[0.25em] text-amber-200/80">
-                Voices from the sky
-              </p>
-              <h2 className="mx-auto mt-3 max-w-2xl text-clearing-soft text-3xl font-extrabold tracking-tight sm:text-4xl">
-                Small stars, hung daily, change how people meet their moments
-              </h2>
+      {/* ---- 06 Mind gym ---- */}
+      <Section
+        id="gym"
+        index="06"
+        eyebrow="The mind gym"
+        title="Five tiny workouts for the space between stimulus and response"
+        note="Each one takes under a minute. No sign-up, no score to post — just reps for the part of you that chooses."
+      >
+        <FadeUp>
+          <MindGym />
+        </FadeUp>
+      </Section>
+
+      {/* ---- 07 Micro-shifts ---- */}
+      <Section
+        index="07"
+        eyebrow="Micro-shifts"
+        title="Pocket resets for when it goes sideways"
+        note="Tap one to open it. One lands in your sky every day."
+      >
+        <FadeUp>
+          <ShiftWall />
+        </FadeUp>
+      </Section>
+
+      {/* ---- 08 Breathe ---- */}
+      <Section
+        index="08"
+        eyebrow="Breathe with the sky"
+        title="The 4-7-8 reset, guided"
+        note="The same pocket reset your sky nudges you with — in for four, hold for seven, out for eight. Reaction to choice, in about a minute."
+        center
+      >
+        <FadeUp>
+          <div className="panel relative mx-auto max-w-3xl overflow-hidden p-10 text-center">
+            <div className="pointer-events-none absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-emerald-200/5 to-transparent" />
+            <div className="flex justify-center">
+              <BreathOrb />
             </div>
-          </FadeUp>
-          <div className="mt-12 grid gap-5 md:grid-cols-3">
-            {VOICES.map((v, i) => (
-              <FadeUp key={v.name} delay={i * 0.1}>
-                <figure className="flex h-full flex-col rounded-3xl border border-white/10 bg-white/[0.04] p-6">
-                  <span className={`text-2xl ${v.color}`}>{v.star}</span>
-                  <blockquote className="mt-4 flex-1 text-sm leading-relaxed text-foreground/85">
-                    “{v.text}”
-                  </blockquote>
-                  <figcaption className="mt-5 text-xs font-semibold text-muted-foreground">
-                    {v.name}
-                  </figcaption>
-                </figure>
-              </FadeUp>
+          </div>
+        </FadeUp>
+      </Section>
+
+      {/* ---- 09 Ranks ---- */}
+      <Section
+        index="09"
+        eyebrow="Sky ranks"
+        title="The more you show up, the more your sky opens"
+        note="Stars hung, nights kept, days visited, quizzes taken — every bit of light feeds your rank, and each rank unlocks something real."
+      >
+        <FadeUp>
+          <div className="flex flex-wrap items-center gap-2.5">
+            {RANK_TIERS.map((t) => (
+              <div
+                key={t.level}
+                className="panel panel-hover flex items-center gap-2.5 px-4 py-3"
+              >
+                <span className="text-xl">{RANK_EMOJI[t.level]}</span>
+                <div>
+                  <p className="text-sm font-semibold tracking-tight">{t.name}</p>
+                  <p className="font-eyebrow mt-0.5 text-muted-foreground">
+                    {t.score}+ light
+                  </p>
+                </div>
+              </div>
             ))}
           </div>
+        </FadeUp>
+
+        <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          {UPGRADES.slice(0, 3).map((u, i) => (
+            <FadeUp key={u.id} delay={i * 0.07}>
+              <div className="panel panel-hover flex h-full items-start gap-3 p-4">
+                <span className="text-xl">{u.emoji}</span>
+                <div>
+                  <p className="text-sm font-semibold">{u.title}</p>
+                  <p className="mt-1 text-xs leading-relaxed text-foreground/60">
+                    {u.body}
+                  </p>
+                </div>
+              </div>
+            </FadeUp>
+          ))}
         </div>
-      </section>
+      </Section>
+
+      {/* ---- 10 Field notes (voices) ---- */}
+      <Section
+        id="voices"
+        index="10"
+        eyebrow="Field notes"
+        title="Small stars, hung daily, change how people meet their moments"
+        center
+      >
+        <div className="grid gap-4 md:grid-cols-3">
+          {VOICES.map((v, i) => (
+            <FadeUp key={v.name} delay={i * 0.1}>
+              <figure className="panel panel-hover flex h-full flex-col p-6">
+                <span className={`text-2xl ${v.color}`}>{v.star}</span>
+                <blockquote className="mt-4 flex-1 font-display text-[15px] italic leading-relaxed text-foreground/85">
+                  “{v.text}”
+                </blockquote>
+                <figcaption className="mt-5 border-t hairline pt-3.5 font-eyebrow text-muted-foreground">
+                  {v.name}
+                </figcaption>
+              </figure>
+            </FadeUp>
+          ))}
+        </div>
+      </Section>
 
       {/* ---- Final CTA ---- */}
-      <section className="relative py-24">
+      <section className="relative py-20">
         <div className="mx-auto max-w-4xl px-4 sm:px-6">
           <FadeUp>
-            <div className="relative overflow-hidden rounded-[32px] border border-amber-300/25 bg-gradient-to-br from-amber-300/10 via-[#0c1424] to-[#152238] p-10 text-center sm:p-14">
-              <div className="pointer-events-none absolute -top-16 left-1/2 h-48 w-96 -translate-x-1/2 rounded-full bg-amber-300/20 blur-3xl" />
-              <span className="animate-floaty inline-block text-4xl">🌌</span>
-              <h2 className="mx-auto mt-4 max-w-xl text-clearing-soft text-3xl font-extrabold tracking-tight sm:text-5xl">
+            <div className="panel relative overflow-hidden p-10 text-center sm:p-14">
+              <div className="pointer-events-none absolute -top-16 left-1/2 h-48 w-96 -translate-x-1/2 rounded-full bg-emerald-200/10 blur-3xl" />
+              <p className="font-eyebrow text-emerald-200/70">
+                Last call · the sky is open
+              </p>
+              <h2 className="text-clearing-soft mx-auto mt-4 max-w-xl font-display text-4xl font-semibold leading-tight tracking-tight sm:text-5xl">
                 Your first star takes{" "}
-                <span className="text-amber-300">ten seconds</span>
+                <span className="text-emerald-200">ten seconds</span>
               </h2>
-              <p className="mx-auto mt-4 max-w-md text-sm leading-relaxed text-foreground/75 sm:text-base">
+              <p className="mx-auto mt-4 max-w-md text-sm leading-relaxed text-foreground/70 sm:text-base">
                 {isAuthenticated
                   ? "Your sky is waiting. Go hang tonight's intention."
                   : "Make an account, hang one intention, and let tomorrow meet a slightly more intentional you."}
@@ -843,13 +851,12 @@ export default function Landing() {
               <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
                 {cta}
               </div>
-              <div className="mt-6 flex items-center justify-center gap-6 text-[11px] text-muted-foreground">
+              <div className="mt-7 flex items-center justify-center gap-6 font-eyebrow text-muted-foreground">
                 <span className="flex items-center gap-1.5">
-                  <Star className="h-3 w-3 text-amber-300" /> Streaks & gentle
-                  nudges
+                  <Star className="h-3 w-3 text-emerald-300" /> Streaks & nudges
                 </span>
                 <span className="flex items-center gap-1.5">
-                  <Bell className="h-3 w-3 text-amber-300" /> No ads, ever
+                  <Bell className="h-3 w-3 text-emerald-300" /> No ads, ever
                 </span>
               </div>
             </div>
@@ -858,35 +865,38 @@ export default function Landing() {
       </section>
 
       {/* ---- Footer ---- */}
-      <footer className="relative border-t border-white/8 py-10">
+      <footer className="relative border-t hairline py-10">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-6 px-4 sm:flex-row sm:px-6">
           <div className="flex items-center gap-2.5">
             <StarMark size={30} />
             <div>
-              <p className="font-display text-sm font-bold tracking-tight">
-                Shifted<span className="text-amber-300">Mind</span>
+              <p className="font-display text-sm font-semibold tracking-tight">
+                Shifted<span className="text-emerald-200/90">Mind</span>
               </p>
-              <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
+              <p className="font-eyebrow text-muted-foreground">
                 choose your responses
               </p>
             </div>
           </div>
-          <nav className="flex items-center gap-5 text-xs text-muted-foreground">
-            <a href="#how" className="hover:text-amber-200">
-              How it works
+          <nav className="flex items-center gap-5 font-eyebrow text-muted-foreground">
+            <a href="#how" className="hover:text-emerald-200">
+              Practice
             </a>
-            <a href="#quiz" className="hover:text-amber-200">
-              Quiz
+            <a href="#tone" className="hover:text-emerald-200">
+              Tone lab
             </a>
-            <a href="#voices" className="hover:text-amber-200">
-              Voices
+            <a href="#quiz" className="hover:text-emerald-200">
+              Archetype
             </a>
-            <Link to="/auth" className="hover:text-amber-200">
+            <a href="#gym" className="hover:text-emerald-200">
+              Mind gym
+            </a>
+            <Link to="/auth" className="hover:text-emerald-200">
               Sign in
             </Link>
           </nav>
-          <p className="text-[11px] text-muted-foreground/70">
-            © {new Date().getFullYear()} ShiftedMind — one star at a time.
+          <p className="font-eyebrow text-muted-foreground/70">
+            © {new Date().getFullYear()} ShiftedMind
           </p>
         </div>
       </footer>

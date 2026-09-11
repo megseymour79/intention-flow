@@ -19,7 +19,7 @@ import { cn } from "@/lib/utils";
 const KIND_STYLES: Record<ResourceKind, string> = {
   Watch: "bg-rose-300/10 text-rose-200 ring-rose-300/25",
   Listen: "bg-sky-300/10 text-sky-200 ring-sky-300/25",
-  Read: "bg-amber-300/10 text-amber-200 ring-amber-300/25",
+  Read: "bg-emerald-300/10 text-emerald-200 ring-emerald-300/25",
   Practice: "bg-emerald-300/10 text-emerald-200 ring-emerald-300/25",
   Explore: "bg-violet-300/10 text-violet-200 ring-violet-300/25",
 };
@@ -61,7 +61,7 @@ function ResourceCard({ r, index }: { r: MindResource; index: number }) {
 
       <p className="mt-3 flex-1 text-xs leading-relaxed text-muted-foreground">{r.blurb}</p>
 
-      <p className="mt-4 border-t border-white/8 pt-3 text-xs italic leading-relaxed text-amber-200/80">
+      <p className="mt-4 border-t border-white/8 pt-3 font-display text-xs italic leading-relaxed text-emerald-200/80">
         ✦ {r.take}
       </p>
 
@@ -116,15 +116,15 @@ export default function Observatory() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1, duration: 0.4 }}
           whileHover={{ y: -2 }}
-          className="group relative block overflow-hidden rounded-3xl border border-amber-300/25 bg-gradient-to-r from-amber-300/[0.09] via-white/[0.03] to-transparent p-5"
+          className="group relative block overflow-hidden rounded-3xl border border-emerald-300/20 bg-gradient-to-r from-emerald-300/[0.06] via-white/[0.03] to-transparent p-5"
         >
-          <div className="pointer-events-none absolute -right-8 -top-10 h-36 w-36 rounded-full bg-amber-300/10 blur-3xl" />
+          <div className="pointer-events-none absolute -right-8 -top-10 h-36 w-36 rounded-full bg-emerald-300/10 blur-3xl" />
           <div className="flex flex-wrap items-center gap-4">
-            <span className="flex h-12 w-12 shrink-0 animate-glow-pulse items-center justify-center rounded-2xl bg-amber-300/15 text-2xl ring-1 ring-amber-300/30">
+            <span className="flex h-12 w-12 shrink-0 animate-glow-pulse items-center justify-center rounded-xl bg-emerald-300/12 text-2xl ring-1 ring-emerald-300/25">
               {pick.emoji}
             </span>
             <div className="min-w-[220px] flex-1">
-              <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-amber-200/80">
+              <p className="font-eyebrow text-emerald-200/80">
                 tonight's chart · rotates at midnight
               </p>
               <p className="mt-1 text-base font-bold tracking-tight">{pick.title}</p>
@@ -135,7 +135,7 @@ export default function Observatory() {
                 {pick.blurb}
               </p>
             </div>
-            <ArrowUpRight className="h-5 w-5 text-amber-200/60 transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-amber-200" />
+            <ArrowUpRight className="h-5 w-5 text-emerald-200/60 transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-emerald-200" />
           </div>
         </motion.a>
 
@@ -147,7 +147,7 @@ export default function Observatory() {
             className={cn(
               "rounded-full border px-4 py-1.5 text-xs font-semibold transition-colors",
               filter === "all"
-                ? "border-amber-300/50 bg-amber-300/15 text-amber-200"
+                ? "border-emerald-300/45 bg-emerald-300/12 text-emerald-200"
                 : "border-white/10 bg-white/[0.03] text-muted-foreground hover:border-white/25 hover:text-foreground",
             )}
           >
@@ -161,7 +161,7 @@ export default function Observatory() {
               className={cn(
                 "rounded-full border px-4 py-1.5 text-xs font-semibold transition-colors",
                 filter === c.id
-                  ? "border-amber-300/50 bg-amber-300/15 text-amber-200"
+                  ? "border-emerald-300/45 bg-emerald-300/12 text-emerald-200"
                   : "border-white/10 bg-white/[0.03] text-muted-foreground hover:border-white/25 hover:text-foreground",
               )}
             >
@@ -211,7 +211,7 @@ export default function Observatory() {
               </p>
             </div>
             <Link to="/dashboard">
-              <Button className="rounded-full bg-amber-300 font-bold text-amber-950 hover:bg-amber-200">
+              <Button className="rounded-full bg-foreground font-semibold text-background hover:bg-foreground/85">
                 <Sparkles className="mr-1.5 h-4 w-4" />
                 Hang a star in my sky
               </Button>

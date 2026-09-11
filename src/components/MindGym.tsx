@@ -24,12 +24,12 @@ function GymCard({
   return (
     <div
       className={cn(
-        "flex flex-col rounded-3xl border border-white/10 bg-gradient-to-b from-white/[0.05] to-white/[0.02] p-5 transition-colors hover:border-amber-300/25",
+        "flex flex-col rounded-3xl border border-white/10 bg-gradient-to-b from-white/[0.05] to-white/[0.02] p-5 transition-colors hover:border-emerald-300/25",
         wide && "sm:col-span-2",
       )}
     >
       <div className="flex items-start gap-3">
-        <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-amber-300/12 text-xl ring-1 ring-amber-300/25">
+        <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-emerald-300/10 text-xl ring-1 ring-emerald-300/20">
           {emoji}
         </span>
         <div>
@@ -51,7 +51,7 @@ function PlayAgain({ onClick, label }: { onClick: () => void; label: string }) {
     <button
       type="button"
       onClick={onClick}
-      className="mx-auto mt-4 inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/5 px-4 py-1.5 text-xs font-semibold text-muted-foreground transition-colors hover:border-amber-300/40 hover:text-amber-100"
+      className="mx-auto mt-4 inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/5 px-4 py-1.5 text-xs font-semibold text-muted-foreground transition-colors hover:border-emerald-300/40 hover:text-emerald-100"
     >
       <RotateCcw className="h-3 w-3" /> {label}
     </button>
@@ -180,7 +180,7 @@ function ImpulseCatcher() {
             <button
               type="button"
               onClick={start}
-              className="mt-1 rounded-full bg-amber-300 px-5 py-2 text-sm font-bold text-amber-950 transition-transform hover:scale-105"
+              className="mt-1 rounded-full bg-foreground px-5 py-2 text-sm font-semibold text-background transition-transform hover:scale-105"
             >
               {done ? "Go again" : "Start the 20s"}
             </button>
@@ -338,14 +338,14 @@ function GroundingSteps() {
             <p className="text-4xl">{s.emoji}</p>
             <p className="text-sm font-semibold">
               Notice{" "}
-              <span className="text-amber-200">
+              <span className="text-emerald-200">
                 {need} {s.sense}
               </span>
             </p>
             <button
               type="button"
               onClick={tap}
-              className="rounded-full border border-amber-300/40 bg-amber-300/10 px-6 py-2.5 text-sm font-bold text-amber-100 transition-all hover:scale-105 active:scale-95"
+              className="rounded-full border border-emerald-300/40 bg-emerald-300/10 px-6 py-2.5 text-sm font-semibold text-emerald-100 transition-all hover:scale-105 active:scale-95"
             >
               Found one — {remaining} to go
             </button>
@@ -355,7 +355,7 @@ function GroundingSteps() {
                   key={i}
                   className={cn(
                     "h-1.5 w-5 rounded-full transition-colors",
-                    i < taps ? "bg-amber-300" : "bg-white/10",
+                    i < taps ? "bg-emerald-300" : "bg-white/10",
                   )}
                 />
               ))}
@@ -517,7 +517,7 @@ function MomentCompass() {
                   key={side}
                   type="button"
                   onClick={() => pick(side)}
-                  className="group flex-1 rounded-2xl border border-white/12 bg-white/5 px-2 py-4 text-xs font-semibold leading-snug transition-all hover:-translate-y-0.5 hover:border-amber-300/50 hover:bg-amber-300/10"
+                  className="group flex-1 rounded-2xl border border-white/12 bg-white/5 px-2 py-4 text-xs font-semibold leading-snug transition-all hover:-translate-y-0.5 hover:border-emerald-300/40 hover:bg-emerald-300/10"
                 >
                   {side === "a" ? pair!.a : pair!.b}
                 </button>

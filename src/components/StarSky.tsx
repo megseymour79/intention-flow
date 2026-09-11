@@ -795,7 +795,7 @@ export function StarSky({
         </motion.button>
       )}
       {hint && (
-        <p className="pointer-events-none absolute bottom-3 left-1/2 z-10 -translate-x-1/2 whitespace-nowrap rounded-full border border-white/10 bg-black/40 px-3 py-1 text-[11px] text-amber-100/70 backdrop-blur-sm">
+        <p className="pointer-events-none absolute bottom-3 left-1/2 z-10 -translate-x-1/2 whitespace-nowrap rounded-full border border-white/10 bg-black/40 px-3 py-1 font-eyebrow text-foreground/70 backdrop-blur-sm">
           {hint}
         </p>
       )}
@@ -862,7 +862,7 @@ export function StarSky({
             )}
             {/* label revealed for the focused star */}
             {star.active && (
-              <span className="pointer-events-none absolute left-1/2 top-full mt-1 -translate-x-1/2 whitespace-nowrap rounded-full border border-white/10 bg-black/60 px-2.5 py-0.5 text-[11px] text-amber-50/90 backdrop-blur-sm">
+              <span className="pointer-events-none absolute left-1/2 top-full mt-1 -translate-x-1/2 whitespace-nowrap rounded-full border border-white/10 bg-black/60 px-2.5 py-0.5 text-[11px] text-foreground/90 backdrop-blur-sm">
                 {star.text.length > 34 ? `${star.text.slice(0, 34)}…` : star.text}
               </span>
             )}

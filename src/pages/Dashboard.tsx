@@ -22,9 +22,9 @@ import { BreathOrb } from "@/components/BreathOrb";
 import { DiveInDialog } from "@/components/DiveInDialog";
 import { MindGym } from "@/components/MindGym";
 import { PersonalityQuiz } from "@/components/PersonalityQuiz";
-import { StarEditor } from "@/components/StarEditor";
-import { StarSky, SkyStarLike } from "@/components/StarSky";
+import { StarEditor } from "@/components/StarEditor";import { StarSky, SkyStarLike } from "@/components/StarSky";
 import { StyleQuiz } from "@/components/StyleQuiz";
+import { ToneDetector } from "@/components/ToneDetector";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import {
@@ -211,7 +211,7 @@ export default function Dashboard() {
         {/* Greeting row */}
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
+            <p className="font-eyebrow text-muted-foreground">
               {new Date().toLocaleDateString([], {
                 weekday: "long",
                 month: "long",
@@ -230,7 +230,7 @@ export default function Dashboard() {
           </div>
           <Button
             onClick={openFreshEditor}
-            className="rounded-full bg-amber-300 font-bold text-amber-950 hover:bg-amber-200"
+            className="rounded-full bg-foreground font-semibold text-background hover:bg-foreground/85"
           >
             <Plus className="mr-1.5 h-4 w-4" /> New intention
           </Button>
@@ -268,7 +268,7 @@ export default function Dashboard() {
             />
             {loading && (
               <div className="absolute inset-0 z-20 flex items-center justify-center rounded-3xl bg-[#03050e]/70 backdrop-blur-sm">
-                <Loader2 className="h-6 w-6 animate-spin text-amber-200" />
+                <Loader2 className="h-6 w-6 animate-spin text-emerald-200" />
               </div>
             )}
             {!loading && stars.length === 0 && (
@@ -308,8 +308,8 @@ export default function Dashboard() {
         {/* Stat tiles */}
         <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
           {/* North star */}
-          <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-5">
-            <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
+          <div className="panel p-5">
+            <p className="font-eyebrow text-muted-foreground">
               North star · right now
             </p>
             {activeStar ? (
@@ -367,7 +367,7 @@ export default function Dashboard() {
                   size="sm"
                   variant="outline"
                   onClick={openFreshEditor}
-                  className="border-amber-300/40 bg-amber-300/10 text-amber-100 hover:bg-amber-300/20"
+                  className="border-emerald-300/40 bg-emerald-300/10 text-emerald-100 hover:bg-emerald-300/20"
                 >
                   <Sparkles className="mr-1.5 h-3.5 w-3.5" /> Hang my focus
                 </Button>
@@ -376,8 +376,8 @@ export default function Dashboard() {
           </div>
 
           {/* Streak */}
-          <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-5">
-            <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
+          <div className="panel p-5">
+            <p className="font-eyebrow text-muted-foreground">
               Streak
             </p>
             <div className="mt-3 flex items-center gap-3">
@@ -399,7 +399,7 @@ export default function Dashboard() {
               </div>
             </div>
             <p className="mt-3 border-t border-white/8 pt-3 text-xs text-muted-foreground">
-              <span className="font-semibold text-amber-200/90">
+              <span className="font-semibold text-emerald-200/90">
                 {streakData?.total ?? stars.length}
               </span>{" "}
               stars in your sky so far
@@ -407,8 +407,8 @@ export default function Dashboard() {
           </div>
 
           {/* Shift of the day */}
-          <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-5">
-            <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
+          <div className="panel p-5">
+            <p className="font-eyebrow text-muted-foreground">
               Today's micro-shift
             </p>
             <div className="mt-3 flex items-start gap-3">
@@ -425,8 +425,8 @@ export default function Dashboard() {
           </div>
 
           {/* Response style */}
-          <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-5">
-            <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
+          <div className="panel p-5">
+            <p className="font-eyebrow text-muted-foreground">
               Your archetype
             </p>
             {style ? (
@@ -465,7 +465,7 @@ export default function Dashboard() {
                 <Button
                   size="sm"
                   onClick={() => setQuizOpen(true)}
-                  className="h-8 rounded-full bg-amber-300 font-bold text-amber-950 hover:bg-amber-200"
+                  className="h-8 rounded-full bg-foreground font-semibold text-background hover:bg-foreground/85"
                 >
                   <Sparkles className="mr-1.5 h-3.5 w-3.5" /> Find my style
                 </Button>
@@ -474,13 +474,14 @@ export default function Dashboard() {
           </div>
         </div>
 
+        {/* The tone lab — read a message before you send it */}
+        <ToneDetector compact />
+
         {/* Mind gym — daily reps between the reflection and the rank */}
-        <div className="rounded-3xl border border-white/10 bg-white/[0.02] p-5">
+        <div className="panel p-5">
           <div className="flex flex-wrap items-end justify-between gap-3">
             <div>
-              <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
-                The mind gym
-              </p>
+              <p className="font-eyebrow text-muted-foreground">The mind gym</p>
               <p className="mt-1 max-w-xl text-sm text-muted-foreground">
                 One-minute reps for the choosing muscle — catch an urge, unhook
                 a thought, ground your senses, turn a lens, find your pull.
@@ -493,11 +494,9 @@ export default function Dashboard() {
         </div>
 
         {/* Pocket reset — the same guided breath, one tap away */}
-        <div className="flex flex-wrap items-center justify-between gap-5 rounded-3xl border border-amber-300/15 bg-gradient-to-r from-amber-300/[0.07] via-white/[0.03] to-transparent p-5">
+        <div className="panel flex flex-wrap items-center justify-between gap-5 p-5">
           <div className="min-w-[220px] flex-1">
-            <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
-              Pocket reset · 4-7-8
-            </p>
+            <p className="font-eyebrow text-muted-foreground">Pocket reset · 4-7-8</p>
             <p className="mt-2 max-w-md text-sm leading-relaxed text-muted-foreground">
               Feeling the old pattern pull? One guided minute moves you from
               reaction to choice — in for four, hold for seven, out for eight.
@@ -512,11 +511,11 @@ export default function Dashboard() {
         {/* The Observatory — the science behind the sky */}
         <Link
           to="/observatory"
-          className="group relative block overflow-hidden rounded-3xl border border-violet-300/20 bg-gradient-to-r from-violet-500/[0.09] via-white/[0.03] to-transparent p-5 transition-colors hover:border-violet-300/40"
+          className="panel panel-hover group relative block overflow-hidden p-5"
         >
-          <div className="pointer-events-none absolute -right-8 -top-10 h-28 w-28 rounded-full bg-violet-400/10 blur-3xl" />
+          <div className="pointer-events-none absolute -right-8 -top-10 h-28 w-28 rounded-full bg-emerald-200/10 blur-3xl" />
           <div className="flex flex-wrap items-center gap-4">
-            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-violet-300/15 text-xl ring-1 ring-violet-300/25">
+            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-emerald-200/25 bg-emerald-200/10 text-xl">
               🔭
             </span>
             <div className="min-w-[200px] flex-1">
@@ -529,19 +528,17 @@ export default function Dashboard() {
                 new chart every night.
               </p>
             </div>
-            <span className="text-xs font-bold text-violet-200/80 transition-transform group-hover:translate-x-0.5">
+            <span className="font-eyebrow text-emerald-200/80 transition-transform group-hover:translate-x-0.5">
               Look through →
             </span>
           </div>
         </Link>
 
         {/* Go deeper — the personality quizzes */}
-        <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-5">
+        <div className="panel p-5">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
-              <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
-                Go deeper
-              </p>
+              <p className="font-eyebrow text-muted-foreground">Go deeper</p>
               <p className="mt-1 max-w-xl text-sm text-muted-foreground">
                 Three honest readings of how you move through the world — each
                 one ends with intentions cut to fit what you learn.
@@ -557,7 +554,7 @@ export default function Dashboard() {
                   key={pack.kind}
                   type="button"
                   onClick={() => setDeepOpen(pack.kind)}
-                  className="group rounded-2xl border border-white/10 bg-white/[0.03] p-4 text-left transition-all hover:border-amber-300/40 hover:bg-amber-300/[0.06]"
+                  className="group rounded-xl border border-white/10 bg-white/[0.03] p-4 text-left transition-all hover:border-emerald-300/30 hover:bg-emerald-300/[0.05]"
                 >
                   <div className="flex items-start justify-between gap-2">
                     <span className="text-2xl">{pack.emoji}</span>
@@ -575,7 +572,7 @@ export default function Dashboard() {
                       ? savedResult.tagline
                       : `${pack.questions.length} questions · ${pack.subtitle}`}
                   </p>
-                  <p className="mt-2 text-[11px] font-semibold text-amber-200/70 transition-colors group-hover:text-amber-200">
+                  <p className="font-eyebrow mt-2 text-emerald-200/70 transition-colors group-hover:text-emerald-200">
                     {savedResult ? "Retake →" : "Take the quiz →"}
                   </p>
                 </button>
@@ -585,11 +582,11 @@ export default function Dashboard() {
         </div>
 
         {/* Reminders */}
-        <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-5">
+        <div className="panel p-5">
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div className="flex items-start gap-3">
-              <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-amber-300/15 text-xl ring-1 ring-amber-300/25">
-                <Bell className="h-5 w-5 text-amber-200" />
+              <span className="flex h-11 w-11 items-center justify-center rounded-xl border border-emerald-200/25 bg-emerald-200/10">
+                <Bell className="h-5 w-5 text-emerald-200" />
               </span>
               <div>
                 <p className="font-bold">Nudge me back to my intention</p>
@@ -637,7 +634,7 @@ export default function Dashboard() {
                   }
                   className={`flex items-center gap-2 rounded-full border px-3 py-1.5 text-xs transition-colors disabled:cursor-not-allowed disabled:opacity-40 ${
                     on
-                      ? "border-amber-300/60 bg-amber-300/15 text-amber-100"
+                      ? "border-emerald-300/50 bg-emerald-300/12 text-emerald-100"
                       : "border-white/10 bg-white/5 text-muted-foreground hover:border-white/25"
                   }`}
                 >
@@ -688,7 +685,7 @@ export default function Dashboard() {
                     ? "Remove this custom time"
                     : "Add this custom time"
                 }
-                className="text-muted-foreground transition-colors hover:text-amber-200 disabled:cursor-not-allowed disabled:opacity-40"
+                className="text-muted-foreground transition-colors hover:text-emerald-200 disabled:cursor-not-allowed disabled:opacity-40"
               >
                 {reminders.slots.includes(customTime) ? (
                   <X className="h-3.5 w-3.5" />
