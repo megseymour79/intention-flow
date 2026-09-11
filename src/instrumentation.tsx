@@ -36,12 +36,13 @@ async function reportErrorToVly(errorData: {
   lineno?: number;
   colno?: number;
 }) {
-  if (!import.meta.env.VITE_VLY_APP_ID) {
+  const monitoringUrl = import.meta.env.VITE_VLY_MONITORING_URL;
+  if (!import.meta.env.VITE_VLY_APP_ID || !monitoringUrl) {
     return;
   }
 
   try {
-    await fetch(import.meta.env.VITE_VLY_MONITORING_URL, {
+    await fetch(monitoringUrl, {
       method: "POST",
       body: JSON.stringify({
         ...errorData,
