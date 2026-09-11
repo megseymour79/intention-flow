@@ -124,13 +124,13 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
               <span className="font-display block text-2xl font-bold tracking-tight">
                 Shifted<span className="text-emerald-200/90">Mind</span>
               </span>
-              <span className="block text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
+              <span className="font-eyebrow block text-muted-foreground">
                 choose your responses
               </span>
             </span>
           </button>
 
-          <Card className="w-full border-white/15 bg-white/6 pb-0 shadow-[0_24px_80px_-24px_rgba(0,0,0,0.6)] backdrop-blur-md">
+          <Card className="w-full rounded-xl border-white/12 bg-white/[0.05] pb-0 shadow-[0_24px_80px_-24px_rgba(0,0,0,0.6)] backdrop-blur-md">
             {step === "signIn" ? (
               <>
                 <CardHeader className="text-center">
@@ -297,7 +297,7 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
               </a>
             </div>
           </Card>
-          <p className="mt-5 text-sm text-foreground/55">
+          <p className="font-display mt-5 text-sm italic text-foreground/60">
             ✨ One intention a day keeps autopilot away
           </p>
         </div>

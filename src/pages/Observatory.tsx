@@ -3,7 +3,7 @@ import { Link } from "react-router";
 import { motion } from "framer-motion";
 import { ArrowUpRight, Compass, Sparkles } from "lucide-react";
 
-import { AppShell } from "@/components/AppShell";
+import { AppShell, PageHeader } from "@/components/AppShell";
 import { Button } from "@/components/ui/button";
 import {
   CATEGORIES,
@@ -35,10 +35,10 @@ function ResourceCard({ r, index }: { r: MindResource; index: number }) {
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: Math.min(index * 0.04, 0.4), duration: 0.35 }}
       whileHover={{ y: -3 }}
-      className="group relative flex flex-col overflow-hidden rounded-3xl border border-white/10 bg-white/[0.03] p-5 transition-colors hover:border-white/20 hover:bg-white/[0.05]"
+      className="panel panel-hover group relative flex flex-col overflow-hidden p-5"
     >
       <div className="flex items-start justify-between gap-3">
-        <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-white/5 text-xl ring-1 ring-white/10">
+        <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-white/5 text-xl ring-1 ring-white/10">
           {r.emoji}
         </span>
         <div className="flex items-center gap-2">
@@ -55,17 +55,17 @@ function ResourceCard({ r, index }: { r: MindResource; index: number }) {
       </div>
 
       <p className="mt-4 text-sm font-bold leading-snug tracking-tight">{r.title}</p>
-      <p className="mt-0.5 text-[11px] font-semibold uppercase tracking-widest text-muted-foreground/70">
+      <p className="font-eyebrow mt-0.5 text-muted-foreground/70">
         {r.by} · {r.length}
       </p>
 
       <p className="mt-3 flex-1 text-xs leading-relaxed text-muted-foreground">{r.blurb}</p>
 
-      <p className="mt-4 border-t border-white/8 pt-3 font-display text-xs italic leading-relaxed text-emerald-200/80">
+      <p className="mt-4 border-t hairline pt-3 font-display text-xs italic leading-relaxed text-emerald-200/80">
         ✦ {r.take}
       </p>
 
-      <p className="mt-2 text-[10px] uppercase tracking-widest text-muted-foreground/50">
+      <p className="font-eyebrow mt-2 text-muted-foreground/50">
         {cat.emoji} {cat.name}
       </p>
     </motion.a>
@@ -92,19 +92,16 @@ export default function Observatory() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4 }}
         >
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
-            star charts for a changing mind
-          </p>
-          <h1 className="mt-1 text-3xl font-extrabold tracking-tight sm:text-4xl">
-            The Observatory{" "}
-            <span className="inline-block animate-sway">🔭</span>
-          </h1>
-          <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-            The science behind why this sky works — and it's all free to explore.
-            Every chart is hand-picked and real: neuroscientists, psychologists, and
-            researchers on rewiring your mind, catching engrained responses, and
-            choosing who you are, moment by moment.
-          </p>
+          <PageHeader
+            eyebrow="Section 02 · Star charts"
+            title={
+              <>
+                The Observatory{" "}
+                <span className="inline-block animate-sway">🔭</span>
+              </>
+            }
+            sub="The science behind why this sky works — and it's all free to explore. Every chart is hand-picked and real: neuroscientists, psychologists, and researchers on rewiring your mind, catching engrained responses, and choosing who you are, moment by moment."
+          />
         </motion.div>
 
         {/* Tonight's pick */}
@@ -116,7 +113,7 @@ export default function Observatory() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1, duration: 0.4 }}
           whileHover={{ y: -2 }}
-          className="group relative block overflow-hidden rounded-3xl border border-emerald-300/20 bg-gradient-to-r from-emerald-300/[0.06] via-white/[0.03] to-transparent p-5"
+          className="panel relative block overflow-hidden p-5"
         >
           <div className="pointer-events-none absolute -right-8 -top-10 h-36 w-36 rounded-full bg-emerald-300/10 blur-3xl" />
           <div className="flex flex-wrap items-center gap-4">
@@ -128,7 +125,7 @@ export default function Observatory() {
                 tonight's chart · rotates at midnight
               </p>
               <p className="mt-1 text-base font-bold tracking-tight">{pick.title}</p>
-              <p className="mt-0.5 text-xs text-muted-foreground">
+              <p className="font-eyebrow mt-0.5 text-muted-foreground">
                 {pick.by} · {pick.length} · {pick.kind}
               </p>
               <p className="mt-2 max-w-xl text-xs leading-relaxed text-muted-foreground">
@@ -145,7 +142,7 @@ export default function Observatory() {
             type="button"
             onClick={() => setFilter("all")}
             className={cn(
-              "rounded-full border px-4 py-1.5 text-xs font-semibold transition-colors",
+              "rounded-full border px-4 py-1.5 font-eyebrow transition-colors",
               filter === "all"
                 ? "border-emerald-300/45 bg-emerald-300/12 text-emerald-200"
                 : "border-white/10 bg-white/[0.03] text-muted-foreground hover:border-white/25 hover:text-foreground",
@@ -159,7 +156,7 @@ export default function Observatory() {
               type="button"
               onClick={() => setFilter(c.id)}
               className={cn(
-                "rounded-full border px-4 py-1.5 text-xs font-semibold transition-colors",
+                "rounded-full border px-4 py-1.5 font-eyebrow transition-colors",
                 filter === c.id
                   ? "border-emerald-300/45 bg-emerald-300/12 text-emerald-200"
                   : "border-white/10 bg-white/[0.03] text-muted-foreground hover:border-white/25 hover:text-foreground",
@@ -194,11 +191,11 @@ export default function Observatory() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2, duration: 0.4 }}
-          className="relative overflow-hidden rounded-3xl border border-sky-300/20 bg-gradient-to-r from-indigo-500/[0.09] via-white/[0.03] to-transparent p-6"
+          className="panel relative block overflow-hidden p-6"
         >
-          <div className="pointer-events-none absolute -left-8 -bottom-10 h-32 w-32 rounded-full bg-indigo-400/10 blur-3xl" />
+          <div className="pointer-events-none absolute -left-8 -bottom-10 h-32 w-32 rounded-full bg-sky-300/10 blur-3xl" />
           <div className="flex flex-wrap items-center gap-4">
-            <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-sky-300/15 text-2xl ring-1 ring-sky-300/25">
+            <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-sky-300/15 text-2xl ring-1 ring-sky-300/25">
               <Compass className="h-6 w-6 text-sky-200" />
             </span>
             <div className="min-w-[220px] flex-1">

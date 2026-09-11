@@ -1,7 +1,6 @@
 import type { ReactNode } from "react";
 import { NavLink, useNavigate } from "react-router";
 import { LogOut, MessagesSquare, Send, Sparkles, Telescope } from "lucide-react";
-
 import { FloatingBackground } from "@/components/FloatingBackground";
 import { StarMark } from "@/components/StarMark";
 import { Button } from "@/components/ui/button";
@@ -28,6 +27,36 @@ export function initialsOf(name?: string | null): string {
   if (!name) return "?";
   const parts = name.trim().split(/\s+/).slice(0, 2);
   return parts.map((p) => p[0]?.toUpperCase() ?? "").join("") || "?";
+}
+
+/** The one consistent page opening: mono eyebrow, serif title, quiet sub. */
+export function PageHeader({
+  eyebrow,
+  title,
+  sub,
+  action,
+}: {
+  eyebrow: string;
+  title: ReactNode;
+  sub?: ReactNode;
+  action?: ReactNode;
+}) {
+  return (
+    <div className="flex flex-wrap items-end justify-between gap-4">
+      <div className="min-w-0">
+        <p className="font-eyebrow text-muted-foreground">{eyebrow}</p>
+        <h1 className="text-clearing-soft mt-1.5 font-display text-3xl font-semibold leading-tight tracking-tight sm:text-4xl">
+          {title}
+        </h1>
+        {sub && (
+          <p className="mt-1.5 max-w-2xl text-sm leading-relaxed text-muted-foreground">
+            {sub}
+          </p>
+        )}
+      </div>
+      {action}
+    </div>
+  );
 }
 
 export function AppShell({

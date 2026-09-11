@@ -15,7 +15,7 @@ import {
 
 import { api } from "@/convex/_generated/api";
 import type { Id } from "@/convex/_generated/dataModel";
-import { AppShell } from "@/components/AppShell";
+import { AppShell, PageHeader } from "@/components/AppShell";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -149,21 +149,21 @@ export default function Community() {
   return (
     <AppShell title="Community">
       <div className="mx-auto max-w-2xl space-y-6">
-        <div>
-          <h1 className="text-3xl font-extrabold tracking-tight sm:text-4xl">
-            The community <span className="text-emerald-200/90">sky</span>
-          </h1>
-          <p className="mt-1.5 text-sm text-muted-foreground">
-            Share the intention you're holding this week — and see what other
-            people are aiming at. Glow the ones that get you.
-          </p>
-        </div>
+        <PageHeader
+          eyebrow="Community · shared intentions"
+          title={
+            <>
+              The community <span className="text-emerald-200/90">sky</span>
+            </>
+          }
+          sub="Share the intention you're holding this week — and see what other people are aiming at. Glow the ones that get you."
+        />
 
         {/* Composer */}
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          className="rounded-3xl border border-white/10 bg-white/[0.04] p-4"
+          className="panel p-4"
         >
           <Textarea
             value={text}
@@ -296,7 +296,7 @@ export default function Community() {
                   initial={{ opacity: 0, y: 16 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0 }}
-                  className="overflow-hidden rounded-3xl border border-white/10 bg-white/[0.04]"
+                  className="panel overflow-hidden"
                 >
                   <div className="p-5">
                     <div className="flex items-center gap-3">
@@ -314,12 +314,12 @@ export default function Community() {
                         <p className="flex items-center gap-1.5 truncate text-sm font-semibold">
                           {post.author.name}
                           {isMine && (
-                            <span className="rounded-full bg-white/10 px-1.5 py-0.5 text-[9px] uppercase tracking-wider text-muted-foreground">
+                            <span className="rounded-full bg-white/10 px-1.5 py-0.5 font-eyebrow text-muted-foreground">
                               you
                             </span>
                           )}
                         </p>
-                        <p className="text-[11px] text-muted-foreground">
+                        <p className="font-eyebrow text-muted-foreground">
                           {timeAgo(post.createdAt)}
                         </p>
                       </div>
@@ -366,7 +366,7 @@ export default function Community() {
                         >
                           {post.emoji}
                         </span>
-                        <span className="text-[11px] uppercase tracking-wider text-muted-foreground">
+                        <span className="font-eyebrow text-muted-foreground">
                           {STAR_COLORS[post.colorKey as ColorKey]?.label ?? "star"}
                         </span>
                       </div>

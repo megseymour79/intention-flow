@@ -32,20 +32,28 @@ export default function Messages() {
   const myId = user?._id;
 
   const [openId, setOpenId] = useState<Id<"conversations"> | null>(null);
-  const [starting, setStarting] = useState(false);
   const [draft, setDraft] = useState("");
   const [sending, setSending] = useState(false);
 
   const startConversation = useMutation(api.messages.startConversation);
   const sendMessage = useMutation(api.messages.sendMessage);
   const conversations = useQuery(api.messages.listConversations) ?? [];
+  const peerIdParam = searchParams.get("peer");
+  // The ?peer= deep link resolves reactively from the conversation list.
+  const peerConvo = useMemo(
+    () =>
+      peerIdParam
+        ? (conversations.find((c) => c.otherUserId === peerIdParam) ?? null)
+        : null,
+    [conversations, peerIdParam],
+  );
+  const activeId = openId ?? peerConvo?._id ?? null;
+
   const messages =
     useQuery(
       api.messages.listMessages,
-      openId ? { conversationId: openId } : "skip",
+      activeId ? { conversationId: activeId } : "skip",
     ) ?? [];
-
-  const peerIdParam = searchParams.get("peer");
   const peerNameFromState = useMemo(() => {
     const st = location.state as { peerName?: string } | null;
     return st?.peerName ?? null;
@@ -54,17 +62,16 @@ export default function Messages() {
   const desktopScrollRef = useRef<HTMLDivElement | null>(null);
   const mobileScrollRef = useRef<HTMLDivElement | null>(null);
 
-  // Open a conversation with the peer from the URL (?peer=<userId>)
+  // Create (once) the conversation behind a ?peer= deep link when none exists.
+  const startingRef = useRef(false);
   useEffect(() => {
     if (!peerIdParam || !myId) return;
-    const existing = conversations.find((c) => c.otherUserId === peerIdParam);
-    if (existing) {
-      setOpenId(existing._id);
+    if (peerConvo) {
       setSearchParams({}, { replace: true });
       return;
     }
-    if (starting) return;
-    setStarting(true);
+    if (startingRef.current || conversations.length === 0) return;
+    startingRef.current = true;
     void startConversation({ otherUserId: peerIdParam as Id<"users"> })
       .then((id) => {
         setOpenId(id);
@@ -76,9 +83,10 @@ export default function Messages() {
           description: err instanceof Error ? err.message : "Try again in a moment.",
         });
       })
-      .finally(() => setStarting(false));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [peerIdParam, myId, conversations, startConversation]);
+      .finally(() => {
+        startingRef.current = false;
+      });
+  }, [peerIdParam, myId, peerConvo, conversations.length, startConversation, setSearchParams]);
 
   useEffect(() => {
     const scroll = (el: HTMLDivElement | null) => {
@@ -108,7 +116,7 @@ export default function Messages() {
 
   return (
     <AppShell title="Messages">
-      <div className="mx-auto flex h-[calc(100vh-10rem)] max-w-5xl flex-col overflow-hidden rounded-3xl border border-white/10 bg-white/[0.03] lg:h-[calc(100vh-9rem)]">
+      <div className="panel mx-auto flex h-[calc(100vh-10rem)] max-w-5xl flex-col overflow-hidden lg:h-[calc(100vh-9rem)]">
         <div className="flex h-full min-h-0 flex-col md:flex-row">
           {/* Conversation list */}
           <aside
@@ -117,10 +125,10 @@ export default function Messages() {
             } w-full shrink-0 flex-col border-white/10 md:w-72 md:border-r`}
           >
             <div className="border-b border-white/8 p-4">
-              <h2 className="flex items-center gap-2 text-lg font-extrabold tracking-tight">
+              <h2 className="flex items-center gap-2 font-display text-lg font-semibold tracking-tight">
                 <MessageCircle className="h-5 w-5 text-emerald-200" /> Messages
               </h2>
-              <p className="mt-0.5 text-xs text-muted-foreground">
+              <p className="font-eyebrow mt-0.5 text-muted-foreground">
                 Notes between star-hangers
               </p>
             </div>
@@ -150,7 +158,7 @@ export default function Messages() {
                     {c.otherImage ? (
                       <AvatarImage src={c.otherImage} alt={c.otherName} />
                     ) : null}
-                    <AvatarFallback className="bg-gradient-to-br from-cyan-300/70 to-blue-400/70 text-sm font-bold text-[#0a1120]">
+                    <AvatarFallback className="border border-emerald-200/25 bg-emerald-200/10 font-mono text-xs font-semibold text-emerald-100">
                       {initialsOf(c.otherName)}
                     </AvatarFallback>
                   </Avatar>
@@ -159,7 +167,7 @@ export default function Messages() {
                       <span className="truncate text-sm font-semibold">
                         {c.otherName}
                       </span>
-                      <span className="shrink-0 text-[10px] text-muted-foreground">
+                      <span className="shrink-0 font-eyebrow text-muted-foreground">
                         {timeAgo(c.lastAt)}
                       </span>
                     </span>
@@ -169,12 +177,6 @@ export default function Messages() {
                   </span>
                 </button>
               ))}
-              {starting && (
-                <div className="flex items-center justify-center gap-2 py-6 text-xs text-muted-foreground">
-                  <Loader2 className="h-3.5 w-3.5 animate-spin" /> Opening
-                  channel…
-                </div>
-              )}
             </div>
           </aside>
 
@@ -190,7 +192,7 @@ export default function Messages() {
                         alt={openConvo.otherName}
                       />
                     ) : null}
-                    <AvatarFallback className="bg-gradient-to-br from-cyan-300/70 to-blue-400/70 text-xs font-bold text-[#0a1120]">
+                    <AvatarFallback className="border border-emerald-200/25 bg-emerald-200/10 font-mono text-xs font-semibold text-emerald-100">
                       {initialsOf(openConvo.otherName)}
                     </AvatarFallback>
                   </Avatar>
@@ -198,7 +200,7 @@ export default function Messages() {
                     <p className="truncate text-sm font-bold">
                       {openConvo.otherName}
                     </p>
-                    <p className="text-[11px] text-muted-foreground">
+                    <p className="font-eyebrow text-muted-foreground">
                       {peerNameFromState ? "from the community sky" : "fellow star-hanger"}
                     </p>
                   </div>
@@ -303,7 +305,7 @@ export default function Messages() {
                   ← Back
                 </Button>
                 <Avatar className="h-8 w-8">
-                  <AvatarFallback className="bg-gradient-to-br from-cyan-300/70 to-blue-400/70 text-[10px] font-bold text-[#0a1120]">
+                  <AvatarFallback className="border border-emerald-200/25 bg-emerald-200/10 font-mono text-[10px] font-semibold text-emerald-100">
                     {initialsOf(openConvo.otherName)}
                   </AvatarFallback>
                 </Avatar>
@@ -323,10 +325,9 @@ export default function Messages() {
                       className={`flex ${mine ? "justify-end" : "justify-start"}`}
                     >
                       <div
-                        className={`max-w-[80%] rounded-2xl px-3.5 py-2 ${
-                          mine
-                            ? "rounded-br-sm bg-amber-300/90 text-amber-950"
-                            : "rounded-bl-sm bg-white/8 text-foreground/90"
+                        className={`max-w-[80%] rounded-2xl px-3.5 py-2 ${                            mine
+                              ? "rounded-br-sm bg-emerald-300/90 text-emerald-950"
+                              : "rounded-bl-sm bg-white/8 text-foreground/90"
                         }`}
                       >
                         <p className="text-sm leading-relaxed">{m.text}</p>
@@ -347,13 +348,13 @@ export default function Messages() {
                   }}
                   placeholder="Write to the sky…"
                   maxLength={1000}
-                  className="h-10 min-w-0 flex-1 rounded-full border border-white/12 bg-white/5 px-4 text-sm placeholder:text-foreground/35 focus:border-amber-300/50 focus:outline-none"
+                  className="h-10 min-w-0 flex-1 rounded-full border border-white/12 bg-white/5 px-4 text-sm placeholder:text-foreground/35 focus:border-emerald-300/40 focus:outline-none"
                 />
                 <Button
                   size="icon"
                   disabled={sending || draft.trim().length === 0}
                   onClick={() => void handleSend()}
-                  className="h-10 w-10 shrink-0 rounded-full bg-amber-300 text-amber-950 hover:bg-amber-200"
+                  className="h-10 w-10 shrink-0 rounded-full bg-foreground text-background hover:bg-foreground/85"
                   aria-label="Send message"
                 >
                   {sending ? (
