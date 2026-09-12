@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router";
 import { useQuery } from "convex/react";
-import { toast } from "sonner";
 
 import { api } from "@/convex/_generated/api";
 import { AppShell, PageHeader } from "@/components/AppShell";
@@ -9,16 +8,18 @@ import { StarEditor } from "@/components/StarEditor";
 import { PersonalityQuiz } from "@/components/PersonalityQuiz";
 import { RankPanel } from "@/components/SkyQuest";
 import { QUIZ_PACKS, resultById } from "@/lib/quiz-packs";
+import { resolveQuizKind } from "@/lib/quiz-deep-link";
 
 export default function Deeper() {
-  // The black-hole dive on the Dashboard lands here with ?open=<kind>.
+  // The black-hole dive on the Dashboard lands here with ?open=<kind> —
+  // the param is validated before any dialog opens.
   const [searchParams, setSearchParams] = useSearchParams();
   const [deepOpen, setDeepOpen] = useState<string | null>(
-    () => searchParams.get("open"),
+    () => resolveQuizKind(searchParams.get("open")),
   );
 
   useEffect(() => {
-    const kind = searchParams.get("open");
+    const kind = resolveQuizKind(searchParams.get("open"));
     if (kind && kind !== deepOpen) setDeepOpen(kind);
   }, [searchParams, deepOpen]);
 
