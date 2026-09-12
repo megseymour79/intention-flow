@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router";
 import { motion } from "framer-motion";
-import { ArrowRight, Bell, Shuffle, Sparkles, Star } from "lucide-react";
+import { ArrowRight, Bell, Shuffle, Star } from "lucide-react";
 
 import { BreathOrb } from "@/components/BreathOrb";
 import { FloatingBackground } from "@/components/FloatingBackground";
@@ -162,7 +162,7 @@ function HeroSky() {
         hint="tap the sky & type a way you want to be"
       />
       <div className="border-t border-white/8 p-2.5">
-        <div className="flex items-center gap-2 rounded-lg bg-black/25 px-1">
+        <div className="flex items-center gap-2 rounded-lg bg-[#141c40]/50 px-1">
           <span className="pl-2 text-lg">✍️</span>
           <Input
             value={typed}
@@ -422,12 +422,12 @@ export default function Landing() {
         className="pointer-events-none fixed inset-x-0 top-0 z-0 h-80"
         style={{
           background:
-            "linear-gradient(to bottom, rgba(2,4,10,0.92) 0%, rgba(2,4,12,0.6) 45%, rgba(3,6,16,0) 100%)",
+            "linear-gradient(to bottom, rgba(10,17,40,0.88) 0%, rgba(12,20,46,0.55) 45%, rgba(14,24,52,0) 100%)",
         }}
       />
 
       {/* ---- Nav: a thin instrument bar ---- */}
-      <header className="fixed inset-x-0 top-0 z-50 border-b border-white/8 bg-[#04070f]/70 backdrop-blur-md">
+      <header className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-[#101737]/70 backdrop-blur-md">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 sm:px-6">
           <a href="#top" className="flex items-center gap-2.5">
             <StarMark size={34} />
@@ -700,7 +700,7 @@ export default function Landing() {
             <div className="mt-9 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {RESPONSE_STYLES.map((st, i) => (
                 <FadeUp key={st.id} delay={i * 0.07}>
-                  <div className="group h-full rounded-xl border border-white/8 bg-black/20 p-5 transition-all hover:-translate-y-1 hover:border-white/20">
+                  <div className="group h-full rounded-xl border border-white/10 bg-[#131b3e]/40 p-5 transition-all hover:-translate-y-1 hover:border-white/25">
                     <span className="text-4xl">{st.emoji}</span>
                     <h3 className={`mt-4 font-display text-lg font-semibold ${st.glow}`}>
                       {st.name}

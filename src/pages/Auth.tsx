@@ -180,7 +180,7 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
                           <span className="w-full border-t border-white/10" />
                         </div>
                         <div className="relative flex justify-center text-xs uppercase">
-                          <span className="bg-[#0b1322] px-2 text-muted-foreground">
+                          <span className="bg-[#151d44] px-2 text-muted-foreground">
                             Or
                           </span>
                         </div>

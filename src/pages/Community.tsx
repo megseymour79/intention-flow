@@ -265,7 +265,7 @@ export default function Community() {
                   setImage(null);
                   if (fileRef.current) fileRef.current.value = "";
                 }}
-                className="absolute right-2 top-2 flex h-7 w-7 items-center justify-center rounded-full bg-black/60 text-white backdrop-blur"
+                className="absolute right-2 top-2 flex h-7 w-7 items-center justify-center rounded-full bg-[#141c40]/75 text-white backdrop-blur"
                 aria-label="Remove image"
               >
                 <X className="h-4 w-4" />
@@ -422,7 +422,7 @@ export default function Community() {
                         animate={{ height: "auto", opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
                         transition={{ duration: 0.2 }}
-                        className="overflow-hidden border-t border-white/8 bg-black/20"
+                        className="overflow-hidden border-t border-white/8 bg-[#141c40]/35"
                       >
                         <div className="space-y-3 p-4">
                           {comments.length === 0 && (

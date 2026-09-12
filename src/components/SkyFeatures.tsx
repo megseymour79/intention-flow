@@ -70,7 +70,7 @@ export function TonightEvent({
       animate={{ opacity: 1, y: 0 }}
       className="pointer-events-auto absolute left-3 top-3 z-20 max-w-[280px]"
     >
-      <div className="rounded-2xl border border-white/10 bg-black/55 p-3 backdrop-blur-md">
+      <div className="rounded-2xl border border-white/12 bg-[#141c40]/60 p-3 backdrop-blur-md">
         <div className="flex items-start justify-between gap-2">
           <div>
             <p className="font-eyebrow text-emerald-200/80">
@@ -280,7 +280,7 @@ export function WishCaught({
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="absolute inset-0 z-40 flex items-center justify-center rounded-3xl bg-black/60 backdrop-blur-sm"
+          className="absolute inset-0 z-40 flex items-center justify-center rounded-3xl bg-[#101737]/60 backdrop-blur-sm"
           onClick={onClose}
         >
           <motion.div
@@ -288,7 +288,7 @@ export function WishCaught({
             animate={{ scale: 1, y: 0 }}
             exit={{ scale: 0.9, opacity: 0 }}
             transition={{ type: "spring", stiffness: 300, damping: 22 }}
-            className="mx-4 max-w-xs rounded-3xl border border-emerald-300/25 bg-[#0b1222]/95 p-5 text-center shadow-2xl"
+            className="mx-4 max-w-xs rounded-3xl border border-emerald-300/25 bg-[#131b3e]/95 p-5 text-center shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
             <p className="text-3xl">✨</p>

@@ -146,7 +146,7 @@ function ImpulseCatcher() {
 
   return (
     <div className="flex flex-1 flex-col">
-      <div className="relative h-44 overflow-hidden rounded-2xl border border-white/10 bg-black/30">
+      <div className="relative h-44 overflow-hidden rounded-2xl border border-white/10 bg-[#1a2450]/45">
         {running &&
           urges.map((u) => (
             <motion.button
@@ -232,7 +232,7 @@ function ThoughtUnhook() {
 
   return (
     <div className="flex flex-1 flex-col">
-      <div className="relative flex h-44 flex-col justify-center overflow-hidden rounded-2xl border border-white/10 bg-black/30 px-4">
+      <div className="relative flex h-44 flex-col justify-center overflow-hidden rounded-2xl border border-white/10 bg-[#1a2450]/45 px-4">
         <motion.p
           animate={{ x: `${drift}%`, opacity }}
           transition={{ duration: 1.4, ease: "easeInOut" }}
@@ -309,7 +309,7 @@ function GroundingSteps() {
 
   return (
     <div className="flex flex-1 flex-col">
-      <div className="relative flex h-44 flex-col items-center justify-center gap-3 rounded-2xl border border-white/10 bg-black/30 px-4 text-center">
+      <div className="relative flex h-44 flex-col items-center justify-center gap-3 rounded-2xl border border-white/10 bg-[#1a2450]/45 px-4 text-center">
         {done ? (
           <>
             <motion.p
@@ -421,7 +421,7 @@ function ReframeLens() {
 
   return (
     <div className="flex flex-1 flex-col">
-      <div className="flex h-44 flex-col justify-center gap-3 rounded-2xl border border-white/10 bg-black/30 p-4">
+      <div className="flex h-44 flex-col justify-center gap-3 rounded-2xl border border-white/10 bg-[#1a2450]/45 p-4">
         <p className="text-xs uppercase tracking-widest text-muted-foreground/70">
           the situation
         </p>
@@ -491,7 +491,7 @@ function MomentCompass() {
 
   return (
     <div className="flex flex-1 flex-col">
-      <div className="flex h-44 flex-col items-center justify-center gap-3 rounded-2xl border border-white/10 bg-black/30 p-4 text-center">
+      <div className="flex h-44 flex-col items-center justify-center gap-3 rounded-2xl border border-white/10 bg-[#1a2450]/45 p-4 text-center">
         {done ? (
           <>
             <p className="text-3xl">🧭</p>

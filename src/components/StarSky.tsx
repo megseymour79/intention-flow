@@ -368,7 +368,7 @@ function SkyVortex({ onDiveIn }: { onDiveIn: () => void }) {
       />
 
       {/* the invitation — always visible, brighter on hover */}
-      <span className="pointer-events-none absolute left-1/2 top-full mt-2 -translate-x-1/2 whitespace-nowrap rounded-full border border-blue-200/20 bg-black/60 px-3 py-1 text-[11px] font-medium tracking-wide text-blue-50/85 backdrop-blur-sm transition-colors duration-200 group-hover:border-blue-200/50 group-hover:text-white">
+      <span className="pointer-events-none absolute left-1/2 top-full mt-2 -translate-x-1/2 whitespace-nowrap rounded-full border border-blue-200/20 bg-[#141c40]/70 px-3 py-1 text-[11px] font-medium tracking-wide text-blue-50/85 backdrop-blur-sm transition-colors duration-200 group-hover:border-blue-200/50 group-hover:text-white">
         dive deeper ↓
       </span>
 
@@ -775,7 +775,7 @@ export function StarSky({
           exit={{ opacity: 0 }}
           transition={{ delay: 1.2, duration: 0.4 }}
           onClick={onDiveIn}
-          className="absolute z-20 max-w-[180px] rounded-2xl border border-blue-200/25 bg-black/60 p-3 text-left backdrop-blur-md transition-colors hover:border-blue-200/50"
+          className="absolute z-20 max-w-[180px] rounded-2xl border border-blue-200/25 bg-[#141c40]/70 p-3 text-left backdrop-blur-md transition-colors hover:border-blue-200/50"
           // Anchored beside the vortex (centered at 88% / 20%) — the arrow points into the void.
           style={{
             right: "calc(12% + 108px)",
@@ -790,12 +790,12 @@ export function StarSky({
           </span>
           <span
             aria-hidden
-            className="absolute -right-1.5 top-1/2 h-3 w-3 -translate-y-1/2 rotate-45 border-r border-t border-blue-200/25 bg-black/60"
+            className="absolute -right-1.5 top-1/2 h-3 w-3 -translate-y-1/2 rotate-45 border-r border-t border-blue-200/25 bg-[#141c40]/70"
           />
         </motion.button>
       )}
       {hint && (
-        <p className="pointer-events-none absolute bottom-3 left-1/2 z-10 -translate-x-1/2 whitespace-nowrap rounded-full border border-white/10 bg-black/40 px-3 py-1 font-eyebrow text-foreground/70 backdrop-blur-sm">
+        <p className="pointer-events-none absolute bottom-3 left-1/2 z-10 -translate-x-1/2 whitespace-nowrap rounded-full border border-white/10 bg-[#141c40]/55 px-3 py-1 font-eyebrow text-foreground/70 backdrop-blur-sm">
           {hint}
         </p>
       )}
@@ -862,7 +862,7 @@ export function StarSky({
             )}
             {/* label revealed for the focused star */}
             {star.active && (
-              <span className="pointer-events-none absolute left-1/2 top-full mt-1 -translate-x-1/2 whitespace-nowrap rounded-full border border-white/10 bg-black/60 px-2.5 py-0.5 text-[11px] text-foreground/90 backdrop-blur-sm">
+              <span className="pointer-events-none absolute left-1/2 top-full mt-1 -translate-x-1/2 whitespace-nowrap rounded-full border border-white/10 bg-[#141c40]/70 px-2.5 py-0.5 text-[11px] text-foreground/90 backdrop-blur-sm">
                 {star.text.length > 34 ? `${star.text.slice(0, 34)}…` : star.text}
               </span>
             )}

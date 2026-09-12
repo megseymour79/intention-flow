@@ -55,17 +55,17 @@
 :root {
   --radius: 0.75rem;
   --font-sans: "Space Grotesk", ui-sans-serif, system-ui, -apple-system, sans-serif;
-  --background: oklch(0.16 0.035 262);
+  --background: oklch(0.22 0.042 262);
   --foreground: oklch(0.945 0.012 95);
-  --card: oklch(0.2 0.034 262 / 0.72);
+  --card: oklch(0.25 0.036 262 / 0.6);
   --card-foreground: oklch(0.945 0.012 95);
-  --popover: oklch(0.18 0.034 262);
+  --popover: oklch(0.24 0.036 262);
   --popover-foreground: oklch(0.945 0.012 95);
   --primary: oklch(0.93 0.03 95);
   --primary-foreground: oklch(0.18 0.04 262);
-  --secondary: oklch(0.24 0.028 262);
+  --secondary: oklch(0.29 0.03 262);
   --secondary-foreground: oklch(0.945 0.012 95);
-  --muted: oklch(0.23 0.024 262);
+  --muted: oklch(0.28 0.026 262);
   --muted-foreground: oklch(0.72 0.018 95);
   --accent: oklch(0.78 0.09 182);
   --accent-foreground: oklch(0.18 0.04 262);
@@ -78,7 +78,7 @@
   --chart-3: oklch(0.75 0.12 250);
   --chart-4: oklch(0.8 0.14 160);
   --chart-5: oklch(0.75 0.14 320);
-  --sidebar: oklch(0.175 0.032 262);
+  --sidebar: oklch(0.215 0.034 262);
   --sidebar-foreground: oklch(0.945 0.012 95);
   --sidebar-primary: oklch(0.93 0.03 95);
   --sidebar-primary-foreground: oklch(0.18 0.04 262);
@@ -89,17 +89,17 @@
 }
 
 .dark {
-  --background: oklch(0.145 0.035 262);
+  --background: oklch(0.205 0.04 262);
   --foreground: oklch(0.945 0.012 95);
-  --card: oklch(0.2 0.034 262 / 0.72);
+  --card: oklch(0.25 0.036 262 / 0.6);
   --card-foreground: oklch(0.945 0.012 95);
-  --popover: oklch(0.18 0.034 262);
+  --popover: oklch(0.24 0.036 262);
   --popover-foreground: oklch(0.945 0.012 95);
   --primary: oklch(0.93 0.03 95);
   --primary-foreground: oklch(0.18 0.04 262);
-  --secondary: oklch(0.24 0.028 262);
+  --secondary: oklch(0.29 0.03 262);
   --secondary-foreground: oklch(0.945 0.012 95);
-  --muted: oklch(0.23 0.024 262);
+  --muted: oklch(0.28 0.026 262);
   --muted-foreground: oklch(0.72 0.018 95);
   --accent: oklch(0.78 0.09 182);
   --accent-foreground: oklch(0.18 0.04 262);
@@ -112,7 +112,7 @@
   --chart-3: oklch(0.75 0.12 250);
   --chart-4: oklch(0.8 0.14 160);
   --chart-5: oklch(0.75 0.14 320);
-  --sidebar: oklch(0.175 0.032 262);
+  --sidebar: oklch(0.215 0.034 262);
   --sidebar-foreground: oklch(0.945 0.012 95);
   --sidebar-primary: oklch(0.93 0.03 95);
   --sidebar-primary-foreground: oklch(0.18 0.04 262);
@@ -564,18 +564,21 @@
   animation-timing-function: linear;
 }
 
-/* Sky gradient — deep space easing through royal blue into a verdigris
-   teal dusk: the observatory's own horizon, not the usual pink sunset. */
+/* Sky gradient — a long, light twilight: midnight indigo easing through
+   royal blue, cerulean and turquoise into a bright mint-teal horizon.
+   Many stops keep the blend smooth and obviously gradient. */
 .sky-gradient {
   background: linear-gradient(
     to bottom,
-    #02040c 0%,
-    #081231 34%,
-    #122a5c 56%,
-    #1d4a7e 76%,
-    #2a6b7a 88%,
-    #3d8382 96%,
-    #5b9a8f 100%
+    #0a1128 0%,
+    #13224f 16%,
+    #1b3268 32%,
+    #234684 47%,
+    #2b5c96 61%,
+    #3377a2 73%,
+    #3e93a4 84%,
+    #4cb0a2 93%,
+    #66c9ad 100%
   );
 }
 
@@ -676,9 +679,9 @@
   border-radius: 50%;
   background: radial-gradient(
     ellipse 70% 62% at 50% 50%,
-    rgba(2, 3, 9, 0.78) 0%,
-    rgba(3, 6, 16, 0.55) 55%,
-    rgba(4, 8, 20, 0) 100%
+    rgba(8, 14, 34, 0.68) 0%,
+    rgba(10, 18, 42, 0.45) 55%,
+    rgba(12, 22, 48, 0) 100%
   );
   pointer-events: none;
 }
@@ -687,9 +690,9 @@
 .text-clearing-soft::before {
   background: radial-gradient(
     ellipse 70% 62% at 50% 50%,
-    rgba(2, 3, 9, 0.55) 0%,
-    rgba(3, 6, 16, 0.38) 55%,
-    rgba(4, 8, 20, 0) 100%
+    rgba(8, 14, 34, 0.45) 0%,
+    rgba(10, 18, 42, 0.3) 55%,
+    rgba(12, 22, 48, 0) 100%
   );
 }
 
@@ -709,17 +712,17 @@
      a hairline top-light, and a deep ink shadow that lifts it off the sky. */
   .panel {
     border-radius: var(--radius-lg);
-    border: 1px solid oklch(1 0 0 / 0.1);
+    border: 1px solid oklch(1 0 0 / 0.14);
     background:
       linear-gradient(
         to bottom,
-        oklch(0.88 0.02 95 / 0.055) 0%,
-        oklch(0.88 0.02 95 / 0.015) 100%
+        oklch(0.9 0.02 95 / 0.09) 0%,
+        oklch(0.9 0.02 95 / 0.03) 100%
       ),
-      oklch(0.14 0.03 262 / 0.72);
+      oklch(0.23 0.036 262 / 0.58);
     box-shadow:
-      inset 0 1px 0 0 oklch(1 0 0 / 0.06),
-      0 18px 40px -22px rgb(0 0 0 / 0.65);
+      inset 0 1px 0 0 oklch(1 0 0 / 0.09),
+      0 18px 40px -22px rgb(0 0 0 / 0.55);
     backdrop-filter: blur(14px);
   }
 
@@ -731,14 +734,14 @@
   }
 
   .panel-hover:hover {
-    border-color: oklch(0.78 0.09 182 / 0.35);
+    border-color: oklch(0.78 0.09 182 / 0.4);
     box-shadow:
-      inset 0 1px 0 0 oklch(1 0 0 / 0.07),
-      0 22px 46px -22px rgb(0 0 0 / 0.7);
+      inset 0 1px 0 0 oklch(1 0 0 / 0.1),
+      0 22px 46px -22px rgb(0 0 0 / 0.6);
   }
 
   /* Thin ivory rule used to divide sections inside panels. */
   .hairline {
-    border-color: oklch(1 0 0 / 0.09);
+    border-color: oklch(1 0 0 / 0.13);
   }
 }

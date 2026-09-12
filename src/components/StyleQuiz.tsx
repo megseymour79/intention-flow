@@ -143,7 +143,7 @@ export function StyleQuiz({
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
-      <DialogContent className="max-h-[92vh] overflow-y-auto border-white/12 bg-[#0b1322]/95 backdrop-blur-xl sm:max-w-lg">
+      <DialogContent className="max-h-[92vh] overflow-y-auto border-white/14 bg-[#131b3e]/95 backdrop-blur-xl sm:max-w-lg">
         <AnimatePresence mode="wait">
           {question ? (
             <motion.div

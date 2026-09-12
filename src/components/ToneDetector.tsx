@@ -124,7 +124,7 @@ export function ToneDetector({ compact = false }: { compact?: boolean }) {
             if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) run();
           }}
           placeholder={'e.g. "You need to fix this NOW, it is completely broken!!"'}
-          className="min-h-[104px] resize-none border-white/10 bg-black/25 text-sm leading-relaxed focus-visible:ring-emerald-300/30"
+          className="min-h-[104px] resize-none border-white/12 bg-[#161e42]/40 text-sm leading-relaxed focus-visible:ring-emerald-300/30"
           maxLength={400}
         />
         <div className="mt-3 flex flex-wrap items-center gap-2.5">
@@ -258,7 +258,7 @@ export function ToneDetector({ compact = false }: { compact?: boolean }) {
                     {variants.map((v, i) => (
                       <li
                         key={`${target}-${i}`}
-                        className="flex items-start gap-3 rounded-xl border border-white/10 bg-black/25 px-4 py-3"
+                        className="flex items-start gap-3 rounded-xl border border-white/10 bg-[#161e42]/40 px-4 py-3"
                       >
                         <span className="mt-0.5 font-eyebrow text-muted-foreground/70">
                           {String(i + 1).padStart(2, "0")}

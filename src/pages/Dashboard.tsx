@@ -267,7 +267,7 @@ export default function Dashboard() {
               }
             />
             {loading && (
-              <div className="absolute inset-0 z-20 flex items-center justify-center rounded-3xl bg-[#03050e]/70 backdrop-blur-sm">
+              <div className="absolute inset-0 z-20 flex items-center justify-center rounded-3xl bg-[#0e1634]/70 backdrop-blur-sm">
                 <Loader2 className="h-6 w-6 animate-spin text-emerald-200" />
               </div>
             )}
@@ -276,7 +276,7 @@ export default function Dashboard() {
                 className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center"
                 aria-hidden
               >
-                <div className="max-w-sm rounded-3xl border border-white/12 bg-black/35 p-6 text-center backdrop-blur-sm">
+                <div className="max-w-sm rounded-3xl border border-white/14 bg-[#131b3e]/50 p-6 text-center backdrop-blur-sm">
                   <p className="text-3xl">🌌</p>
                   <p className="mt-2 text-lg font-bold tracking-tight">
                     Your sky is empty — for now
@@ -774,7 +774,7 @@ export default function Dashboard() {
       ))}
 
       <AlertDialog open={deleteOpen} onOpenChange={setDeleteOpen}>
-        <AlertDialogContent className="border-white/12 bg-[#0b1322]/95 backdrop-blur-xl">
+        <AlertDialogContent className="border-white/14 bg-[#131b3e]/95 backdrop-blur-xl">
           <AlertDialogHeader>
             <AlertDialogTitle>Release this star?</AlertDialogTitle>
             <AlertDialogDescription>

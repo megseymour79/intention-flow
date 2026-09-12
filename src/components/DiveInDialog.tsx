@@ -43,7 +43,7 @@ export function DiveInDialog({
 }: DiveInDialogProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-h-[92vh] overflow-y-auto border-white/12 bg-[#0b1322]/95 backdrop-blur-xl sm:max-w-md">
+      <DialogContent className="max-h-[92vh] overflow-y-auto border-white/14 bg-[#131b3e]/95 backdrop-blur-xl sm:max-w-md">
         <DialogHeader>
           <DialogTitle className="text-xl font-extrabold tracking-tight">
             🕳️ You dove in

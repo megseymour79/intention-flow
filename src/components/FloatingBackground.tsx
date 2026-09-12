@@ -100,7 +100,7 @@ function RealisticPlanet() {
           className="absolute -inset-6 rounded-full"
           style={{
             background:
-              "radial-gradient(circle, rgba(235,205,160,0.08) 0%, transparent 70%)",
+              "radial-gradient(circle, rgba(238,232,214,0.12) 0%, transparent 70%)",
           }}
         />
         <svg
@@ -206,8 +206,8 @@ function RealisticMoon() {
             <stop offset="100%" stopColor="#97917c" />
           </radialGradient>
           <radialGradient id="pm-night" cx="62%" cy="42%" r="72%">
-            <stop offset="0%" stopColor="#05070f" />
-            <stop offset="100%" stopColor="#0b1120" />
+            <stop offset="0%" stopColor="#0c1330" />
+            <stop offset="100%" stopColor="#142045" />
           </radialGradient>
           <mask id="pm-mask">
             <rect width="100" height="100" fill="black" />
@@ -407,30 +407,31 @@ export function FloatingBackground({ count = 18 }: { count?: number }) {
       aria-hidden
       className="pointer-events-none fixed inset-0 -z-10 overflow-hidden"
     >
-      {/* Sky base — deep space easing through royal blue into verdigris dusk */}
+      {/* Sky base — a long light twilight: indigo → royal blue → cerulean
+          → turquoise → bright mint horizon, blended through many stops */}
       <div
         className="absolute inset-0"
         style={{
           background:
-            "linear-gradient(to bottom, #02040c 0%, #081231 34%, #122a5c 56%, #1d4a7e 76%, #2a6b7a 88%, #3d8382 96%, #5b9a8f 100%)",
+            "linear-gradient(to bottom, #0a1128 0%, #13224f 16%, #1b3268 32%, #234684 47%, #2b5c96 61%, #3377a2 73%, #3e93a4 84%, #4cb0a2 93%, #66c9ad 100%)",
         }}
       />
 
-      {/* soft moonlit-teal bloom along the horizon */}
+      {/* bright moonlit-teal bloom along the horizon */}
       <div
-        className="absolute inset-x-0 bottom-0 h-[36%]"
+        className="absolute inset-x-0 bottom-0 h-[42%]"
         style={{
           background:
-            "radial-gradient(120% 90% at 50% 118%, rgba(140,220,205,0.2) 0%, rgba(90,160,190,0.12) 42%, transparent 75%)",
+            "radial-gradient(130% 100% at 50% 122%, rgba(168,236,214,0.3) 0%, rgba(110,190,205,0.16) 45%, transparent 78%)",
         }}
       />
 
-      {/* gentle vignette — frames the viewport and keeps edges calm */}
+      {/* gentle vignette — much lighter now, just enough to frame */}
       <div
         className="absolute inset-0"
         style={{
           background:
-            "radial-gradient(120% 90% at 50% 42%, transparent 58%, rgba(2,3,9,0.32) 100%)",
+            "radial-gradient(120% 90% at 50% 42%, transparent 62%, rgba(6,12,30,0.18) 100%)",
         }}
       />
 
@@ -444,7 +445,7 @@ export function FloatingBackground({ count = 18 }: { count?: number }) {
         className="absolute inset-0"
         style={{
           background:
-            "radial-gradient(140% 55% at 72% -12%, rgba(190,200,225,0.055) 0%, rgba(190,200,225,0.022) 38%, transparent 65%)",
+            "radial-gradient(140% 55% at 72% -12%, rgba(210,218,240,0.08) 0%, rgba(210,218,240,0.035) 38%, transparent 65%)",
         }}
       />
 

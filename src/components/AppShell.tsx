@@ -167,7 +167,7 @@ export function AppShell({
         </aside>
 
         {/* Mobile header */}
-        <header className="sticky top-0 z-40 border-b border-white/8 bg-[#070d1a]/85 backdrop-blur-md lg:hidden">
+        <header className="sticky top-0 z-40 border-b border-white/10 bg-[#101737]/85 backdrop-blur-md lg:hidden">
           <div className="flex items-center justify-between px-4 py-3">
             <NavLink to="/" className="flex items-center gap-2">
               <StarMark size={32} />
