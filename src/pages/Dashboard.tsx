@@ -1,33 +1,18 @@
-import { useMemo, useState } from "react";
-import { Link } from "react-router";
+import { useEffect, useMemo, useState } from "react";
+import { useLocation, useNavigate } from "react-router";
 import { useMutation, useQuery } from "convex/react";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
-import {
-  Bell,
-  Clock,
-  Edit3,
-  Loader2,
-  Lock,
-  Plus,
-  Sparkles,
-  Trash2,
-  X,
-} from "lucide-react";
+import { Edit3, Loader2, Plus, Sparkles, Trash2 } from "lucide-react";
 
 import { api } from "@/convex/_generated/api";
 import type { Id } from "@/convex/_generated/dataModel";
 import { AppShell } from "@/components/AppShell";
-import { BreathOrb } from "@/components/BreathOrb";
 import { DiveInDialog } from "@/components/DiveInDialog";
-import { MindGym } from "@/components/MindGym";
-import { PersonalityQuiz } from "@/components/PersonalityQuiz";
 import { StarEditor } from "@/components/StarEditor";
 import { StarSky, SkyStarLike } from "@/components/StarSky";
 import { StyleQuiz } from "@/components/StyleQuiz";
-import { ToneDetector } from "@/components/ToneDetector";
 import { Button } from "@/components/ui/button";
-import { Switch } from "@/components/ui/switch";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -38,33 +23,25 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import { useAuth } from "@/hooks/use-auth";
-import {
-  REMINDER_SLOTS,
-  useReminders,
-} from "@/hooks/use-reminders";
 import { momentLabel, shiftOfTheDay, starColor, styleById } from "@/lib/shift-data";
-import { QUIZ_PACKS, resultById } from "@/lib/quiz-packs";
 import { randomWishStarter } from "@/lib/sky-events";
-import { ReflectionHeroCard, ReflectionLedger } from "@/components/ReflectionLedger";
-import {
-  ConstellationProgress,
-  FirstLight,
-  RankPanel,
-  WelcomeBack,
-} from "@/components/SkyQuest";
-import { rankNameForLevel, useSkyRank } from "@/lib/unlocks";
+import { ReflectionHeroCard } from "@/components/ReflectionLedger";
+import { FirstLight, WelcomeBack } from "@/components/SkyQuest";
+import { useSkyRank } from "@/lib/unlocks";
+
+type QuizDraft = { text?: string; moment?: string; colorKey?: string };
 
 export default function Dashboard() {
   const { user } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const starsData = useQuery(api.stars.listForUser);
   const streakData = useQuery(api.stars.getStreak);
   const quizData = useQuery(api.quiz.getMyResult);
   const todayReflection = useQuery(api.reflections.getToday);
-  const deepResults = useQuery(api.personality.myResults) ?? [];
   const setActiveStar = useMutation(api.stars.setActive);
   const moveStar = useMutation(api.stars.update);
   const removeStar = useMutation(api.stars.remove);
@@ -92,23 +69,27 @@ export default function Dashboard() {
   // Sky rank: the more you come back and engage, the more your sky opens up.
   const rank = useSkyRank();
 
-  const reminders = useReminders(() => activeStar?.text ?? null);
-
   const [editorOpen, setEditorOpen] = useState(false);
   const [editorTarget, setEditorTarget] = useState<{ x: number; y: number }>();
   const [editing, setEditing] = useState<SkyStarLike | null>(null);
   const [quizOpen, setQuizOpen] = useState(false);
-  const [deepOpen, setDeepOpen] = useState<string | null>(null);
   const [diveOpen, setDiveOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
-  const [section, setSection] = useState("tonight");
   const [busyId, setBusyId] = useState<Id<"stars"> | null>(null);
-  const [customTime, setCustomTime] = useState("07:30");
-  const [editorDraft, setEditorDraft] = useState<{
-    text?: string;
-    moment?: string;
-    colorKey?: string;
-  } | null>(null);
+  const [editorDraft, setEditorDraft] = useState<QuizDraft | null>(null);
+
+  // A quiz suggestion from another page (Go deeper) opens the editor here,
+  // prefilled — then the handoff state is cleared so refreshes stay clean.
+  const quizDraft =
+    (location.state as { quizDraft?: QuizDraft } | null)?.quizDraft ?? null;
+  useEffect(() => {
+    if (!quizDraft) return;
+    setEditing(null);
+    setEditorTarget(undefined);
+    setEditorDraft(quizDraft);
+    setEditorOpen(true);
+    navigate(".", { replace: true, state: null });
+  }, [quizDraft, navigate]);
 
   const hour = new Date().getHours();
   const greeting =
@@ -127,7 +108,7 @@ export default function Dashboard() {
     if (kind === "style") {
       setQuizOpen(true);
     } else {
-      setDeepOpen(kind);
+      navigate(`/deeper?open=${encodeURIComponent(kind)}`);
     }
   };
 
@@ -138,14 +119,9 @@ export default function Dashboard() {
     setEditorOpen(true);
   };
 
-  // Borrowing a quiz suggestion opens the editor prefilled at a random spot.
-  const handleQuizIntention = (draft: {
-    text: string;
-    moment: string;
-    colorKey: string;
-  }) => {
+  // Borrowing a style-quiz suggestion opens the editor prefilled at a random spot.
+  const handleQuizIntention = (draft: QuizDraft) => {
     setQuizOpen(false);
-    setDeepOpen(null);
     setEditing(null);
     setEditorTarget(undefined);
     setEditorDraft(draft);
@@ -303,29 +279,9 @@ export default function Dashboard() {
           hasReflection={todayReflection !== null && todayReflection !== undefined}
           onHangStar={openFreshEditor}
           onTakeQuiz={() => setQuizOpen(true)}
-          onGoToLedger={() => setSection("evening")}
+          onGoToLedger={() => navigate("/evening")}
         />
 
-        {/* Everything below the fold lives in sections — one glance per visit,
-            not one endless scroll. */}
-        <Tabs
-          value={section}
-          onValueChange={(v) => {
-            setSection(v);
-            requestAnimationFrame(() =>
-              window.scrollTo({ top: 0, behavior: "smooth" }),
-            );
-          }}
-        >
-          <TabsList className="sticky top-16 z-30 lg:top-6">
-            <TabsTrigger value="tonight">Tonight</TabsTrigger>
-            <TabsTrigger value="practice">Practice</TabsTrigger>
-            <TabsTrigger value="deeper">Go deeper</TabsTrigger>
-            <TabsTrigger value="evening">Evening</TabsTrigger>
-          </TabsList>
-
-          {/* ---- Section 1 · Tonight ---- */}
-          <TabsContent value="tonight" className="mt-6 space-y-7 outline-none">
         {/* Ledger-so-far summary */}
         <ReflectionHeroCard />
 
@@ -497,278 +453,6 @@ export default function Dashboard() {
             )}
           </div>
         </div>
-
-          </TabsContent>
-
-          {/* ---- Section 2 · Practice ---- */}
-          <TabsContent value="practice" className="mt-6 space-y-7 outline-none">
-            {/* The tone lab — read a message before you send it */}
-            <ToneDetector compact />
-
-            {/* Mind gym — daily reps between the reflection and the rank */}
-        <div className="panel p-5">
-          <div className="flex flex-wrap items-end justify-between gap-3">
-            <div>
-              <p className="font-eyebrow text-muted-foreground">The mind gym</p>
-              <p className="mt-1 max-w-xl text-sm text-muted-foreground">
-                One-minute reps for the choosing muscle — catch an urge, unhook
-                a thought, ground your senses, turn a lens, find your pull.
-              </p>
-            </div>
-          </div>
-          <div className="mt-4">
-            <MindGym />
-          </div>
-        </div>
-
-        {/* Pocket reset — the same guided breath, one tap away */}
-        <div className="panel flex flex-wrap items-center justify-between gap-5 p-5">
-          <div className="min-w-[220px] flex-1">
-            <p className="font-eyebrow text-muted-foreground">Pocket reset · 4-7-8</p>
-            <p className="mt-2 max-w-md text-sm leading-relaxed text-muted-foreground">
-              Feeling the old pattern pull? One guided minute moves you from
-              reaction to choice — in for four, hold for seven, out for eight.
-            </p>
-          </div>
-          <BreathOrb compact />
-        </div>
-
-          </TabsContent>
-
-          {/* ---- Section 3 · Go deeper ---- */}
-          <TabsContent value="deeper" className="mt-6 space-y-7 outline-none">
-            {/* Sky rank — the reason the sky keeps opening up */}
-            <RankPanel />
-
-        {/* The Observatory — the science behind the sky */}
-        <Link
-          to="/observatory"
-          className="panel panel-hover group relative block overflow-hidden p-5"
-        >
-          <div className="pointer-events-none absolute -right-8 -top-10 h-28 w-28 rounded-full bg-emerald-200/10 blur-3xl" />
-          <div className="flex flex-wrap items-center gap-4">
-            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-emerald-200/25 bg-emerald-200/10 text-xl">
-              🔭
-            </span>
-            <div className="min-w-[200px] flex-1">
-              <p className="text-sm font-bold tracking-tight">
-                The Observatory — star charts for a changing mind
-              </p>
-              <p className="mt-0.5 text-xs leading-relaxed text-muted-foreground">
-                Free, hand-picked science on neuroplasticity, breaking engrained
-                loops, and why setting an intention actually rewires your brain. A
-                new chart every night.
-              </p>
-            </div>
-            <span className="font-eyebrow text-emerald-200/80 transition-transform group-hover:translate-x-0.5">
-              Look through →
-            </span>
-          </div>
-        </Link>
-
-        {/* Go deeper — the personality quizzes */}
-        <div className="panel p-5">
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <div>
-              <p className="font-eyebrow text-muted-foreground">Go deeper</p>
-              <p className="mt-1 max-w-xl text-sm text-muted-foreground">
-                Three honest readings of how you move through the world — each
-                one ends with intentions cut to fit what you learn.
-              </p>
-            </div>
-          </div>
-          <div className="mt-4 grid gap-3 md:grid-cols-3">
-            {QUIZ_PACKS.map((pack) => {
-              const saved = deepResults.find((r) => r.kind === pack.kind);
-              const savedResult = saved ? resultById(pack, saved.resultId) : null;
-              return (
-                <button
-                  key={pack.kind}
-                  type="button"
-                  onClick={() => setDeepOpen(pack.kind)}
-                  className="group rounded-xl border border-white/10 bg-white/[0.03] p-4 text-left transition-all hover:border-emerald-300/30 hover:bg-emerald-300/[0.05]"
-                >
-                  <div className="flex items-start justify-between gap-2">
-                    <span className="text-2xl">{pack.emoji}</span>
-                    {savedResult && (
-                      <span
-                        className={`rounded-full border border-white/10 bg-white/5 px-2 py-0.5 text-[10px] font-semibold ${savedResult.hue}`}
-                      >
-                        {savedResult.name}
-                      </span>
-                    )}
-                  </div>
-                  <p className="mt-2 font-bold tracking-tight">{pack.title}</p>
-                  <p className="mt-0.5 line-clamp-2 text-xs leading-relaxed text-muted-foreground">
-                    {savedResult
-                      ? savedResult.tagline
-                      : `${pack.questions.length} questions · ${pack.subtitle}`}
-                  </p>
-                  <p className="font-eyebrow mt-2 text-emerald-200/70 transition-colors group-hover:text-emerald-200">
-                    {savedResult ? "Retake →" : "Take the quiz →"}
-                  </p>
-                </button>
-              );
-            })}
-          </div>
-        </div>
-
-          </TabsContent>
-
-          {/* ---- Section 4 · Evening ---- */}
-          <TabsContent value="evening" className="mt-6 space-y-7 outline-none">
-            {/* Reminders */}
-            <div className="panel p-5">
-              <div className="flex flex-wrap items-start justify-between gap-4">
-            <div className="flex items-start gap-3">
-              <span className="flex h-11 w-11 items-center justify-center rounded-xl border border-emerald-200/25 bg-emerald-200/10">
-                <Bell className="h-5 w-5 text-emerald-200" />
-              </span>
-              <div>
-                <p className="font-bold">Nudge me back to my intention</p>
-                <p className="mt-0.5 max-w-md text-xs leading-relaxed text-muted-foreground">
-                  {activeStar
-                    ? `We'll check in and remind you: “${activeStar.text.slice(0, 70)}”`
-                    : "Set a focus star and we'll remind you how you meant to show up."}{" "}
-                  Reminders arrive as toasts — and as system notifications when
-                  you allow them.
-                </p>
-              </div>
-            </div>
-            <div className="flex items-center gap-3">
-              <span className="text-xs text-muted-foreground">
-                {reminders.enabled
-                  ? reminders.nextIn
-                    ? `Next nudge in ~${reminders.nextIn}`
-                    : "scheduled"
-                  : "off"}
-              </span>
-              <Switch
-                checked={reminders.enabled}
-                onCheckedChange={(v) => void reminders.toggleEnabled(v)}
-                disabled={
-                  reminders.permission === "denied" && !reminders.enabled
-                }
-              />
-            </div>
-          </div>
-
-          <div className="mt-4 flex flex-wrap items-center gap-2 border-t border-white/8 pt-4">
-            {REMINDER_SLOTS.filter((s) => !s.level || rank.level >= s.level).map((slot) => {
-              const on = reminders.slots.includes(slot.time);
-              return (
-                <button
-                  key={slot.time}
-                  type="button"
-                  disabled={!reminders.enabled}
-                  onClick={() =>
-                    reminders.setSlots(
-                      on
-                        ? reminders.slots.filter((t) => t !== slot.time)
-                        : [...reminders.slots, slot.time].sort(),
-                    )
-                  }
-                  className={`flex items-center gap-2 rounded-full border px-3 py-1.5 text-xs transition-colors disabled:cursor-not-allowed disabled:opacity-40 ${
-                    on
-                      ? "border-emerald-300/50 bg-emerald-300/12 text-emerald-100"
-                      : "border-white/10 bg-white/5 text-muted-foreground hover:border-white/25"
-                  }`}
-                >
-                  <span>{slot.emoji}</span>
-                  {slot.label}
-                  <span className="tabular-nums text-[10px] opacity-70">
-                    {slot.time}
-                  </span>
-                </button>
-              );
-            })}
-            {/* The vigil slot appears once the Ember rank is reached */}
-            {rank.level < 3 && (
-              <span
-                title={`Reach the ${rankNameForLevel(3)} rank to unlock the 22:30 nudge`}
-                className="flex items-center gap-1.5 rounded-full border border-white/8 bg-white/[0.03] px-3 py-1.5 text-xs text-muted-foreground/75"
-              >
-                <Lock className="h-3 w-3" />
-                Late vigil · 22:30
-                <span className="text-[10px] uppercase tracking-wider opacity-70">
-                  {rankNameForLevel(3)}
-                </span>
-              </span>
-            )}
-            {/* Custom time */}
-            <div className="flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3 py-1.5">
-              <Clock className="h-3.5 w-3.5 text-muted-foreground" />
-              <input
-                type="time"
-                value={customTime}
-                disabled={!reminders.enabled}
-                onChange={(e) => setCustomTime(e.target.value)}
-                aria-label="Custom reminder time"
-                className="bg-transparent text-xs tabular-nums outline-none [color-scheme:dark] disabled:opacity-40"
-              />
-              <button
-                type="button"
-                disabled={!reminders.enabled || !customTime}
-                onClick={() =>
-                  reminders.setSlots(
-                    reminders.slots.includes(customTime)
-                      ? reminders.slots.filter((t) => t !== customTime)
-                      : [...reminders.slots, customTime].sort(),
-                  )
-                }
-                aria-label={
-                  reminders.slots.includes(customTime)
-                    ? "Remove this custom time"
-                    : "Add this custom time"
-                }
-                className="text-muted-foreground transition-colors hover:text-emerald-200 disabled:cursor-not-allowed disabled:opacity-40"
-              >
-                {reminders.slots.includes(customTime) ? (
-                  <X className="h-3.5 w-3.5" />
-                ) : (
-                  <Plus className="h-3.5 w-3.5" />
-                )}
-              </button>
-            </div>
-            <div className="ml-auto flex items-center gap-2">
-              {reminders.permission === "default" && (
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => void reminders.requestPermission()}
-                  className="h-8 text-xs text-muted-foreground"
-                >
-                  Allow notifications
-                </Button>
-              )}
-              <Button
-                variant="outline"
-                size="sm"
-                disabled={!reminders.enabled}
-                onClick={() => reminders.nudgeNow()}
-                className="h-8 border-white/15 bg-white/5 text-xs hover:bg-white/10"
-              >
-                Test a nudge
-              </Button>
-            </div>
-          </div>
-          {reminders.permission === "denied" && (
-            <p className="mt-3 text-xs text-rose-200/80">
-              Notifications are blocked in your browser — toasts will still
-              reach you while this tab is open.
-            </p>
-          )}
-        </div>
-
-            {/* Evening reflection ledger */}
-            <div id="evening-ledger">
-              <ReflectionLedger intentionText={activeStar?.text ?? null} />
-            </div>
-
-            {/* Thirty nights, drawn as a constellation */}
-            <ConstellationProgress />
-          </TabsContent>
-        </Tabs>
       </div>
 
       <StarEditor
@@ -800,16 +484,6 @@ export default function Dashboard() {
         onOpenChange={setDiveOpen}
         onPickQuiz={handleDivePick}
       />
-
-      {QUIZ_PACKS.map((pack) => (
-        <PersonalityQuiz
-          key={pack.kind}
-          pack={pack}
-          open={deepOpen === pack.kind}
-          onOpenChange={(next) => setDeepOpen(next ? pack.kind : null)}
-          onHangIntention={handleQuizIntention}
-        />
-      ))}
 
       <AlertDialog open={deleteOpen} onOpenChange={setDeleteOpen}>
         <AlertDialogContent className="border-white/14 bg-[#131b3e]/95 backdrop-blur-xl">

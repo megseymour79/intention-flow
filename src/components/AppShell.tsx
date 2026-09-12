@@ -1,6 +1,15 @@
 import type { ReactNode } from "react";
 import { NavLink, useNavigate } from "react-router";
-import { LogOut, MessagesSquare, Send, Sparkles, Telescope } from "lucide-react";
+import {
+  Dumbbell,
+  LogOut,
+  MessagesSquare,
+  Send,
+  Sparkles,
+  Telescope,
+  TrendingUp,
+  MoonStar,
+} from "lucide-react";
 import { FloatingBackground } from "@/components/FloatingBackground";
 import { StarMark } from "@/components/StarMark";
 import { Button } from "@/components/ui/button";
@@ -18,6 +27,9 @@ import { cn } from "@/lib/utils";
 
 const NAV = [
   { to: "/dashboard", label: "My Sky", icon: Sparkles },
+  { to: "/practice", label: "Practice", icon: Dumbbell },
+  { to: "/deeper", label: "Go deeper", icon: TrendingUp },
+  { to: "/evening", label: "Evening", icon: MoonStar },
   { to: "/observatory", label: "Observatory", icon: Telescope },
   { to: "/community", label: "Community", icon: MessagesSquare },
   { to: "/messages", label: "Messages", icon: Send },
@@ -170,26 +182,26 @@ export function AppShell({
         <header className="sticky top-0 z-40 border-b border-white/10 bg-[#101737]/85 backdrop-blur-md lg:hidden">
           <div className="flex items-center justify-between px-4 py-3">
             <NavLink to="/" className="flex items-center gap-2">
-              <StarMark size={32} />
-              <span className="font-display text-base font-semibold tracking-tight">
+              <StarMark size={28} />
+              <span className="hidden font-display text-base font-semibold tracking-tight sm:inline">
                 Shifted<span className="text-emerald-200/90">Mind</span>
               </span>
             </NavLink>
-            <div className="flex items-center gap-1.5">
+            <div className="flex items-center gap-0.5">
               {NAV.map((item) => (
                 <NavLink
                   key={item.to}
                   to={item.to}
                   className={({ isActive }) =>
                     cn(
-                      "flex h-10 w-10 items-center justify-center rounded-xl transition-colors",
+                      "flex h-8 w-8 items-center justify-center rounded-lg transition-colors",
                       isActive
                         ? "bg-white/[0.07] text-emerald-200"
                         : "text-foreground/70 hover:bg-white/5 hover:text-foreground",
                     )
                   }
                 >
-                  <item.icon className="h-5 w-5" />
+                  <item.icon className="h-4 w-4" />
                 </NavLink>
               ))}
               <Button
@@ -197,9 +209,9 @@ export function AppShell({
                 size="icon"
                 onClick={handleSignOut}
                 aria-label="Sign out"
-                className="text-muted-foreground hover:text-destructive"
+                className="h-8 w-8 text-muted-foreground hover:text-destructive"
               >
-                <LogOut className="h-5 w-5" />
+                <LogOut className="h-4 w-4" />
               </Button>
             </div>
           </div>

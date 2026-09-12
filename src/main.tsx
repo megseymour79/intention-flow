@@ -20,6 +20,9 @@ const Dashboard = lazy(() => import("./pages/Dashboard.tsx"));
 const Community = lazy(() => import("./pages/Community.tsx"));
 const Messages = lazy(() => import("./pages/Messages.tsx"));
 const Observatory = lazy(() => import("./pages/Observatory.tsx"));
+const Practice = lazy(() => import("./pages/Practice.tsx"));
+const Deeper = lazy(() => import("./pages/Deeper.tsx"));
+const Evening = lazy(() => import("./pages/Evening.tsx"));
 const NotFound = lazy(() => import("./pages/NotFound.tsx"));
 
 // Self-heal stale build chunks: if the browser fails to load a module (e.g. after
@@ -198,6 +201,30 @@ createRoot(document.getElementById("root")!).render(
                 element={
                   <RequireAuth>
                     <Observatory />
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path="/practice"
+                element={
+                  <RequireAuth>
+                    <Practice />
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path="/deeper"
+                element={
+                  <RequireAuth>
+                    <Deeper />
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path="/evening"
+                element={
+                  <RequireAuth>
+                    <Evening />
                   </RequireAuth>
                 }
               />
