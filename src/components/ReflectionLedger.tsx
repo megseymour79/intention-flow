@@ -100,7 +100,7 @@ export function ReflectionLedger({
   }, [recent]);
 
   return (
-    <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-5">
+    <div className="radius-sheet border border-white/10 bg-white/[0.03] p-5">
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div className="flex items-start gap-3">
           <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-violet-300/15 ring-1 ring-violet-300/25">

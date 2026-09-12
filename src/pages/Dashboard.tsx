@@ -208,9 +208,9 @@ export default function Dashboard() {
 
   return (
     <AppShell title="My Sky">
-      <div className="space-y-6">
+      <div className="space-y-7">
         {/* Greeting row */}
-        <div className="flex flex-wrap items-end justify-between gap-4">
+        <div className="section-rule flex flex-wrap items-end justify-between gap-4 pb-5">
           <div>
             <p className="font-eyebrow text-muted-foreground">
               {new Date().toLocaleDateString([], {
@@ -219,7 +219,7 @@ export default function Dashboard() {
                 day: "numeric",
               })}
             </p>
-            <h1 className="text-clearing-soft mt-1 text-3xl font-extrabold tracking-tight sm:text-4xl">
+            <h1 className="text-clearing-soft mt-1 font-display text-3xl font-semibold tracking-tight sm:text-4xl">
               {greeting}, <span className="text-emerald-200">{firstName}</span>{" "}
               <span className="inline-block animate-sway">✦</span>
             </h1>
@@ -260,7 +260,7 @@ export default function Dashboard() {
               onCatchBloom={handleCatchBloom}
               deepSky={rank.level >= 4}
               golden={rank.level >= 5}
-              className="h-[54vh] min-h-[400px] w-full overflow-hidden rounded-3xl border border-white/10 sky-gradient"
+              className="radius-sheet h-[54vh] min-h-[400px] w-full overflow-hidden border border-white/10 sky-gradient"
               hint={
                 stars.length === 0
                   ? undefined
@@ -268,7 +268,7 @@ export default function Dashboard() {
               }
             />
             {loading && (
-              <div className="absolute inset-0 z-20 flex items-center justify-center rounded-3xl bg-[#0e1634]/70 backdrop-blur-sm">
+              <div className="radius-sheet absolute inset-0 z-20 flex items-center justify-center bg-[#0e1634]/70 backdrop-blur-sm">
                 <Loader2 className="h-6 w-6 animate-spin text-emerald-200" />
               </div>
             )}
@@ -277,7 +277,7 @@ export default function Dashboard() {
                 className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center"
                 aria-hidden
               >
-                <div className="max-w-sm rounded-3xl border border-white/14 bg-[#131b3e]/50 p-6 text-center backdrop-blur-sm">
+                <div className="max-w-sm rounded-xl border border-white/14 bg-[#131b3e]/50 p-6 text-center backdrop-blur-sm">
                   <p className="text-3xl">🌌</p>
                   <p className="mt-2 text-lg font-bold tracking-tight">
                     Your sky is empty — for now

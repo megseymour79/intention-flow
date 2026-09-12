@@ -165,7 +165,7 @@ export default function Observatory() {
 
   return (
     <AppShell title="The Observatory">
-      <div className="space-y-6">
+      <div className="space-y-7">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}

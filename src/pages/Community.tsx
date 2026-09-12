@@ -148,7 +148,7 @@ export default function Community() {
 
   return (
     <AppShell title="Community">
-      <div className="mx-auto max-w-2xl space-y-6">
+      <div className="page-col-narrow space-y-7">
         <PageHeader
           eyebrow="Community · shared intentions"
           title={
@@ -276,7 +276,7 @@ export default function Community() {
 
         {/* Feed */}
         {posts.length === 0 && (
-          <div className="rounded-3xl border border-dashed border-white/15 p-10 text-center">
+          <div className="rounded-2xl border border-dashed border-white/15 p-10 text-center">
             <p className="text-3xl">🪐</p>
             <p className="mt-3 font-bold tracking-tight">No stars up here yet</p>
             <p className="mx-auto mt-1 max-w-sm text-sm text-foreground/75">

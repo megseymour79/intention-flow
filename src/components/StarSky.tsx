@@ -605,7 +605,7 @@ export function StarSky({
       ref={containerRef}
       className={
         className ??
-        "relative h-full w-full overflow-hidden rounded-3xl border border-white/10 sky-gradient"
+        "relative h-full w-full radius-sheet overflow-hidden border border-white/10 sky-gradient"
       }
       onPointerDown={(e) => {
         // Remember where a press on empty sky began, so scrolls don't open the composer

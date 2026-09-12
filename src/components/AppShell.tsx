@@ -42,7 +42,7 @@ export function PageHeader({
   action?: ReactNode;
 }) {
   return (
-    <div className="flex flex-wrap items-end justify-between gap-4">
+    <div className="flex flex-wrap items-end justify-between gap-4 border-b border-white/12 pb-5">
       <div className="min-w-0">
         <p className="font-eyebrow text-muted-foreground">{eyebrow}</p>
         <h1 className="text-clearing-soft mt-1.5 font-display text-3xl font-semibold leading-tight tracking-tight sm:text-4xl">
@@ -85,7 +85,7 @@ export function AppShell({
       to={item.to}
       className={({ isActive }) =>
         cn(
-          "flex items-center gap-3 rounded-lg border border-transparent px-3.5 py-2.5 text-sm font-medium transition-all",
+          "flex items-center gap-3 rounded-lg border border-transparent px-3.5 py-2 text-sm font-medium transition-all",
           isActive
             ? "border-white/12 bg-white/[0.06] text-foreground shadow-[inset_0_1px_0_0_rgba(255,255,255,0.05)]"
             : "text-foreground/75 hover:bg-white/[0.03] hover:text-foreground",
@@ -103,7 +103,7 @@ export function AppShell({
       <div className="mx-auto flex min-h-screen w-full max-w-[1400px] flex-col lg:flex-row">
         {/* Desktop sidebar */}
         <aside className="sticky top-0 hidden h-screen w-60 shrink-0 flex-col border-r border-white/8 px-4 py-6 lg:flex">
-          <NavLink to="/" className="mb-8 flex items-center gap-2.5">
+          <NavLink to="/" className="mb-7 flex items-center gap-2.5">
             <StarMark size={36} />
             <div className="leading-tight">
               <p className="font-display text-[15px] font-semibold tracking-tight">
@@ -115,7 +115,7 @@ export function AppShell({
             </div>
           </NavLink>
 
-          <nav className="space-y-1.5">{NAV.map(sidebarLink)}</nav>
+          <nav className="space-y-1">{NAV.map(sidebarLink)}</nav>
 
           <div className="mt-auto space-y-3">
             <div className="panel p-3 text-center">
@@ -132,7 +132,7 @@ export function AppShell({
               <DropdownMenuTrigger asChild>
                 <button
                   type="button"
-                  className="flex w-full items-center gap-3 rounded-xl border border-white/8 bg-white/4 px-3 py-2 text-left transition-colors hover:bg-white/8"
+                  className="flex w-full items-center gap-3 rounded-lg border border-white/8 bg-white/4 px-3 py-2 text-left transition-colors hover:bg-white/8"
                 >
                   <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-emerald-200/25 bg-emerald-200/10 font-mono text-xs font-semibold text-emerald-100">
                     {initialsOf(user?.name)}
@@ -206,11 +206,13 @@ export function AppShell({
         </header>
 
         {/* Content */}
-        <main className="min-w-0 flex-1 px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
-          {title && (
-            <h1 className="sr-only">{title}</h1>
-          )}
-          {children}
+        <main className="min-w-0 flex-1 px-4 py-6 sm:px-6 lg:px-10 lg:py-8">
+          <div className="page-col">
+            {title && (
+              <h1 className="sr-only">{title}</h1>
+            )}
+            {children}
+          </div>
         </main>
       </div>
     </div>

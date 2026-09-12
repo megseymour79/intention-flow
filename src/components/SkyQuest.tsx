@@ -128,7 +128,7 @@ export function FirstLight({
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -10 }}
           transition={{ duration: 0.4 }}
-          className="relative overflow-hidden rounded-3xl border border-emerald-300/20 bg-gradient-to-br from-emerald-300/[0.06] via-white/[0.03] to-transparent p-5"
+          className="radius-sheet relative overflow-hidden border border-emerald-300/20 bg-gradient-to-br from-emerald-300/[0.06] via-white/[0.03] to-transparent p-5"
         >
           <div className="pointer-events-none absolute -right-10 -top-10 h-36 w-36 rounded-full bg-emerald-300/10 blur-3xl" />
 
@@ -308,7 +308,7 @@ export function ConstellationProgress() {
   if (recent !== undefined && recent.length === 0) return null;
 
   return (
-    <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-5">
+    <div className="radius-sheet border border-white/10 bg-white/[0.03] p-5">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div className="flex items-start gap-3">
           <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-sky-300/15 ring-1 ring-sky-300/25">
@@ -429,7 +429,7 @@ export function WelcomeBack() {
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.45 }}
-      className="relative overflow-hidden rounded-3xl border border-sky-300/20 bg-gradient-to-r from-indigo-500/[0.09] via-white/[0.03] to-transparent p-5"
+      className="radius-sheet relative overflow-hidden border border-sky-300/20 bg-gradient-to-r from-indigo-500/[0.09] via-white/[0.03] to-transparent p-5"
     >
       <div className="pointer-events-none absolute -left-8 -top-10 h-32 w-32 rounded-full bg-indigo-400/10 blur-3xl" />
 
@@ -502,7 +502,7 @@ export function RankPanel() {
   const maxScore = RANK_TIERS[RANK_TIERS.length - 1].score;
 
   return (
-    <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-5">
+    <div className="radius-sheet border border-white/10 bg-white/[0.03] p-5">
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div className="flex items-start gap-3">
           <span

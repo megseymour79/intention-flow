@@ -281,7 +281,7 @@ export function WishCaught({
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="absolute inset-0 z-40 flex items-center justify-center rounded-3xl bg-[#101737]/60 backdrop-blur-sm"
+          className="radius-sheet absolute inset-0 z-40 flex items-center justify-center bg-[#101737]/60 backdrop-blur-sm"
           onClick={onClose}
         >
           <motion.div
@@ -289,7 +289,7 @@ export function WishCaught({
             animate={{ scale: 1, y: 0 }}
             exit={{ scale: 0.9, opacity: 0 }}
             transition={{ type: "spring", stiffness: 300, damping: 22 }}
-            className="mx-4 max-w-xs rounded-3xl border border-emerald-300/25 bg-[#131b3e]/95 p-5 text-center shadow-2xl"
+            className="mx-4 max-w-xs rounded-2xl border border-emerald-300/25 bg-[#131b3e]/95 p-5 text-center shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
             <p className="text-3xl">✨</p>

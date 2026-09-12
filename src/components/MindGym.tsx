@@ -24,7 +24,7 @@ function GymCard({
   return (
     <div
       className={cn(
-        "flex flex-col rounded-3xl border border-white/10 bg-gradient-to-b from-white/[0.05] to-white/[0.02] p-5 transition-colors hover:border-emerald-300/25",
+        "flex flex-col rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.05] to-white/[0.02] p-5 transition-colors hover:border-emerald-300/25",
         wide && "sm:col-span-2",
       )}
     >

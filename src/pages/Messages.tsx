@@ -128,7 +128,7 @@ export default function Messages() {
 
   return (
     <AppShell title="Messages">
-      <div className="panel mx-auto flex h-[calc(100vh-10rem)] max-w-5xl flex-col overflow-hidden lg:h-[calc(100vh-9rem)]">
+      <div className="radius-sheet panel mx-auto flex h-[calc(100dvh-13rem)] max-w-5xl flex-col overflow-hidden">
         <div className="flex h-full min-h-0 flex-col md:flex-row">
           {/* Conversation list */}
           <aside

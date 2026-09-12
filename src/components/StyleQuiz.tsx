@@ -231,7 +231,7 @@ export function StyleQuiz({
                   initial={{ scale: 0, rotate: -20 }}
                   animate={{ scale: 1, rotate: 0 }}
                   transition={{ type: "spring", stiffness: 260, damping: 16, delay: 0.1 }}
-                  className="mx-auto flex h-20 w-20 items-center justify-center rounded-3xl bg-gradient-to-br from-white/10 to-white/5 text-5xl ring-1 ring-white/15"
+                  className="mx-auto flex h-20 w-20 items-center justify-center rounded-2xl bg-gradient-to-br from-white/10 to-white/5 text-5xl ring-1 ring-white/15"
                 >
                   {result.emoji}
                 </motion.div>
