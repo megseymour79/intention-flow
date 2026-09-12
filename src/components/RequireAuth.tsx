@@ -1,4 +1,5 @@
 import { useAuth } from "@/hooks/use-auth";
+import { RemindersProvider } from "@/hooks/reminders-provider";
 import { Loader2 } from "lucide-react";
 import type { ReactNode } from "react";
 import { Navigate, useLocation } from "react-router";
@@ -25,5 +26,7 @@ export function RequireAuth({ children }: { children: ReactNode }) {
     );
   }
 
-  return children;
+  // Authenticated app scope: the reminder scheduler must live above page
+  // navigation so nudges keep firing on every page, not just /evening.
+  return <RemindersProvider>{children}</RemindersProvider>;
 }

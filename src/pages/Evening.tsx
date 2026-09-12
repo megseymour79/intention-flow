@@ -7,7 +7,8 @@ import { api } from "@/convex/_generated/api";
 import { AppShell, PageHeader } from "@/components/AppShell";
 import { ReflectionLedger } from "@/components/ReflectionLedger";
 import { ConstellationProgress } from "@/components/SkyQuest";
-import { REMINDER_SLOTS, useReminders } from "@/hooks/use-reminders";
+import { REMINDER_SLOTS } from "@/hooks/use-reminders";
+import { useRemindersContext } from "@/hooks/reminders-provider";
 import { rankNameForLevel, useSkyRank } from "@/lib/unlocks";
 
 export default function Evening() {
@@ -16,7 +17,9 @@ export default function Evening() {
 
   // Sky rank gates the late-vigil reminder slot.
   const rank = useSkyRank();
-  const reminders = useReminders(() => activeStar?.text ?? null);
+  // The scheduler lives app-wide in RemindersProvider; this page just
+  // renders and controls it.
+  const reminders = useRemindersContext();
   const [customTime, setCustomTime] = useState("07:30");
 
   return (
