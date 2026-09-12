@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router";
-import { motion } from "framer-motion";
-import { ArrowUpRight, Compass, Sparkles } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ArrowUpRight, Compass, Sparkles, Youtube } from "lucide-react";
 
 import { AppShell, PageHeader } from "@/components/AppShell";
 import { Button } from "@/components/ui/button";
@@ -14,6 +14,10 @@ import {
   type MindResource,
   type ResourceKind,
 } from "@/lib/resources";
+import {
+  pickIntentionalWatch,
+  type IntentionalWatch,
+} from "@/lib/intentional-watch";
 import { cn } from "@/lib/utils";
 
 const KIND_STYLES: Record<ResourceKind, string> = {
@@ -69,6 +73,82 @@ function ResourceCard({ r, index }: { r: MindResource; index: number }) {
         {cat.emoji} {cat.name}
       </p>
     </motion.a>
+  );
+}
+
+/* The wormhole — “take me somewhere intentional”: every click warps the
+   stargazer to a different hand-picked talk, never the same one twice. */
+function WormholeCard() {
+  const [watch, setWatch] = useState<IntentionalWatch | null>(null);
+
+  const warp = () => setWatch((cur) => pickIntentionalWatch(cur?.id ?? null));
+
+  return (
+    <motion.section
+      initial={{ opacity: 0, y: 14 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.15, duration: 0.4 }}
+      className="panel panel-hover relative overflow-hidden p-5"
+      aria-label="Take me somewhere intentional — a random talk on intentions"
+    >
+      <div className="pointer-events-none absolute -bottom-12 -right-10 h-40 w-40 rounded-full bg-violet-300/12 blur-3xl" />
+      <div className="flex flex-wrap items-center gap-4">
+        <span className="flex h-12 w-12 shrink-0 animate-glow-pulse items-center justify-center rounded-xl bg-violet-300/12 text-2xl ring-1 ring-violet-300/30">
+          🌀
+        </span>
+        <div className="min-w-[220px] flex-1">
+          <p className="font-eyebrow text-violet-200/80">
+            the wormhole · a new film every click
+          </p>
+          <p className="mt-1 text-base font-bold tracking-tight">
+            Take me somewhere intentional
+          </p>
+          <p className="mt-1 max-w-xl text-xs leading-relaxed text-muted-foreground">
+            Ten hand-picked talks on intentions, growth, and choosing who you
+            are. The sky picks one at random — never the same film twice in a
+            row.
+          </p>
+        </div>
+        <Button
+          onClick={warp}
+          className="rounded-full bg-violet-300 font-semibold text-violet-950 hover:bg-violet-200"
+        >
+          <Sparkles className="mr-1.5 h-4 w-4" />
+          {watch ? "Somewhere else" : "Warp me"}
+        </Button>
+      </div>
+
+      <div aria-live="polite">
+        <AnimatePresence mode="wait" initial={false}>
+          {watch && (
+            <motion.a
+              key={watch.id}
+              href={watch.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.25 }}
+              className="group mt-4 flex items-center gap-3 rounded-2xl border border-violet-300/20 bg-violet-300/[0.06] p-3.5 transition-colors hover:border-violet-300/40"
+            >
+              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-violet-300/15 text-lg ring-1 ring-violet-300/25">
+                {watch.emoji}
+              </span>
+              <span className="min-w-0 flex-1">
+                <span className="block truncate text-sm font-bold tracking-tight">
+                  {watch.title}
+                </span>
+                <span className="font-eyebrow mt-0.5 block text-muted-foreground">
+                  {watch.by} · {watch.length} · opens on YouTube
+                </span>
+              </span>
+              <Youtube className="h-5 w-5 shrink-0 text-violet-200/60 transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-violet-200" />
+            </motion.a>
+          )}
+        </AnimatePresence>
+      </div>
+    </motion.section>
   );
 }
 
@@ -135,6 +215,9 @@ export default function Observatory() {
             <ArrowUpRight className="h-5 w-5 text-emerald-200/60 transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-emerald-200" />
           </div>
         </motion.a>
+
+        {/* The wormhole — a random intention talk on every click */}
+        <WormholeCard />
 
         {/* Category filters */}
         <div className="flex flex-wrap gap-2">
