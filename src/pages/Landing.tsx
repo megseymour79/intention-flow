@@ -864,38 +864,38 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* ---- Footer ---- */}
-      <footer className="relative border-t hairline py-10">
+      {/* ---- Footer — dark ink silhouettes against the bright horizon ---- */}
+      <footer className="relative border-t border-[#101737]/15 py-10">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-6 px-4 sm:flex-row sm:px-6">
           <div className="flex items-center gap-2.5">
             <StarMark size={30} />
             <div>
-              <p className="font-display text-sm font-semibold tracking-tight">
-                Shifted<span className="text-emerald-200/90">Mind</span>
+              <p className="font-display text-sm font-semibold tracking-tight text-[#101737]">
+                Shifted<span className="text-[#0c5a4e]">Mind</span>
               </p>
-              <p className="font-eyebrow text-muted-foreground">
+              <p className="font-eyebrow text-[#101737]/70">
                 choose your responses
               </p>
             </div>
           </div>
-          <nav className="flex items-center gap-5 font-eyebrow text-muted-foreground">
-            <a href="#how" className="hover:text-emerald-200">
+          <nav className="flex items-center gap-5 font-eyebrow text-[#101737]/75">
+            <a href="#how" className="hover:text-[#0c5a4e]">
               Practice
             </a>
-            <a href="#tone" className="hover:text-emerald-200">
+            <a href="#tone" className="hover:text-[#0c5a4e]">
               Tone lab
             </a>
-            <a href="#quiz" className="hover:text-emerald-200">
+            <a href="#quiz" className="hover:text-[#0c5a4e]">
               Archetype
             </a>
-            <a href="#gym" className="hover:text-emerald-200">
+            <a href="#gym" className="hover:text-[#0c5a4e]">
               Mind gym
             </a>
-            <Link to="/auth" className="hover:text-emerald-200">
+            <Link to="/auth" className="hover:text-[#0c5a4e]">
               Sign in
             </Link>
           </nav>
-          <p className="font-eyebrow text-muted-foreground/70">
+          <p className="font-eyebrow text-[#101737]/60">
             © {new Date().getFullYear()} ShiftedMind
           </p>
         </div>

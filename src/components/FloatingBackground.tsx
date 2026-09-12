@@ -407,22 +407,30 @@ export function FloatingBackground({ count = 18 }: { count?: number }) {
       aria-hidden
       className="pointer-events-none fixed inset-0 -z-10 overflow-hidden"
     >
-      {/* Sky base — a long light twilight: indigo → royal blue → cerulean
-          → turquoise → bright mint horizon, blended through many stops */}
+      {/* Sky base — full-spectrum twilight: violet → indigo → royal blue →
+          azure → cyan → turquoise → mint, eleven blended stops */}
       <div
         className="absolute inset-0"
         style={{
           background:
-            "linear-gradient(to bottom, #0a1128 0%, #13224f 16%, #1b3268 32%, #234684 47%, #2b5c96 61%, #3377a2 73%, #3e93a4 84%, #4cb0a2 93%, #66c9ad 100%)",
+            "linear-gradient(to bottom, #0d0f33 0%, #191454 10%, #1c2a74 20%, #1e479c 30%, #2066b8 40%, #2588c4 50%, #2aa8bd 60%, #32c2ae 70%, #42d4a8 80%, #5ce4ab 90%, #7feeb9 100%)",
         }}
       />
 
-      {/* bright moonlit-teal bloom along the horizon */}
+      {/* dawn-gold + rose glow layered over the mint horizon — the moment
+          the night sky hands off to morning */}
       <div
         className="absolute inset-x-0 bottom-0 h-[42%]"
         style={{
           background:
-            "radial-gradient(130% 100% at 50% 122%, rgba(168,236,214,0.3) 0%, rgba(110,190,205,0.16) 45%, transparent 78%)",
+            "radial-gradient(130% 100% at 50% 122%, rgba(255,214,150,0.34) 0%, rgba(255,178,150,0.18) 40%, transparent 75%)",
+        }}
+      />
+      <div
+        className="absolute inset-x-0 bottom-0 h-[26%]"
+        style={{
+          background:
+            "radial-gradient(120% 90% at 26% 118%, rgba(255,158,182,0.14) 0%, transparent 65%)",
         }}
       />
 
@@ -431,7 +439,7 @@ export function FloatingBackground({ count = 18 }: { count?: number }) {
         className="absolute inset-0"
         style={{
           background:
-            "radial-gradient(120% 90% at 50% 42%, transparent 62%, rgba(6,12,30,0.18) 100%)",
+            "radial-gradient(120% 90% at 50% 42%, transparent 62%, rgba(10,12,34,0.14) 100%)",
         }}
       />
 
