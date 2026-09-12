@@ -80,7 +80,7 @@ function Section({
               )}
             >
               <div className={cn(center && "max-w-2xl")}>
-                <p className="font-eyebrow text-emerald-200/70">
+                <p className="font-eyebrow text-emerald-200/85">
                   {index ? `${index} · ` : ""}
                   {eyebrow}
                 </p>
@@ -843,7 +843,7 @@ export default function Landing() {
                 Your first star takes{" "}
                 <span className="text-emerald-200">ten seconds</span>
               </h2>
-              <p className="mx-auto mt-4 max-w-md text-sm leading-relaxed text-foreground/70 sm:text-base">
+              <p className="mx-auto mt-4 max-w-md text-sm leading-relaxed text-foreground/85 sm:text-base">
                 {isAuthenticated
                   ? "Your sky is waiting. Go hang tonight's intention."
                   : "Make an account, hang one intention, and let tomorrow meet a slightly more intentional you."}
@@ -864,38 +864,39 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* ---- Footer — dark ink silhouettes against the bright horizon ---- */}
-      <footer className="relative border-t border-[#101737]/15 py-10">
+      {/* ---- Footer — the night returns at the page's base: deep ink band,
+           ivory type, high contrast against the darker horizon ---- */}
+      <footer className="relative border-t border-white/10 bg-gradient-to-b from-[#0a0c2a]/0 via-[#0a0c2a]/92 to-[#0a0c2a] py-10">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-6 px-4 sm:flex-row sm:px-6">
           <div className="flex items-center gap-2.5">
             <StarMark size={30} />
             <div>
-              <p className="font-display text-sm font-semibold tracking-tight text-[#101737]">
-                Shifted<span className="text-[#0c5a4e]">Mind</span>
+              <p className="font-display text-sm font-semibold tracking-tight text-foreground">
+                Shifted<span className="text-emerald-200/90">Mind</span>
               </p>
-              <p className="font-eyebrow text-[#101737]/70">
+              <p className="font-eyebrow text-foreground/70">
                 choose your responses
               </p>
             </div>
           </div>
-          <nav className="flex items-center gap-5 font-eyebrow text-[#101737]/75">
-            <a href="#how" className="hover:text-[#0c5a4e]">
+          <nav className="flex items-center gap-5 font-eyebrow text-foreground/80">
+            <a href="#how" className="hover:text-emerald-200">
               Practice
             </a>
-            <a href="#tone" className="hover:text-[#0c5a4e]">
+            <a href="#tone" className="hover:text-emerald-200">
               Tone lab
             </a>
-            <a href="#quiz" className="hover:text-[#0c5a4e]">
+            <a href="#quiz" className="hover:text-emerald-200">
               Archetype
             </a>
-            <a href="#gym" className="hover:text-[#0c5a4e]">
+            <a href="#gym" className="hover:text-emerald-200">
               Mind gym
             </a>
-            <Link to="/auth" className="hover:text-[#0c5a4e]">
+            <Link to="/auth" className="hover:text-emerald-200">
               Sign in
             </Link>
           </nav>
-          <p className="font-eyebrow text-[#101737]/60">
+          <p className="font-eyebrow text-foreground/70">
             © {new Date().getFullYear()} ShiftedMind
           </p>
         </div>

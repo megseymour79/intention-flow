@@ -408,29 +408,30 @@ export function FloatingBackground({ count = 18 }: { count?: number }) {
       className="pointer-events-none fixed inset-0 -z-10 overflow-hidden"
     >
       {/* Sky base — full-spectrum twilight: violet → indigo → royal blue →
-          azure → cyan → turquoise → mint, eleven blended stops */}
+          azure → cyan → turquoise → mint, eleven blended stops, lightness
+          capped low so foreground text keeps contrast end to end */}
       <div
         className="absolute inset-0"
         style={{
           background:
-            "linear-gradient(to bottom, #0d0f33 0%, #191454 10%, #1c2a74 20%, #1e479c 30%, #2066b8 40%, #2588c4 50%, #2aa8bd 60%, #32c2ae 70%, #42d4a8 80%, #5ce4ab 90%, #7feeb9 100%)",
+            "linear-gradient(to bottom, #0a0c2a 0%, #131040 10%, #17205c 20%, #1a3380 30%, #1d4494 40%, #205c98 50%, #237691 60%, #268a83 70%, #2a9c7c 80%, #2fae7d 90%, #35bd80 100%)",
         }}
       />
 
-      {/* dawn-gold + rose glow layered over the mint horizon — the moment
-          the night sky hands off to morning */}
+      {/* dawn-gold + rose glow layered over the mint horizon — kept faint
+          so it colors the horizon without washing out text above it */}
       <div
         className="absolute inset-x-0 bottom-0 h-[42%]"
         style={{
           background:
-            "radial-gradient(130% 100% at 50% 122%, rgba(255,214,150,0.34) 0%, rgba(255,178,150,0.18) 40%, transparent 75%)",
+            "radial-gradient(130% 100% at 50% 122%, rgba(255,214,150,0.16) 0%, rgba(255,178,150,0.08) 40%, transparent 75%)",
         }}
       />
       <div
         className="absolute inset-x-0 bottom-0 h-[26%]"
         style={{
           background:
-            "radial-gradient(120% 90% at 26% 118%, rgba(255,158,182,0.14) 0%, transparent 65%)",
+            "radial-gradient(120% 90% at 26% 118%, rgba(255,158,182,0.07) 0%, transparent 65%)",
         }}
       />
 

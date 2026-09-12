@@ -567,23 +567,23 @@
   animation-timing-function: linear;
 }
 
-/* Sky gradient — a full-spectrum twilight: violet → indigo → royal blue
-   → azure → cyan → turquoise → mint, rising lighter at every stop, with
-   a warm dawn-gold bloom layered on the horizon by the background. */
+/* Sky gradient — the same full-spectrum twilight journey (violet → indigo
+   → royal blue → azure → cyan → turquoise → mint) with the lightness capped
+   in the lower half, so ivory text always keeps contrast against the sky. */
 .sky-gradient {
   background: linear-gradient(
     to bottom,
-    #0d0f33 0%,
-    #191454 10%,
-    #1c2a74 20%,
-    #1e479c 30%,
-    #2066b8 40%,
-    #2588c4 50%,
-    #2aa8bd 60%,
-    #32c2ae 70%,
-    #42d4a8 80%,
-    #5ce4ab 90%,
-    #7feeb9 100%
+    #0a0c2a 0%,
+    #131040 10%,
+    #17205c 20%,
+    #1a3380 30%,
+    #1d4494 40%,
+    #205c98 50%,
+    #237691 60%,
+    #268a83 70%,
+    #2a9c7c 80%,
+    #2fae7d 90%,
+    #35bd80 100%
   );
 }
 
@@ -691,12 +691,13 @@
   pointer-events: none;
 }
 
-/* Lighter clearing for text on already-dark cards. */
+/* Lighter clearing for text on already-dark cards — still strong enough
+   that large serif headlines hold their edge over any part of the sky. */
 .text-clearing-soft::before {
   background: radial-gradient(
     ellipse 70% 62% at 50% 50%,
-    rgba(8, 14, 34, 0.45) 0%,
-    rgba(10, 18, 42, 0.3) 55%,
+    rgba(8, 14, 34, 0.58) 0%,
+    rgba(10, 18, 42, 0.4) 55%,
     rgba(12, 22, 48, 0) 100%
   );
 }
