@@ -282,7 +282,7 @@ export default function Dashboard() {
                   <p className="mt-2 text-lg font-bold tracking-tight">
                     Your sky is empty — for now
                   </p>
-                  <p className="mt-1 text-sm text-foreground/70">
+                  <p className="mt-1 text-sm text-foreground/80">
                     Tap anywhere up here to hang a star, or borrow one of the
                     ready-made intentions.
                   </p>
@@ -360,7 +360,7 @@ export default function Dashboard() {
               </div>
             ) : (
               <div className="mt-3 space-y-3">
-                <p className="text-sm text-foreground/60">
+                <p className="text-sm text-foreground/75">
                   No star is lit yet. Tap any star in your sky — or hang a new
                   one — to set today's focus.
                 </p>
@@ -459,7 +459,7 @@ export default function Dashboard() {
               </div>
             ) : (
               <div className="mt-3 space-y-3">
-                <p className="text-sm text-foreground/60">
+                <p className="text-sm text-foreground/75">
                   Eight questions. One honest reading of where your energy
                   lives — and what shadows it.
                 </p>
@@ -651,7 +651,7 @@ export default function Dashboard() {
             {rank.level < 3 && (
               <span
                 title={`Reach the ${rankNameForLevel(3)} rank to unlock the 22:30 nudge`}
-                className="flex items-center gap-1.5 rounded-full border border-white/8 bg-white/[0.03] px-3 py-1.5 text-xs text-muted-foreground/55"
+                className="flex items-center gap-1.5 rounded-full border border-white/8 bg-white/[0.03] px-3 py-1.5 text-xs text-muted-foreground/75"
               >
                 <Lock className="h-3 w-3" />
                 Late vigil · 22:30

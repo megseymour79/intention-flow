@@ -192,7 +192,7 @@ function ImpulseCatcher() {
               {done ? "Go again" : "Start the 20s"}
             </button>
             {bestScore > 0 && (
-              <p className="text-[10px] uppercase tracking-widest text-muted-foreground/60">
+              <p className="text-[10px] uppercase tracking-widest text-foreground/70">
                 personal best · {bestScore}
               </p>
             )}
@@ -367,7 +367,7 @@ function GroundingSteps() {
                 />
               ))}
             </div>
-            <p className="text-[10px] uppercase tracking-widest text-muted-foreground/60">
+            <p className="text-[10px] uppercase tracking-widest text-foreground/70">
               step {step + 1} of 5
             </p>
           </>
@@ -515,7 +515,7 @@ function MomentCompass() {
           </>
         ) : (
           <>
-            <p className="text-[10px] uppercase tracking-widest text-muted-foreground/60">
+            <p className="text-[10px] uppercase tracking-widest text-foreground/70">
               when the moment squeezes · {round + 1}/{COMPASS_PAIRS.length}
             </p>
             <div className="flex w-full max-w-[280px] items-stretch gap-2">
@@ -530,7 +530,7 @@ function MomentCompass() {
                 </button>
               ))}
             </div>
-            <p className="text-[10px] text-muted-foreground/60">
+            <p className="text-[10px] text-foreground/70">
               pick the one you'd want to have chosen
             </p>
           </>

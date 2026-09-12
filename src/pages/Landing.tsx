@@ -172,7 +172,7 @@ function HeroSky() {
             }}
             placeholder="I want to be patient when I'm interrupted…"
             maxLength={120}
-            className="border-0 bg-transparent text-sm shadow-none placeholder:text-foreground/40 focus-visible:ring-0"
+            className="border-0 bg-transparent text-sm shadow-none placeholder:text-foreground/55 focus-visible:ring-0"
           />
           <Button
             onClick={() => hang()}
@@ -320,7 +320,7 @@ function ShiftCard({
         <span
           className={cn(
             "font-eyebrow transition-colors",
-            open ? "text-emerald-200/90" : "text-muted-foreground/50",
+            open ? "text-emerald-200/90" : "text-foreground/75",
           )}
         >
           {open ? "− close" : "+ tap"}
@@ -330,7 +330,7 @@ function ShiftCard({
       <p
         className={cn(
           "text-xs leading-relaxed transition-all",
-          open ? "text-foreground/75 line-clamp-none" : "text-foreground/45 line-clamp-1",
+          open ? "text-foreground/85 line-clamp-none" : "text-foreground/70 line-clamp-1",
         )}
       >
         {shift.body}
@@ -521,7 +521,7 @@ export default function Landing() {
               {cta}
               <a
                 href="#how"
-                className="relative z-10 font-eyebrow text-foreground/60 transition-colors hover:text-emerald-200"
+                className="relative z-10 font-eyebrow text-foreground/75 transition-colors hover:text-emerald-200"
               >
                 See it in action ↓
               </a>
@@ -562,7 +562,7 @@ export default function Landing() {
           {STEPS.map((step, i) => (
             <FadeUp key={step.title} delay={i * 0.1}>
               <div className="panel panel-hover relative h-full overflow-hidden p-6">
-                <span className="font-eyebrow absolute right-4 top-4 text-muted-foreground/40">
+                <span className="font-eyebrow absolute right-4 top-4 text-muted-foreground/60">
                   {String(i + 1).padStart(2, "0")}
                 </span>
                 <span className="inline-flex h-12 w-12 items-center justify-center rounded-xl border border-white/10 bg-white/[0.04] text-2xl">
@@ -571,7 +571,7 @@ export default function Landing() {
                 <h3 className="mt-5 font-display text-lg font-semibold tracking-tight">
                   {step.title}
                 </h3>
-                <p className="mt-2 text-sm leading-relaxed text-foreground/65">
+                <p className="mt-2 text-sm leading-relaxed text-foreground/80">
                   {step.body}
                 </p>
               </div>
@@ -587,7 +587,7 @@ export default function Landing() {
             {MOMENTS.map((m) => (
               <span
                 key={m.id}
-                className="rounded-full border border-white/10 bg-white/[0.03] px-3 py-1 text-xs text-foreground/65"
+                className="rounded-full border border-white/10 bg-white/[0.03] px-3 py-1 text-xs text-foreground/75"
               >
                 {m.emoji} {m.label.replace(/^(in|on|when|before|while)\s+/i, "")}
               </span>
@@ -705,7 +705,7 @@ export default function Landing() {
                     <h3 className={`mt-4 font-display text-lg font-semibold ${st.glow}`}>
                       {st.name}
                     </h3>
-                    <p className="mt-1.5 text-xs leading-relaxed text-foreground/65">
+                    <p className="mt-1.5 text-xs leading-relaxed text-foreground/80">
                       {st.tagline}
                     </p>
                     <div
@@ -795,7 +795,7 @@ export default function Landing() {
                 <span className="text-xl">{u.emoji}</span>
                 <div>
                   <p className="text-sm font-semibold">{u.title}</p>
-                  <p className="mt-1 text-xs leading-relaxed text-foreground/60">
+                  <p className="mt-1 text-xs leading-relaxed text-foreground/75">
                     {u.body}
                   </p>
                 </div>

@@ -171,7 +171,7 @@ export default function Community() {
             placeholder="Tonight I'm hanging: I want to actually listen in hard conversations…"
             maxLength={500}
             rows={3}
-            className="resize-none border-white/12 bg-white/5 placeholder:text-foreground/35"
+            className="resize-none border-white/12 bg-white/5 placeholder:text-foreground/50"
           />
           <div className="mt-3 flex flex-wrap items-center gap-2">
             <div className="flex items-center gap-1">
@@ -279,7 +279,7 @@ export default function Community() {
           <div className="rounded-3xl border border-dashed border-white/15 p-10 text-center">
             <p className="text-3xl">🪐</p>
             <p className="mt-3 font-bold tracking-tight">No stars up here yet</p>
-            <p className="mx-auto mt-1 max-w-sm text-sm text-muted-foreground">
+            <p className="mx-auto mt-1 max-w-sm text-sm text-foreground/75">
               Be the first to hang a star in the community sky.
             </p>
           </div>
@@ -341,7 +341,7 @@ export default function Community() {
                     </div>
 
                     {post.text && (
-                      <p className="mt-3 text-[15px] leading-relaxed text-foreground/90">
+                      <p className="mt-3 text-sm leading-relaxed text-foreground/95">
                         {post.text}
                       </p>
                     )}
@@ -454,7 +454,7 @@ export default function Community() {
                                     {timeAgo(c.createdAt)}
                                   </span>
                                 </p>
-                                <p className="mt-0.5 text-sm leading-relaxed text-foreground/85">
+                                <p className="mt-0.5 text-sm leading-relaxed text-foreground/90">
                                   {c.text}
                                 </p>
                               </div>
@@ -516,7 +516,7 @@ function InputComment({
       }}
       placeholder="Add a word of support…"
       maxLength={300}
-      className="h-8 min-w-0 flex-1 rounded-full border border-white/12 bg-white/5 px-3.5 text-xs placeholder:text-foreground/35 focus:border-cyan-300/50 focus:outline-none"
+      className="h-8 min-w-0 flex-1 rounded-full border border-white/12 bg-white/5 px-3.5 text-xs placeholder:text-foreground/50 focus:border-cyan-300/50 focus:outline-none"
     />
   );
 }

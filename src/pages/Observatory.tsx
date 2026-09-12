@@ -63,13 +63,13 @@ function ResourceCard({ r, index }: { r: MindResource; index: number }) {
         {r.by} · {r.length}
       </p>
 
-      <p className="mt-3 flex-1 text-xs leading-relaxed text-muted-foreground">{r.blurb}</p>
+      <p className="mt-3 flex-1 text-xs leading-relaxed text-foreground/75">{r.blurb}</p>
 
       <p className="mt-4 border-t hairline pt-3 font-display text-xs italic leading-relaxed text-emerald-200/80">
         ✦ {r.take}
       </p>
 
-      <p className="font-eyebrow mt-2 text-muted-foreground/50">
+      <p className="font-eyebrow mt-2 text-muted-foreground/70">
         {cat.emoji} {cat.name}
       </p>
     </motion.a>

@@ -151,7 +151,7 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
                           name="email"
                           placeholder="name@example.com"
                           type="email"
-                          className="border-white/20 bg-white/5 pl-9 placeholder:text-foreground/40"
+                          className="border-white/20 bg-white/5 pl-9 placeholder:text-foreground/55"
                           disabled={isLoading}
                           required
                         />
@@ -297,7 +297,7 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
               </a>
             </div>
           </Card>
-          <p className="font-display mt-5 text-sm italic text-foreground/60">
+          <p className="font-display mt-5 text-sm italic text-foreground/75">
             ✨ One intention a day keeps autopilot away
           </p>
         </div>

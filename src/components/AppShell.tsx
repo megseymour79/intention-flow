@@ -88,7 +88,7 @@ export function AppShell({
           "flex items-center gap-3 rounded-lg border border-transparent px-3.5 py-2.5 text-sm font-medium transition-all",
           isActive
             ? "border-white/12 bg-white/[0.06] text-foreground shadow-[inset_0_1px_0_0_rgba(255,255,255,0.05)]"
-            : "text-foreground/60 hover:bg-white/[0.03] hover:text-foreground",
+            : "text-foreground/75 hover:bg-white/[0.03] hover:text-foreground",
         )
       }
     >
@@ -119,7 +119,7 @@ export function AppShell({
 
           <div className="mt-auto space-y-3">
             <div className="panel p-3 text-center">
-              <p className="font-display text-[12px] italic leading-relaxed text-muted-foreground">
+              <p className="font-display text-[13px] italic leading-relaxed text-foreground/80">
                 “Between stimulus and response there is a space. In that space is
                 our power.”
               </p>
@@ -185,7 +185,7 @@ export function AppShell({
                       "flex h-10 w-10 items-center justify-center rounded-xl transition-colors",
                       isActive
                         ? "bg-white/[0.07] text-emerald-200"
-                        : "text-muted-foreground hover:bg-white/5 hover:text-foreground",
+                        : "text-foreground/70 hover:bg-white/5 hover:text-foreground",
                     )
                   }
                 >

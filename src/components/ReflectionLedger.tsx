@@ -178,7 +178,7 @@ export function ReflectionLedger({
         maxLength={400}
         rows={2}
         placeholder="One honest line about tonight… (optional)"
-        className="mt-4 resize-none border-white/15 bg-white/5 text-sm placeholder:text-foreground/35"
+        className="mt-4 resize-none border-white/15 bg-white/5 text-sm placeholder:text-foreground/50"
       />
 
       <div className="mt-3 flex items-center justify-between gap-3">
@@ -230,7 +230,7 @@ export function ReflectionLedger({
                     style={{ height }}
                   />
                   <span
-                    className={`text-[9px] ${d.isToday ? "font-semibold text-emerald-200" : "text-muted-foreground/60"}`}
+                    className={`text-[9px] ${d.isToday ? "font-semibold text-emerald-200" : "text-muted-foreground/75"}`}
                   >
                     {d.label}
                   </span>

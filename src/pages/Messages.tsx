@@ -273,7 +273,7 @@ export default function Messages() {
                     }}
                     placeholder="Write to the sky…"
                     maxLength={1000}
-                    className="h-10 min-w-0 flex-1 rounded-full border border-white/12 bg-white/5 px-4 text-sm placeholder:text-foreground/35 focus:border-emerald-300/40 focus:outline-none"
+                    className="h-10 min-w-0 flex-1 rounded-full border border-white/12 bg-white/5 px-4 text-sm placeholder:text-foreground/50 focus:border-emerald-300/40 focus:outline-none"
                   />
                   <Button
                     size="icon"
@@ -360,7 +360,7 @@ export default function Messages() {
                   }}
                   placeholder="Write to the sky…"
                   maxLength={1000}
-                  className="h-10 min-w-0 flex-1 rounded-full border border-white/12 bg-white/5 px-4 text-sm placeholder:text-foreground/35 focus:border-emerald-300/40 focus:outline-none"
+                  className="h-10 min-w-0 flex-1 rounded-full border border-white/12 bg-white/5 px-4 text-sm placeholder:text-foreground/50 focus:border-emerald-300/40 focus:outline-none"
                 />
                 <Button
                   size="icon"

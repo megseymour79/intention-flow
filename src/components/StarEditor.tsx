@@ -198,7 +198,7 @@ export function StarEditor({
               placeholder="I want to stay curious when the answer feels obvious…"
               maxLength={120}
               rows={3}
-              className="resize-none border-white/15 bg-white/5 text-[15px] placeholder:text-foreground/35"
+              className="resize-none border-white/15 bg-white/5 text-[15px] placeholder:text-foreground/50"
             />
             <p className="text-right text-[11px] text-muted-foreground/70">
               {text.length}/120
@@ -311,7 +311,7 @@ export function StarEditor({
                   <span
                     key={r.key}
                     title={`Reach the ${rankNameForLevel(r.level)} rank to unlock this glow`}
-                    className="flex items-center gap-1.5 rounded-full border border-white/8 bg-white/[0.03] px-2.5 py-1 text-xs text-muted-foreground/60"
+                    className="flex items-center gap-1.5 rounded-full border border-white/8 bg-white/[0.03] px-2.5 py-1 text-xs text-muted-foreground/75"
                   >
                     🔒 {STAR_COLORS[r.key].label}
                     <span className="text-[10px] uppercase tracking-wider opacity-70">
@@ -319,7 +319,7 @@ export function StarEditor({
                     </span>
                   </span>
                 ))}
-                <span className="text-[10px] leading-tight text-muted-foreground/50">
+                <span className="text-[10px] leading-tight text-muted-foreground/70">
                   Rare glows are earned by showing up — see your rank below the sky.
                 </span>
               </div>

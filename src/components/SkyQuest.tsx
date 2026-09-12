@@ -194,7 +194,7 @@ export function FirstLight({
                 <div className="min-w-0 flex-1">
                   <p
                     className={`text-sm font-semibold tracking-tight ${
-                      r.done ? "text-foreground/60 line-through decoration-emerald-300/40" : ""
+                      r.done ? "text-foreground/70 line-through decoration-emerald-300/40" : ""
                     }`}
                   >
                     {r.title}
@@ -360,7 +360,7 @@ export function ConstellationProgress() {
           );
         })}
       </div>
-      <div className="mt-1.5 flex justify-between text-[9px] text-muted-foreground/60">
+      <div className="mt-1.5 flex justify-between text-[9px] text-muted-foreground/75">
         <span>30 nights ago</span>
         <span>today</span>
       </div>
