@@ -319,6 +319,7 @@ export default function Dashboard() {
         >
           <TabsList className="sticky top-16 z-30 lg:top-6">
             <TabsTrigger value="tonight">Tonight</TabsTrigger>
+            <TabsTrigger value="practice">Practice</TabsTrigger>
             <TabsTrigger value="deeper">Go deeper</TabsTrigger>
             <TabsTrigger value="evening">Evening</TabsTrigger>
           </TabsList>
@@ -497,10 +498,14 @@ export default function Dashboard() {
           </div>
         </div>
 
-        {/* The tone lab — read a message before you send it */}
-        <ToneDetector compact />
+          </TabsContent>
 
-        {/* Mind gym — daily reps between the reflection and the rank */}
+          {/* ---- Section 2 · Practice ---- */}
+          <TabsContent value="practice" className="mt-6 space-y-7 outline-none">
+            {/* The tone lab — read a message before you send it */}
+            <ToneDetector compact />
+
+            {/* Mind gym — daily reps between the reflection and the rank */}
         <div className="panel p-5">
           <div className="flex flex-wrap items-end justify-between gap-3">
             <div>
@@ -530,10 +535,10 @@ export default function Dashboard() {
 
           </TabsContent>
 
-          {/* ---- Section 2 · Go deeper ---- */}
+          {/* ---- Section 3 · Go deeper ---- */}
           <TabsContent value="deeper" className="mt-6 space-y-7 outline-none">
-        {/* Sky rank — the reason the sky keeps opening up */}
-        <RankPanel />
+            {/* Sky rank — the reason the sky keeps opening up */}
+            <RankPanel />
 
         {/* The Observatory — the science behind the sky */}
         <Link
@@ -608,9 +613,13 @@ export default function Dashboard() {
           </div>
         </div>
 
-        {/* Reminders */}
-        <div className="panel p-5">
-          <div className="flex flex-wrap items-start justify-between gap-4">
+          </TabsContent>
+
+          {/* ---- Section 4 · Evening ---- */}
+          <TabsContent value="evening" className="mt-6 space-y-7 outline-none">
+            {/* Reminders */}
+            <div className="panel p-5">
+              <div className="flex flex-wrap items-start justify-between gap-4">
             <div className="flex items-start gap-3">
               <span className="flex h-11 w-11 items-center justify-center rounded-xl border border-emerald-200/25 bg-emerald-200/10">
                 <Bell className="h-5 w-5 text-emerald-200" />
@@ -751,10 +760,6 @@ export default function Dashboard() {
           )}
         </div>
 
-          </TabsContent>
-
-          {/* ---- Section 3 · Evening ---- */}
-          <TabsContent value="evening" className="mt-6 space-y-7 outline-none">
             {/* Evening reflection ledger */}
             <div id="evening-ledger">
               <ReflectionLedger intentionText={activeStar?.text ?? null} />

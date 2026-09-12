@@ -795,7 +795,7 @@ export function StarSky({
         </motion.button>
       )}
       {hint && (
-        <p className="pointer-events-none absolute bottom-3 left-1/2 z-10 -translate-x-1/2 whitespace-nowrap rounded-full border border-white/10 bg-[#141c40]/55 px-3 py-1 font-eyebrow text-foreground/70 backdrop-blur-sm">
+        <p className="pointer-events-none absolute bottom-3 left-1/2 z-10 max-w-[calc(100%-1.5rem)] -translate-x-1/2 rounded-full border border-white/10 bg-[#141c40]/55 px-3 py-1 text-center font-eyebrow text-foreground/70 backdrop-blur-sm sm:whitespace-nowrap">
           {hint}
         </p>
       )}
@@ -860,9 +860,20 @@ export function StarSky({
                 }}
               />
             )}
-            {/* label revealed for the focused star */}
+            {/* label revealed for the focused star — flips above near the
+                bottom edge and shifts toward the sky when near a side edge,
+                so it never runs off the page */}
             {star.active && (
-              <span className="pointer-events-none absolute left-1/2 top-full mt-1 -translate-x-1/2 whitespace-nowrap rounded-full border border-white/10 bg-[#141c40]/70 px-2.5 py-0.5 text-[11px] text-foreground/90 backdrop-blur-sm">
+              <span
+                className={`pointer-events-none absolute left-1/2 whitespace-nowrap rounded-full border border-white/10 bg-[#141c40]/70 px-2.5 py-0.5 text-[11px] text-foreground/90 backdrop-blur-sm ${
+                  pos.y > 62 ? "bottom-full mb-1" : "top-full mt-1"
+                }`}
+                style={{
+                  transform: `translateX(${
+                    pos.x < 18 ? "-15%" : pos.x > 82 ? "-85%" : "-50%"
+                  })`,
+                }}
+              >
                 {star.text.length > 34 ? `${star.text.slice(0, 34)}…` : star.text}
               </span>
             )}
