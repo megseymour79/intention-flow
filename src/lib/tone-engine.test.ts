@@ -200,4 +200,61 @@ describe("rewrite", () => {
       "lighter",
     ]);
   });
+
+  test("rewrites never crash on messy input and keep the original ask", () => {
+    const messy = "WTF?! you need to FIX this ASAP, it is TRASH!!!";
+    for (const t of targets) {
+      const variants = rewrite(messy, t);
+      expect(variants).toHaveLength(3);
+      for (const v of variants) {
+        expect(v.toLowerCase()).not.toContain("wtf");
+        expect(v.toLowerCase()).not.toContain("trash");
+      }
+    }
+  });
+});
+
+/* ------------------------------------------------------------------ */
+/* edge cases — the engine must never produce NaN or crash             */
+/* ------------------------------------------------------------------ */
+
+describe("edge cases", () => {
+  test("empty string stays neutral with no flags and no NaN", () => {
+    const r = analyze("");
+    expect(r.primary).toBe("Neutral & even");
+    expect(r.flags).toHaveLength(0);
+    for (const m of r.meters) {
+      expect(Number.isFinite(m.value)).toBe(true);
+      expect(m.value).toBeGreaterThanOrEqual(0);
+    }
+    expect(Number.isFinite(r.confidence)).toBe(true);
+  });
+
+  test("emoji-only message reads warm, never rude", () => {
+    const r = analyze("😀 😄 🎉");
+    const rude = r.meters.find((m) => m.key === "rude")!.value;
+    const warm = r.meters.find((m) => m.key === "warm")!.value;
+    expect(rude).toBe(0);
+    expect(warm).toBeGreaterThan(0);
+  });
+
+  test("very long message stays within bounds", () => {
+    const r = analyze("please review this. ".repeat(400));
+    expect(r.confidence).toBeLessThanOrEqual(97);
+    for (const m of r.meters) {
+      expect(m.value).toBeLessThanOrEqual(100);
+      expect(Number.isFinite(m.value)).toBe(true);
+    }
+  });
+
+  test("shouty caps demand still lands in the rude band", () => {
+    const r = analyze("YOU NEED TO STOP THIS NOW!!!");
+    expect(["Rude", "Rude with an edge"]).toContain(r.primary);
+  });
+
+  test("soften is idempotent (second pass changes nothing)", () => {
+    const once = soften("You need to STOP being stupid about this ALWAYS!!");
+    const twice = soften(once);
+    expect(twice).toBe(once);
+  });
 });

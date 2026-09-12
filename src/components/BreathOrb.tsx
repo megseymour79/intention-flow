@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
 const PHASES = [
@@ -33,13 +33,17 @@ const SCALE_BY_PHASE = [1.32, 1.32, 0.96] as const;
  */
 export function BreathOrb({ compact = false }: { compact?: boolean }) {
   const [elapsed, setElapsed] = useState<number | null>(null);
-  const [done, setDone] = useState(false);
+
+  // "done" is derived from a ref that the completion tick flips — no
+  // cascading setState during the effect. begin() clears it again.
+  const finishedRef = useRef(false);
+  const done = elapsed === null && finishedRef.current;
 
   useEffect(() => {
     if (elapsed === null) return;
     if (elapsed >= TOTAL_SECONDS) {
+      finishedRef.current = true;
       setElapsed(null);
-      setDone(true);
       return;
     }
     const t = setTimeout(() => setElapsed((e) => (e ?? 0) + 1), 1000);
@@ -55,7 +59,7 @@ export function BreathOrb({ compact = false }: { compact?: boolean }) {
     elapsed !== null ? Math.floor(elapsed / CYCLE_SECONDS) + 1 : 0;
 
   const begin = () => {
-    setDone(false);
+    finishedRef.current = false;
     setElapsed(0);
   };
 

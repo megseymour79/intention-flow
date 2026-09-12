@@ -94,7 +94,7 @@ export default function Messages() {
     };
     scroll(desktopScrollRef.current);
     scroll(mobileScrollRef.current);
-  }, [messages.length, openId]);
+  }, [messages.length, activeId]);
 
   const handleSend = async () => {
     if (!openId || draft.trim().length === 0) return;
@@ -112,7 +112,7 @@ export default function Messages() {
     }
   };
 
-  const openConvo = conversations.find((c) => c._id === openId) ?? null;
+  const openConvo = conversations.find((c) => c._id === activeId) ?? null;
 
   return (
     <AppShell title="Messages">

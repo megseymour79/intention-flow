@@ -219,7 +219,7 @@ export default function Dashboard() {
               })}
             </p>
             <h1 className="text-clearing-soft mt-1 text-3xl font-extrabold tracking-tight sm:text-4xl">
-              {greeting}, <span className="text-amber-300">{firstName}</span>{" "}
+              {greeting}, <span className="text-emerald-200">{firstName}</span>{" "}
               <span className="inline-block animate-sway">✦</span>
             </h1>
             <p className="mt-1 text-sm text-muted-foreground">

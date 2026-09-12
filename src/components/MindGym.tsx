@@ -86,7 +86,15 @@ function ImpulseCatcher() {
   const [caught, setCaught] = useState(0);
   const [escaped, setEscaped] = useState(0);
   const nextId = useRef(0);
-  const best = useRef<number>(Number(localStorage.getItem("sm-gym-best") ?? 0));
+  // Personal best lives in state (seeded from localStorage) so the UI can
+  // read it during render without touching a ref.
+  const [bestScore, setBestScore] = useState<number>(() => {
+    try {
+      return Number(localStorage.getItem("sm-gym-best") ?? 0);
+    } catch {
+      return 0;
+    }
+  });
 
   useEffect(() => {
     if (!running) return;
@@ -111,9 +119,8 @@ function ImpulseCatcher() {
     const drain = setInterval(() => {
       setUrges((u) => {
         if (u.length === 0) return u;
-        const [gone, ...rest] = u;
         setEscaped((e) => e + 1);
-        return rest;
+        return u.slice(1);
       });
     }, 1150);
     return () => clearInterval(drain);
@@ -132,15 +139,15 @@ function ImpulseCatcher() {
 
   const score = caught;
   useEffect(() => {
-    if (!running && score > best.current) {
-      best.current = score;
+    if (!running && score > bestScore) {
+      setBestScore(score);
       try {
         localStorage.setItem("sm-gym-best", String(score));
       } catch {
         /* private mode */
       }
     }
-  }, [running, score]);
+  }, [running, score, bestScore]);
 
   const done = !running && caught + escaped > 0;
 
@@ -184,9 +191,9 @@ function ImpulseCatcher() {
             >
               {done ? "Go again" : "Start the 20s"}
             </button>
-            {best.current > 0 && (
+            {bestScore > 0 && (
               <p className="text-[10px] uppercase tracking-widest text-muted-foreground/60">
-                personal best · {best.current}
+                personal best · {bestScore}
               </p>
             )}
           </div>

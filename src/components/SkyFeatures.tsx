@@ -129,8 +129,9 @@ export function WishComet({
 }: {
   onCatch: (starter: string, e: React.MouseEvent<HTMLButtonElement>) => void;
 }) {
-  // One comet per mount (per visit to the sky), on a seeded lane.
-  const comet = useMemo<CometState | null>(() => {
+  // One comet per mount (per visit to the sky), on a seeded lane. The seed
+  // is captured once via useState so render stays pure.
+  const [comet] = useState<CometState | null>(() => {
     const h = Date.now() % 100000;
     if (seeded(h, 3) <= 0.15) return null;
     return {
@@ -138,7 +139,7 @@ export function WishComet({
       top: 12 + seeded(h, 5) * 45,
       duration: 16 + seeded(h, 9) * 8,
     };
-  }, []);
+  });
   const [gone, setGone] = useState(false);
   if (!comet || gone) return null;
 
@@ -173,7 +174,7 @@ export function WishComet({
             "linear-gradient(90deg, rgba(255,240,180,0.85), rgba(255,220,140,0.3), transparent)",
         }}
       />
-      <span className="pointer-events-none absolute left-1/2 top-full mt-1 -translate-x-1/2 whitespace-nowrap rounded-full border border-white/10 bg-black/60 px-2 py-0.5 text-[10px] text-foreground/90 opacity-0 backdrop-blur-sm transition-opacity group-hover:opacity-100">
+      <span className="pointer-events-none absolute left-1/2 top-full mt-1 -translate-x-1/2 whitespace-nowrap rounded-full border border-white/10 bg-[#141c40]/70 px-2 py-0.5 text-[10px] text-foreground/90 opacity-0 backdrop-blur-sm transition-opacity group-hover:opacity-100">
         a falling wish — catch it
       </span>
     </button>

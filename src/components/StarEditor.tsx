@@ -94,6 +94,9 @@ export function StarEditor({
 
   // Re-seed the form every time the editor opens — from the star being
   // edited, from a prefilled draft, or blank for a fresh intention.
+  // This is the React-documented "adjust state when props change" pattern:
+  // external props (open/existing/draft) must be copied into form state.
+  // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => {
     if (!open) return;
     setError(null);
