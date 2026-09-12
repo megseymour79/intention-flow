@@ -113,7 +113,7 @@ export default function Observatory() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1, duration: 0.4 }}
           whileHover={{ y: -2 }}
-          className="panel relative block overflow-hidden p-5"
+          className="panel panel-hover group relative block overflow-hidden p-5"
         >
           <div className="pointer-events-none absolute -right-8 -top-10 h-36 w-36 rounded-full bg-emerald-300/10 blur-3xl" />
           <div className="flex flex-wrap items-center gap-4">

@@ -37,7 +37,10 @@ export default function Messages() {
 
   const startConversation = useMutation(api.messages.startConversation);
   const sendMessage = useMutation(api.messages.sendMessage);
-  const conversations = useQuery(api.messages.listConversations) ?? [];
+  // Keep the raw query result so loading (undefined) is distinguishable from
+  // a genuinely empty list — the ?peer= bootstrap below depends on that.
+  const conversationsQuery = useQuery(api.messages.listConversations);
+  const conversations = conversationsQuery ?? [];
   const peerIdParam = searchParams.get("peer");
   // The ?peer= deep link resolves reactively from the conversation list.
   const peerConvo = useMemo(
@@ -70,7 +73,9 @@ export default function Messages() {
       setSearchParams({}, { replace: true });
       return;
     }
-    if (startingRef.current || conversations.length === 0) return;
+    // Only attempt once the list has actually loaded: an empty list here means
+    // no conversation exists yet, so create one for this peer.
+    if (startingRef.current || conversationsQuery === undefined) return;
     startingRef.current = true;
     void startConversation({ otherUserId: peerIdParam as Id<"users"> })
       .then((id) => {
@@ -86,7 +91,14 @@ export default function Messages() {
       .finally(() => {
         startingRef.current = false;
       });
-  }, [peerIdParam, myId, peerConvo, conversations.length, startConversation, setSearchParams]);
+  }, [
+    peerIdParam,
+    myId,
+    peerConvo,
+    conversationsQuery,
+    startConversation,
+    setSearchParams,
+  ]);
 
   useEffect(() => {
     const scroll = (el: HTMLDivElement | null) => {
