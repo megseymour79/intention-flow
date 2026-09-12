@@ -38,6 +38,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import { useAuth } from "@/hooks/use-auth";
 import {
@@ -100,6 +101,7 @@ export default function Dashboard() {
   const [deepOpen, setDeepOpen] = useState<string | null>(null);
   const [diveOpen, setDiveOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
+  const [section, setSection] = useState("tonight");
   const [busyId, setBusyId] = useState<Id<"stars"> | null>(null);
   const [customTime, setCustomTime] = useState("07:30");
   const [editorDraft, setEditorDraft] = useState<{
@@ -301,8 +303,28 @@ export default function Dashboard() {
           hasReflection={todayReflection !== null && todayReflection !== undefined}
           onHangStar={openFreshEditor}
           onTakeQuiz={() => setQuizOpen(true)}
+          onGoToLedger={() => setSection("evening")}
         />
 
+        {/* Everything below the fold lives in sections — one glance per visit,
+            not one endless scroll. */}
+        <Tabs
+          value={section}
+          onValueChange={(v) => {
+            setSection(v);
+            requestAnimationFrame(() =>
+              window.scrollTo({ top: 0, behavior: "smooth" }),
+            );
+          }}
+        >
+          <TabsList className="sticky top-16 z-30 lg:top-6">
+            <TabsTrigger value="tonight">Tonight</TabsTrigger>
+            <TabsTrigger value="deeper">Go deeper</TabsTrigger>
+            <TabsTrigger value="evening">Evening</TabsTrigger>
+          </TabsList>
+
+          {/* ---- Section 1 · Tonight ---- */}
+          <TabsContent value="tonight" className="mt-6 space-y-7 outline-none">
         {/* Ledger-so-far summary */}
         <ReflectionHeroCard />
 
@@ -506,6 +528,10 @@ export default function Dashboard() {
           <BreathOrb compact />
         </div>
 
+          </TabsContent>
+
+          {/* ---- Section 2 · Go deeper ---- */}
+          <TabsContent value="deeper" className="mt-6 space-y-7 outline-none">
         {/* Sky rank — the reason the sky keeps opening up */}
         <RankPanel />
 
@@ -725,13 +751,19 @@ export default function Dashboard() {
           )}
         </div>
 
-        {/* Evening reflection ledger */}
-        <div id="evening-ledger">
-          <ReflectionLedger intentionText={activeStar?.text ?? null} />
-        </div>
+          </TabsContent>
 
-        {/* Thirty nights, drawn as a constellation */}
-        <ConstellationProgress />
+          {/* ---- Section 3 · Evening ---- */}
+          <TabsContent value="evening" className="mt-6 space-y-7 outline-none">
+            {/* Evening reflection ledger */}
+            <div id="evening-ledger">
+              <ReflectionLedger intentionText={activeStar?.text ?? null} />
+            </div>
+
+            {/* Thirty nights, drawn as a constellation */}
+            <ConstellationProgress />
+          </TabsContent>
+        </Tabs>
       </div>
 
       <StarEditor

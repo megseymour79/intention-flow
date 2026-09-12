@@ -35,12 +35,14 @@ export function FirstLight({
   hasReflection,
   onHangStar,
   onTakeQuiz,
+  onGoToLedger,
 }: {
   hasStar: boolean;
   hasQuiz: boolean;
   hasReflection: boolean;
   onHangStar: () => void;
   onTakeQuiz: () => void;
+  onGoToLedger?: () => void;
 }) {
   const [dismissed, setDismissed] = useState(() => {
     try {
@@ -111,9 +113,11 @@ export function FirstLight({
         : {
             label: "Go to the ledger",
             onClick: () =>
-              document
-                .getElementById("evening-ledger")
-                ?.scrollIntoView({ behavior: "smooth", block: "center" }),
+              onGoToLedger
+                ? onGoToLedger()
+                : document
+                    .getElementById("evening-ledger")
+                    ?.scrollIntoView({ behavior: "smooth", block: "center" }),
           },
     },
   ];

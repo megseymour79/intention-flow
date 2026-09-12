@@ -408,17 +408,17 @@ export function FloatingBackground({ count = 18 }: { count?: number }) {
       className="pointer-events-none fixed inset-0 -z-10 overflow-hidden"
     >
       {/* Sky base — full-spectrum twilight: violet → indigo → royal blue →
-          azure → cyan → turquoise → mint, eleven blended stops, lightness
-          capped low so foreground text keeps contrast end to end */}
+          azure → cyan → green, lightness capped low so foreground text keeps
+          contrast end to end, warming into an amber horizon at the bottom */}
       <div
         className="absolute inset-0"
         style={{
           background:
-            "linear-gradient(to bottom, #0a0c2a 0%, #131040 10%, #17205c 20%, #1a3380 30%, #1d4494 40%, #205c98 50%, #237691 60%, #268a83 70%, #2a9c7c 80%, #2fae7d 90%, #35bd80 100%)",
+            "linear-gradient(to bottom, #0a0c2a 0%, #131040 10%, #17205c 20%, #1a3380 30%, #1d4494 40%, #205c98 50%, #237691 58%, #268a83 68%, #2f9e72 78%, #35ae6e 88%, #c2703d 96%, #e8944a 100%)",
         }}
       />
 
-      {/* dawn-gold + rose glow layered over the mint horizon — kept faint
+      {/* dawn-gold + rose glow layered over the amber horizon — kept faint
           so it colors the horizon without washing out text above it */}
       <div
         className="absolute inset-x-0 bottom-0 h-[42%]"
