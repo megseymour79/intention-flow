@@ -70,12 +70,15 @@ window.addEventListener("error", (e) => {
   try {
     const msg = e.message ?? "";
     if (CHUNK_FAIL.test(msg)) return recoverFromChunkFailure();
-    // Cross-origin proxies mask real errors as a bare "Script error." with no
-    // filename and no detail. During the first moments of a page load, that is
-    // almost always a stale or briefly-missing module — not app logic — so
-    // self-heal the same way (capped at two reloads per session).
-    if (msg === "Script error." && !e.filename && performance.now() < 6000) {
-      recoverFromChunkFailure();
+    // A bare "Script error." is the browser's mask for ANY cross-origin script
+    // error — platform-injected bridges, extensions, proxy instrumentation.
+    // It is environmental noise, not a stale chunk: reloading on it caused
+    // repeat reload loops, so it is only logged here. Real module-load
+    // failures always match CHUNK_FAIL above (or arrive as rejections below).
+    if (msg === "Script error." && !e.filename) {
+      console.warn(
+        "[shiftedmind] masked cross-origin script error (not reloading)",
+      );
     }
   } catch {
     // never let the recovery path itself throw
@@ -104,6 +107,11 @@ class RouteErrorBoundary extends Component<
   state = { failed: false };
   static getDerivedStateFromError() {
     return { failed: true };
+  }
+  componentDidCatch(error: Error, info: unknown) {
+    // Surface the real error + component stack so render crashes are
+    // diagnosable instead of disappearing behind the fallback UI.
+    console.error("[shiftedmind] route render failed:", error, info);
   }
   render() {
     if (this.state.failed) {
