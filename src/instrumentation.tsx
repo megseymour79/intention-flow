@@ -14,6 +14,8 @@ import { Dialog } from "@radix-ui/react-dialog";
 import { ChevronDown, ExternalLink } from "lucide-react";
 import React, { useEffect, useState } from "react";
 
+import { isMaskedOrTransient } from "@/lib/error-filter";
+
 type SyncError = {
   error: string;
   stack: string;
@@ -176,16 +178,6 @@ export function InstrumentationProvider({
   const [error, setError] = useState<GenericError | null>(null);
 
   useEffect(() => {
-    // Errors the browser masked for us (cross-origin iframe) or transient module
-    // reload noise carry no usable detail — log them, but don't alarm the user.
-    const isMaskedOrTransient = (message: string, filename: string) =>
-      message === "Script error." ||
-      message === "Script error.".toLowerCase() ||
-      /importing a module script failed|failed to fetch dynamically imported module|error loading dynamically imported module/i.test(
-        message,
-      ) ||
-      (!filename && message.startsWith("Uncaught"));
-
     const handleError = async (event: ErrorEvent) => {
       try {
         const masked = isMaskedOrTransient(event.message ?? "", event.filename ?? "");
