@@ -188,12 +188,9 @@ export function InstrumentationProvider({
 
     const handleError = async (event: ErrorEvent) => {
       try {
-        console.log(event);
-        event.preventDefault();
+        const masked = isMaskedOrTransient(event.message ?? "", event.filename ?? "");
 
-        if (
-          !isMaskedOrTransient(event.message ?? "", event.filename ?? "")
-        ) {
+        if (!masked) {
           setError({
             error: event.message,
             stack: event.error?.stack || "",
@@ -201,16 +198,16 @@ export function InstrumentationProvider({
             lineno: event.lineno,
             colno: event.colno,
           });
-        }
 
-        if (import.meta.env.VITE_VLY_APP_ID) {
-          await reportErrorToVly({
-            error: event.message,
-            stackTrace: event.error?.stack,
-            filename: event.filename,
-            lineno: event.lineno,
-            colno: event.colno,
-          });
+          if (import.meta.env.VITE_VLY_APP_ID) {
+            await reportErrorToVly({
+              error: event.message,
+              stackTrace: event.error?.stack,
+              filename: event.filename,
+              lineno: event.lineno,
+              colno: event.colno,
+            });
+          }
         }
       } catch (error) {
         console.error("Error in handleError:", error);
@@ -219,8 +216,6 @@ export function InstrumentationProvider({
 
     const handleRejection = async (event: PromiseRejectionEvent) => {
       try {
-        console.error(event);
-
         const reason = event.reason;
         const message =
           reason instanceof Error
@@ -235,13 +230,13 @@ export function InstrumentationProvider({
             error: message,
             stack,
           });
-        }
 
-        if (import.meta.env.VITE_VLY_APP_ID) {
-          await reportErrorToVly({
-            error: message,
-            stackTrace: stack,
-          });
+          if (import.meta.env.VITE_VLY_APP_ID) {
+            await reportErrorToVly({
+              error: message,
+              stackTrace: stack,
+            });
+          }
         }
       } catch (error) {
         console.error("Error in handleRejection:", error);
