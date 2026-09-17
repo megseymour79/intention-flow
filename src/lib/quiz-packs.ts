@@ -153,7 +153,7 @@ const MBTI_RESULTS: PackResult[] = [
       "You see the architecture under the noise. You'd rather build one thing that lasts than ten things that shimmer. People underestimate how much you're running in the background.",
     shadow:
       "You can plan past people — dismissing feelings (yours included) as friction in the system.",
-    hue: "text-sky-200",
+    hue: "text-rose-200",
     intentions: [
       { text: "Ask how someone feels before I ask what's next", moment: "conversations", colorKey: "wave" },
       { text: "Let the plan bend to the person in front of me", colorKey: "orbit" },
@@ -169,7 +169,7 @@ const MBTI_RESULTS: PackResult[] = [
       "You take ideas apart to see how they hold together — and you're honest about what doesn't. Your mind is a lab, and everything is a hypothesis until proven.",
     shadow:
       "Analysis can become a hiding place — understanding a thing forever instead of starting it once.",
-    hue: "text-sky-200",
+    hue: "text-rose-200",
     intentions: [
       { text: "Decide at 80% clarity, refine as I go", colorKey: "surge" },
       { text: "Ship the first version before it's elegant", moment: "mornings", colorKey: "wave" },
@@ -281,7 +281,7 @@ const MBTI_RESULTS: PackResult[] = [
       "You are the person people quietly rely on. You remember what was promised, you show up, and you finish. In a loud world, that's its own kind of brilliance.",
     shadow:
       "The familiar can masquerade as the right; new ways get dismissed before they're tried.",
-    hue: "text-sky-200",
+    hue: "text-rose-200",
     intentions: [
       { text: "Try one unfamiliar route today", colorKey: "pulse" },
       { text: "Adapt the plan, keep the goal", moment: "change", colorKey: "wave" },
@@ -345,7 +345,7 @@ const MBTI_RESULTS: PackResult[] = [
       "You learn by touching the thing. Calm in a crisis, handy in a jam, allergic to pretense — you're the person people want next to them when it matters.",
     shadow:
       "Going it alone is your default; the people around you can't help with a problem they never hear about.",
-    hue: "text-sky-200",
+    hue: "text-rose-200",
     intentions: [
       { text: "Share the problem while it's small", colorKey: "wave" },
       { text: "Explain my thinking once, out loud", moment: "meetings", colorKey: "nova" },
@@ -565,7 +565,7 @@ const SPIRIT_RESULTS: PackResult[] = [
       "You meet the world with warmth and speed. People lighten around you. You're proof that taking things seriously and holding them lightly can be the same skill.",
     shadow:
       "Staying buoyant for everyone else can bury your own heavy water.",
-    hue: "text-cyan-200",
+    hue: "text-amber-200",
     intentions: [
       { text: "Let the heavy thing surface tonight", moment: "nights", colorKey: "orbit" },
       { text: "Ask for what I need before I'm underwater", colorKey: "wave" },
@@ -613,7 +613,7 @@ const SPIRIT_RESULTS: PackResult[] = [
       "You move at the speed of certainty. While everyone sprints, you carry your home and your history with you, and you outlast things that were louder and faster.",
     shadow:
       "Stillness can slip into avoidance — the shell is home, not the whole world.",
-    hue: "text-cyan-200",
+    hue: "text-amber-200",
     intentions: [
       { text: "Take one brave step today, however small", moment: "mornings", colorKey: "surge" },
       { text: "Speak up before the moment passes", moment: "meetings", colorKey: "nova" },
@@ -756,7 +756,7 @@ const ATTACHMENT_RESULTS: PackResult[] = [
       "You can be close without disappearing and apart without panicking. You ask directly, repair after conflict, and trust that love is something people build together.",
     shadow:
       "Even secure folks can slide toward anxious or avoidant under long stress — this is a practice, not a permanence.",
-    hue: "text-cyan-200",
+    hue: "text-amber-200",
     intentions: [
       { text: "Extend the same patience to myself I give others", moment: "nights", colorKey: "surge" },
       { text: "Stay present in the hard conversation", moment: "conversations", colorKey: "wave" },
@@ -788,7 +788,7 @@ const ATTACHMENT_RESULTS: PackResult[] = [
       "You are self-sufficient in a way the world rewards. Intimacy asks for interdependence, and that's the muscle you're building — closeness at your own deliberate pace.",
     shadow:
       "Deactivating — going quiet, finding flaws, busying yourself — protects you and starves the relationship.",
-    hue: "text-sky-200",
+    hue: "text-rose-200",
     intentions: [
       { text: "Share one real thing today", moment: "conversations", colorKey: "pulse" },
       { text: "Stay in the room when it gets tender", colorKey: "wave" },

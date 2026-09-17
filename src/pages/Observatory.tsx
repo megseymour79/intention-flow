@@ -22,9 +22,9 @@ import { cn } from "@/lib/utils";
 
 const KIND_STYLES: Record<ResourceKind, string> = {
   Watch: "bg-rose-300/10 text-rose-200 ring-rose-300/25",
-  Listen: "bg-sky-300/10 text-sky-200 ring-sky-300/25",
-  Read: "bg-cyan-300/10 text-cyan-200 ring-cyan-300/25",
-  Practice: "bg-cyan-300/10 text-cyan-200 ring-cyan-300/25",
+  Listen: "bg-violet-300/10 text-violet-200 ring-violet-300/25",
+  Read: "bg-amber-300/10 text-amber-200 ring-amber-300/25",
+  Practice: "bg-amber-300/10 text-amber-200 ring-amber-300/25",
   Explore: "bg-violet-300/10 text-violet-200 ring-violet-300/25",
 };
 
@@ -65,7 +65,7 @@ function ResourceCard({ r, index }: { r: MindResource; index: number }) {
 
       <p className="mt-3 flex-1 text-xs leading-relaxed text-foreground/75">{r.blurb}</p>
 
-      <p className="mt-4 border-t hairline pt-3 font-display text-xs italic leading-relaxed text-cyan-200/80">
+      <p className="mt-4 border-t hairline pt-3 font-display text-xs italic leading-relaxed text-amber-200/80">
         ✦ {r.take}
       </p>
 
@@ -195,13 +195,13 @@ export default function Observatory() {
           whileHover={{ y: -2 }}
           className="panel panel-hover group relative block overflow-hidden p-5"
         >
-          <div className="pointer-events-none absolute -right-8 -top-10 h-36 w-36 rounded-full bg-cyan-300/10 blur-3xl" />
+          <div className="pointer-events-none absolute -right-8 -top-10 h-36 w-36 rounded-full bg-amber-300/10 blur-3xl" />
           <div className="flex flex-wrap items-center gap-4">
-            <span className="flex h-12 w-12 shrink-0 animate-glow-pulse items-center justify-center rounded-xl bg-cyan-300/12 text-2xl ring-1 ring-cyan-300/25">
+            <span className="flex h-12 w-12 shrink-0 animate-glow-pulse items-center justify-center rounded-xl bg-amber-300/12 text-2xl ring-1 ring-amber-300/25">
               {pick.emoji}
             </span>
             <div className="min-w-[220px] flex-1">
-              <p className="font-eyebrow text-cyan-200/80">
+              <p className="font-eyebrow text-amber-200/80">
                 tonight's chart · rotates at midnight
               </p>
               <p className="mt-1 text-base font-bold tracking-tight">{pick.title}</p>
@@ -212,7 +212,7 @@ export default function Observatory() {
                 {pick.blurb}
               </p>
             </div>
-            <ArrowUpRight className="h-5 w-5 text-cyan-200/60 transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-cyan-200" />
+            <ArrowUpRight className="h-5 w-5 text-amber-200/60 transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-amber-200" />
           </div>
         </motion.a>
 
@@ -227,7 +227,7 @@ export default function Observatory() {
             className={cn(
               "rounded-full border px-4 py-1.5 font-eyebrow transition-colors",
               filter === "all"
-                ? "border-cyan-300/45 bg-cyan-300/12 text-cyan-200"
+                ? "border-amber-300/45 bg-amber-300/12 text-amber-200"
                 : "border-white/10 bg-white/[0.03] text-muted-foreground hover:border-white/25 hover:text-foreground",
             )}
           >
@@ -241,7 +241,7 @@ export default function Observatory() {
               className={cn(
                 "rounded-full border px-4 py-1.5 font-eyebrow transition-colors",
                 filter === c.id
-                  ? "border-cyan-300/45 bg-cyan-300/12 text-cyan-200"
+                  ? "border-amber-300/45 bg-amber-300/12 text-amber-200"
                   : "border-white/10 bg-white/[0.03] text-muted-foreground hover:border-white/25 hover:text-foreground",
               )}
             >
@@ -276,10 +276,10 @@ export default function Observatory() {
           transition={{ delay: 0.2, duration: 0.4 }}
           className="panel relative block overflow-hidden p-6"
         >
-          <div className="pointer-events-none absolute -left-8 -bottom-10 h-32 w-32 rounded-full bg-sky-300/10 blur-3xl" />
+          <div className="pointer-events-none absolute -left-8 -bottom-10 h-32 w-32 rounded-full bg-violet-300/10 blur-3xl" />
           <div className="flex flex-wrap items-center gap-4">
-            <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-sky-300/15 text-2xl ring-1 ring-sky-300/25">
-              <Compass className="h-6 w-6 text-sky-200" />
+            <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-violet-300/15 text-2xl ring-1 ring-violet-300/25">
+              <Compass className="h-6 w-6 text-violet-200" />
             </span>
             <div className="min-w-[220px] flex-1">
               <p className="text-sm font-bold tracking-tight">

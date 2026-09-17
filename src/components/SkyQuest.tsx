@@ -132,13 +132,13 @@ export function FirstLight({
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -10 }}
           transition={{ duration: 0.4 }}
-          className="radius-sheet relative overflow-hidden border border-cyan-300/20 bg-gradient-to-br from-cyan-300/[0.06] via-white/[0.03] to-transparent p-5"
+          className="radius-sheet relative overflow-hidden border border-amber-300/20 bg-gradient-to-br from-amber-300/[0.07] via-white/[0.03] to-transparent p-5"
         >
-          <div className="pointer-events-none absolute -right-10 -top-10 h-36 w-36 rounded-full bg-cyan-300/10 blur-3xl" />
+          <div className="pointer-events-none absolute -right-10 -top-10 h-36 w-36 rounded-full bg-amber-300/10 blur-3xl" />
 
           <div className="flex items-start justify-between gap-3">
             <div className="flex items-center gap-2.5">
-              <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-cyan-300/12 text-lg ring-1 ring-cyan-300/25">
+              <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-amber-300/12 text-lg ring-1 ring-amber-300/25">
                 {allDone ? "🌌" : "🗺️"}
               </span>
               <div>
@@ -167,7 +167,7 @@ export function FirstLight({
               <span
                 key={r.key}
                 className={`h-1.5 flex-1 rounded-full transition-colors duration-500 ${
-                  r.done ? "bg-cyan-300" : "bg-white/10"
+                  r.done ? "bg-amber-300" : "bg-white/10"
                 }`}
               />
             ))}
@@ -182,14 +182,14 @@ export function FirstLight({
                 transition={{ delay: 0.1 + i * 0.08, duration: 0.3 }}
                 className={`flex items-center gap-3 rounded-2xl border px-3.5 py-2.5 transition-colors ${
                   r.done
-                    ? "border-cyan-300/25 bg-cyan-300/[0.06]"
+                    ? "border-amber-300/25 bg-amber-300/[0.06]"
                     : "border-white/10 bg-white/[0.03]"
                 }`}
               >
                 <span
                   className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-xl text-sm ring-1 transition-colors ${
                     r.done
-                      ? "bg-cyan-300/15 text-cyan-200 ring-cyan-300/30"
+                      ? "bg-amber-300/15 text-amber-200 ring-amber-300/30"
                       : "bg-white/5 text-foreground/80 ring-white/10"
                   }`}
                 >
@@ -198,7 +198,7 @@ export function FirstLight({
                 <div className="min-w-0 flex-1">
                   <p
                     className={`text-sm font-semibold tracking-tight ${
-                      r.done ? "text-foreground/70 line-through decoration-cyan-300/40" : ""
+                      r.done ? "text-foreground/70 line-through decoration-amber-300/40" : ""
                     }`}
                   >
                     {r.title}
@@ -315,8 +315,8 @@ export function ConstellationProgress() {
     <div className="radius-sheet border border-white/10 bg-white/[0.03] p-5">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div className="flex items-start gap-3">
-          <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-sky-300/15 ring-1 ring-sky-300/25">
-            <Star className="h-5 w-5 text-sky-200" />
+          <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-violet-300/15 ring-1 ring-violet-300/25">
+            <Star className="h-5 w-5 text-violet-200" />
           </span>
           <div>
             <p className="font-bold">Your constellation</p>
@@ -327,7 +327,7 @@ export function ConstellationProgress() {
           </div>
         </div>
         <div className="text-right">
-          <p className="text-2xl font-extrabold tracking-tight text-sky-200">
+          <p className="text-2xl font-extrabold tracking-tight text-violet-200">
             {kept}
             <span className="ml-1 text-sm font-semibold text-muted-foreground">
               / {Math.max(logged, kept)} kept
@@ -378,11 +378,11 @@ export function ConstellationProgress() {
               key={m.nights}
               className={`flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[11px] font-semibold transition-colors ${
                 got
-                  ? "border-cyan-300/45 bg-cyan-300/10 text-cyan-100"
+                  ? "border-amber-300/45 bg-amber-300/10 text-amber-100"
                   : "border-white/10 bg-white/5 text-muted-foreground/70"
               }`}
             >
-              {got ? <Sparkles className="h-3 w-3 text-cyan-300" /> : <MoonStar className="h-3 w-3 opacity-50" />}
+              {got ? <Sparkles className="h-3 w-3 text-amber-300" /> : <MoonStar className="h-3 w-3 opacity-50" />}
               {m.nights} · {m.name}
             </span>
           );
@@ -392,9 +392,9 @@ export function ConstellationProgress() {
       <p className="mt-3 flex items-center gap-1.5 text-xs text-muted-foreground">
         {next ? (
           <>
-            <ChevronDown className="h-3.5 w-3.5 text-cyan-200/70" />
+            <ChevronDown className="h-3.5 w-3.5 text-amber-200/70" />
             {next.nights - kept} more kept night{next.nights - kept === 1 ? "" : "s"} until{" "}
-            <span className="font-semibold text-cyan-200/90">“{next.name}”</span>
+            <span className="font-semibold text-amber-200/90">“{next.name}”</span>
           </>
         ) : (
           <>
@@ -433,12 +433,12 @@ export function WelcomeBack() {
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.45 }}
-      className="radius-sheet relative overflow-hidden border border-sky-300/20 bg-gradient-to-r from-indigo-500/[0.09] via-white/[0.03] to-transparent p-5"
-    >
-      <div className="pointer-events-none absolute -left-8 -top-10 h-32 w-32 rounded-full bg-indigo-400/10 blur-3xl" />
+      className="radius-sheet relative overflow-hidden border border-violet-300/20 bg-gradient-to-r from-violet-500/[0.09] via-white/[0.03] to-transparent p-5"
+      >
+      <div className="pointer-events-none absolute -left-8 -top-10 h-32 w-32 rounded-full bg-violet-400/10 blur-3xl" />
 
       <div className="flex flex-wrap items-center gap-4">
-        <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-sky-300/15 text-2xl ring-1 ring-sky-300/25">
+        <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-violet-300/15 text-2xl ring-1 ring-violet-300/25">
           {streak > 0 ? "🌙" : "☁️"}
         </span>
 
@@ -471,7 +471,7 @@ export function WelcomeBack() {
             </div>
             <div className="mt-1.5 h-1.5 overflow-hidden rounded-full bg-white/10">
               <div
-                className="h-full rounded-full bg-gradient-to-r from-sky-400 to-indigo-300 transition-all duration-700"
+                className="h-full rounded-full bg-gradient-to-r from-amber-400 to-rose-300 transition-all duration-700"
                 style={{ width: `${progress}%` }}
               />
             </div>
@@ -510,7 +510,7 @@ export function RankPanel() {
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div className="flex items-start gap-3">
           <span
-            className="animate-glow-pulse flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-cyan-300/20 to-sky-400/12 text-xl ring-1 ring-cyan-300/25"
+            className="animate-glow-pulse flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-amber-300/20 to-rose-400/12 text-xl ring-1 ring-amber-300/25"
             title={`Rank ${rank.level} of ${RANK_TIERS.length}`}
           >
             {rank.emoji}
@@ -518,7 +518,7 @@ export function RankPanel() {
           <div>
             <p className="font-bold">
               Sky rank ·{" "}
-              <span className="text-cyan-200">{rank.name}</span>
+              <span className="text-amber-200">{rank.name}</span>
             </p>
             <p className="mt-0.5 max-w-md text-xs leading-relaxed text-muted-foreground">
               {rank.blurb} Every star hung, night kept, day visited and quiz
@@ -527,7 +527,7 @@ export function RankPanel() {
           </div>
         </div>
         <div className="text-right">
-          <p className="text-2xl font-extrabold tracking-tight text-cyan-200">
+          <p className="text-2xl font-extrabold tracking-tight text-amber-200">
             {rank.score}
             <span className="ml-1 text-sm font-semibold text-muted-foreground">
               / {maxScore} light
@@ -551,7 +551,7 @@ export function RankPanel() {
                 </span>
               </>
             ) : (
-              <span className="text-cyan-200/90">
+              <span className="text-amber-200/90">
                 ✦ Final rank reached — the sky bends around you now.
               </span>
             )}
@@ -560,7 +560,7 @@ export function RankPanel() {
         </div>
         <div className="mt-1.5 h-2 overflow-hidden rounded-full bg-white/8">
           <div
-            className="h-full rounded-full bg-gradient-to-r from-cyan-400/80 to-cyan-200 shadow-[0_0_10px_rgba(110,231,183,0.45)] transition-all duration-700"
+            className="h-full rounded-full bg-gradient-to-r from-amber-400/80 to-amber-200 shadow-[0_0_10px_rgba(251,176,59,0.45)] transition-all duration-700"
             style={{ width: `${progress}%` }}
           />
         </div>
@@ -596,7 +596,7 @@ export function RankPanel() {
                 key={u.id}
                 className={`rounded-2xl border p-3.5 transition-colors ${
                   open
-                    ? "border-cyan-300/30 bg-cyan-300/[0.05]"
+                    ? "border-amber-300/30 bg-amber-300/[0.05]"
                     : "border-white/8 bg-white/[0.02]"
                 }`}
               >
@@ -605,7 +605,7 @@ export function RankPanel() {
                     {u.emoji}
                   </span>
                   {open ? (
-                    <span className="flex items-center gap-1 rounded-full border border-cyan-300/30 bg-cyan-300/10 px-2 py-0.5 text-[10px] font-semibold text-cyan-200">
+                    <span className="flex items-center gap-1 rounded-full border border-amber-300/30 bg-amber-300/10 px-2 py-0.5 text-[10px] font-semibold text-amber-200">
                       <Check className="h-3 w-3" /> Unlocked
                     </span>
                   ) : (
@@ -630,7 +630,7 @@ export function RankPanel() {
         </div>
         {rank.next && (
           <p className="mt-3 text-xs text-muted-foreground">
-            <Sparkles className="mr-1 inline h-3.5 w-3.5 text-cyan-300/80" />
+            <Sparkles className="mr-1 inline h-3.5 w-3.5 text-amber-300/80" />
             Come back tomorrow — even a visit alone feeds the next rank.
           </p>
         )}

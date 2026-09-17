@@ -13,7 +13,7 @@ export default function NotFound() {
         <Link to="/" className="flex w-fit items-center gap-2.5">
           <StarMark size={34} />
           <span className="text-lg font-extrabold tracking-tight">
-            Shifted<span className="text-cyan-200/90">Mind</span>
+            Shifted<span className="text-amber-200/90">Mind</span>
           </span>
         </Link>
       </header>
@@ -25,7 +25,7 @@ export default function NotFound() {
       >
         <p className="animate-floaty text-6xl">🪐</p>
         <h1 className="mt-5 text-6xl font-extrabold tracking-tight">
-          4<span className="text-cyan-200/90">0</span>4
+          4<span className="text-amber-200/90">0</span>4
         </h1>
         <p className="mt-3 max-w-md text-lg text-foreground/75">
           This star drifted off the map. Even constellations have orphans.

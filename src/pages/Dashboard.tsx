@@ -198,7 +198,7 @@ export default function Dashboard() {
               })}
             </p>
             <h1 className="text-clearing-soft mt-1 font-display text-3xl font-semibold tracking-tight sm:text-4xl">
-              {greeting}, <span className="text-cyan-200">{firstName}</span>{" "}
+              {greeting}, <span className="text-amber-200">{firstName}</span>{" "}
               <span className="inline-block animate-sway">✦</span>
             </h1>
             <p className="mt-1 text-sm text-muted-foreground">
@@ -246,8 +246,8 @@ export default function Dashboard() {
               }
             />
             {loading && (
-              <div className="radius-sheet absolute inset-0 z-20 flex items-center justify-center bg-[#0b1c26]/70 backdrop-blur-sm">
-                <Loader2 className="h-6 w-6 animate-spin text-cyan-200" />
+              <div className="radius-sheet absolute inset-0 z-20 flex items-center justify-center bg-[#1b1038]/70 backdrop-blur-sm">
+                <Loader2 className="h-6 w-6 animate-spin text-amber-200" />
               </div>
             )}
             {!loading && stars.length === 0 && (
@@ -255,7 +255,7 @@ export default function Dashboard() {
                 className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center"
                 aria-hidden
               >
-                <div className="max-w-sm rounded-xl border border-white/14 bg-[#131b3e]/50 p-6 text-center backdrop-blur-sm">
+                <div className="max-w-sm rounded-xl border border-white/14 bg-[#211448]/50 p-6 text-center backdrop-blur-sm">
                   <p className="text-3xl">🌌</p>
                   <p className="mt-2 text-lg font-bold tracking-tight">
                     Your sky is empty — for now
@@ -347,7 +347,7 @@ export default function Dashboard() {
                   size="sm"
                   variant="outline"
                   onClick={openFreshEditor}
-                  className="border-cyan-300/40 bg-cyan-300/10 text-cyan-100 hover:bg-cyan-300/20"
+                  className="border-amber-300/40 bg-amber-300/10 text-amber-100 hover:bg-amber-300/20"
                 >
                   <Sparkles className="mr-1.5 h-3.5 w-3.5" /> Hang my focus
                 </Button>
@@ -379,7 +379,7 @@ export default function Dashboard() {
               </div>
             </div>
             <p className="mt-3 border-t border-white/8 pt-3 text-xs text-muted-foreground">
-              <span className="font-semibold text-cyan-200/90">
+              <span className="font-semibold text-amber-200/90">
                 {streakData?.total ?? stars.length}
               </span>{" "}
               stars in your sky so far
@@ -486,7 +486,7 @@ export default function Dashboard() {
       />
 
       <AlertDialog open={deleteOpen} onOpenChange={setDeleteOpen}>
-        <AlertDialogContent className="border-white/14 bg-[#131b3e]/95 backdrop-blur-xl">
+        <AlertDialogContent className="border-white/14 bg-[#211448]/95 backdrop-blur-xl">
           <AlertDialogHeader>
             <AlertDialogTitle>Release this star?</AlertDialogTitle>
             <AlertDialogDescription>

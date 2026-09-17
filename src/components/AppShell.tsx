@@ -119,7 +119,7 @@ export function AppShell({
             <StarMark size={36} />
             <div className="leading-tight">
               <p className="font-display text-[15px] font-semibold tracking-tight">
-                Shifted<span className="text-cyan-200/90">Mind</span>
+                Shifted<span className="text-amber-200/90">Mind</span>
               </p>
               <p className="font-eyebrow text-muted-foreground">
                 choose your responses
@@ -135,7 +135,7 @@ export function AppShell({
                 “Between stimulus and response there is a space. In that space is
                 our power.”
               </p>
-              <p className="font-eyebrow mt-1.5 text-cyan-200/60">
+              <p className="font-eyebrow mt-1.5 text-amber-200/60">
                 — Viktor Frankl
               </p>
             </div>
@@ -146,7 +146,7 @@ export function AppShell({
                   type="button"
                   className="flex w-full items-center gap-3 rounded-lg border border-white/8 bg-white/4 px-3 py-2 text-left transition-colors hover:bg-white/8"
                 >
-                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-cyan-200/25 bg-cyan-200/10 font-mono text-xs font-semibold text-cyan-100">
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-amber-200/25 bg-amber-200/10 font-mono text-xs font-semibold text-amber-100">
                     {initialsOf(user?.name)}
                   </span>
                   <span className="min-w-0 flex-1">
@@ -157,7 +157,7 @@ export function AppShell({
                       {user?.email ?? "anonymous star"}
                     </span>
                     {!rank.loading && (
-                      <span className="font-eyebrow mt-0.5 block truncate text-cyan-200/70">
+                      <span className="font-eyebrow mt-0.5 block truncate text-amber-200/70">
                         {rank.emoji} {rank.name}
                       </span>
                     )}
@@ -179,12 +179,12 @@ export function AppShell({
         </aside>
 
         {/* Mobile header */}
-        <header className="sticky top-0 z-40 border-b border-white/10 bg-[#101737]/85 backdrop-blur-md lg:hidden">
+        <header className="sticky top-0 z-40 border-b border-white/10 bg-[#171033]/85 backdrop-blur-md lg:hidden">
           <div className="flex items-center justify-between px-4 py-3">
             <NavLink to="/" className="flex items-center gap-2">
               <StarMark size={28} />
               <span className="hidden font-display text-base font-semibold tracking-tight sm:inline">
-                Shifted<span className="text-cyan-200/90">Mind</span>
+                Shifted<span className="text-amber-200/90">Mind</span>
               </span>
             </NavLink>
             <div className="flex items-center gap-0.5">
@@ -196,7 +196,7 @@ export function AppShell({
                     cn(
                       "flex h-8 w-8 items-center justify-center rounded-lg transition-colors",
                       isActive
-                        ? "bg-white/[0.07] text-cyan-200"
+                        ? "bg-white/[0.07] text-amber-200"
                         : "text-foreground/70 hover:bg-white/5 hover:text-foreground",
                     )
                   }

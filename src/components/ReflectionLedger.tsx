@@ -116,7 +116,7 @@ export function ReflectionLedger({
           </div>
         </div>
         {seeded && (
-          <span className="rounded-full border border-cyan-300/30 bg-cyan-300/10 px-2.5 py-1 text-[11px] font-semibold text-cyan-200">
+          <span className="rounded-full border border-amber-300/30 bg-amber-300/10 px-2.5 py-1 text-[11px] font-semibold text-amber-200">
             logged tonight ✓
           </span>
         )}
@@ -129,7 +129,7 @@ export function ReflectionLedger({
         </span>
         {(
           [
-            { v: true, label: "Yes", cls: "border-cyan-300/60 bg-cyan-300/15 text-cyan-100" },
+            { v: true, label: "Yes", cls: "border-amber-300/60 bg-amber-300/15 text-amber-100" },
             { v: false, label: "Not yet", cls: "border-rose-300/50 bg-rose-300/10 text-rose-100" },
           ] as const
         ).map((o) => (
@@ -162,7 +162,7 @@ export function ReflectionLedger({
             onClick={() => setMood(m.value)}
             className={`flex h-10 w-10 items-center justify-center rounded-xl border text-lg transition-all ${
               effMood === m.value
-                ? "scale-110 border-cyan-300/60 bg-cyan-300/10"
+                ? "scale-110 border-amber-300/60 bg-amber-300/10"
                 : "border-white/10 bg-white/5 opacity-70 hover:opacity-100"
             }`}
           >
@@ -213,7 +213,7 @@ export function ReflectionLedger({
               const color = !d.r
                 ? "bg-white/10"
                 : d.r.honored
-                  ? "bg-gradient-to-t from-cyan-400/80 to-cyan-200"
+                  ? "bg-gradient-to-t from-amber-400/80 to-amber-200"
                   : "bg-gradient-to-t from-rose-400/70 to-rose-300";
               return (
                 <div
@@ -230,7 +230,7 @@ export function ReflectionLedger({
                     style={{ height }}
                   />
                   <span
-                    className={`text-[9px] ${d.isToday ? "font-semibold text-cyan-200" : "text-muted-foreground/75"}`}
+                    className={`text-[9px] ${d.isToday ? "font-semibold text-amber-200" : "text-muted-foreground/75"}`}
                   >
                     {d.label}
                   </span>
@@ -270,7 +270,7 @@ export function ReflectionHeroCard() {
         </div>
       </div>
       <div className="text-right">
-        <p className="text-2xl font-extrabold tracking-tight text-cyan-200">
+        <p className="text-2xl font-extrabold tracking-tight text-amber-200">
           {honoredPct}%
         </p>
         <p className="text-[10px] uppercase tracking-widest text-muted-foreground">

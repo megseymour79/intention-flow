@@ -56,7 +56,7 @@ export default function Deeper() {
           eyebrow="Section · go deeper"
           title={
             <>
-              Go <span className="text-cyan-200/90">deeper</span>
+              Go <span className="text-amber-200/90">deeper</span>
             </>
           }
           sub="Where you are in the sky, the science behind why it works, and three honest readings of how you move through the world — each ending with intentions cut to fit what you learn."
@@ -70,9 +70,9 @@ export default function Deeper() {
           to="/observatory"
           className="panel panel-hover group relative block overflow-hidden p-5"
         >
-          <div className="pointer-events-none absolute -right-8 -top-10 h-28 w-28 rounded-full bg-cyan-200/10 blur-3xl" />
+          <div className="pointer-events-none absolute -right-8 -top-10 h-28 w-28 rounded-full bg-amber-200/10 blur-3xl" />
           <div className="flex flex-wrap items-center gap-4">
-            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-cyan-200/25 bg-cyan-200/10 text-xl">
+            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-amber-200/25 bg-amber-200/10 text-xl">
               🔭
             </span>
             <div className="min-w-[200px] flex-1">
@@ -85,7 +85,7 @@ export default function Deeper() {
                 new chart every night.
               </p>
             </div>
-            <span className="font-eyebrow text-cyan-200/80 transition-transform group-hover:translate-x-0.5">
+            <span className="font-eyebrow text-amber-200/80 transition-transform group-hover:translate-x-0.5">
               Look through →
             </span>
           </div>
@@ -111,7 +111,7 @@ export default function Deeper() {
                   key={pack.kind}
                   type="button"
                   onClick={() => setDeepOpen(pack.kind)}
-                  className="group rounded-xl border border-white/10 bg-white/[0.03] p-4 text-left transition-all hover:border-cyan-300/30 hover:bg-cyan-300/[0.05]"
+                  className="group rounded-xl border border-white/10 bg-white/[0.03] p-4 text-left transition-all hover:border-amber-300/30 hover:bg-amber-300/[0.05]"
                 >
                   <div className="flex items-start justify-between gap-2">
                     <span className="text-2xl">{pack.emoji}</span>
@@ -129,7 +129,7 @@ export default function Deeper() {
                       ? savedResult.tagline
                       : `${pack.questions.length} questions · ${pack.subtitle}`}
                   </p>
-                  <p className="font-eyebrow mt-2 text-cyan-200/70 transition-colors group-hover:text-cyan-200">
+                  <p className="font-eyebrow mt-2 text-amber-200/70 transition-colors group-hover:text-amber-200">
                     {savedResult ? "Retake →" : "Take the quiz →"}
                   </p>
                 </button>

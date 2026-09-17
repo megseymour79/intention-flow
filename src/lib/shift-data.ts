@@ -193,8 +193,8 @@ export const RESPONSE_STYLES: ResponseStyle[] = [
     practice:
       "Give small decisions a one-minute deadline and commit. For the big ones, write down what you actually need, then answer the moment in front of you instead of the one in your head.",
     intentions: ["One thing at a time, all the way through", "Speak slower than I think", "Adapt the plan, keep the goal"],
-    bar: "bg-cyan-300",
-    glow: "text-cyan-300",
+    bar: "bg-violet-300",
+    glow: "text-violet-300",
   },
   {
     id: "current",
@@ -225,8 +225,8 @@ export const RESPONSE_STYLES: ResponseStyle[] = [
     practice:
       "For every yes you hand out today, give one to yourself. 'I'll help' and 'I need a minute' can live in the same conversation.",
     intentions: ["Stay curious when the answer feels obvious", "Leave the work at the door tonight", "Get curious before I get defensive"],
-    bar: "bg-cyan-300",
-    glow: "text-cyan-300",
+    bar: "bg-rose-300",
+    glow: "text-rose-300",
   },
 ];
 

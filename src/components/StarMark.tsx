@@ -11,14 +11,14 @@ export function StarMark({ size = 40, className }: StarMarkProps) {
     <div
       aria-hidden
       className={cn(
-        "relative flex shrink-0 items-center justify-center rounded-2xl bg-gradient-to-b from-[#101a2e] to-[#050a16] ring-1 ring-white/15",
+        "relative flex shrink-0 items-center justify-center rounded-2xl bg-gradient-to-b from-[#231448] to-[#0e0820] ring-1 ring-white/15",
         className,
       )}
       style={{ width: size, height: size }}
     >
       {/* tiny background stars */}
       <span
-        className="absolute rounded-full bg-blue-100/70"
+        className="absolute rounded-full bg-amber-100/70"
         style={{
           width: Math.max(1.5, size * 0.045),
           height: Math.max(1.5, size * 0.045),
@@ -41,9 +41,9 @@ export function StarMark({ size = 40, className }: StarMarkProps) {
         style={{
           fontSize: size * 0.5,
           lineHeight: 1,
-          color: "#e8eeff",
+          color: "#f5ead9",
           textShadow:
-            "0 0 8px rgba(200,218,255,0.9), 0 0 18px rgba(160,190,255,0.45)",
+            "0 0 8px rgba(255,214,168,0.9), 0 0 18px rgba(255,178,120,0.45)",
           transform: "translateY(-2%)",
         }}
       >

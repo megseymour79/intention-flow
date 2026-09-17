@@ -138,7 +138,7 @@ export default function Messages() {
           >
             <div className="border-b border-white/8 p-4">
               <h2 className="flex items-center gap-2 font-display text-lg font-semibold tracking-tight">
-                <MessageCircle className="h-5 w-5 text-cyan-200" /> Messages
+                <MessageCircle className="h-5 w-5 text-amber-200" /> Messages
               </h2>
               <p className="font-eyebrow mt-0.5 text-muted-foreground">
                 Notes between star-hangers
@@ -162,7 +162,7 @@ export default function Messages() {
                   onClick={() => setOpenId(c._id)}
                   className={`flex w-full items-center gap-3 rounded-2xl px-3 py-3 text-left transition-colors ${
                     openId === c._id
-                      ? "bg-cyan-300/10"
+                      ? "bg-amber-300/10"
                       : "hover:bg-white/5"
                   }`}
                 >
@@ -170,7 +170,7 @@ export default function Messages() {
                     {c.otherImage ? (
                       <AvatarImage src={c.otherImage} alt={c.otherName} />
                     ) : null}
-                    <AvatarFallback className="border border-cyan-200/25 bg-cyan-200/10 font-mono text-xs font-semibold text-cyan-100">
+                    <AvatarFallback className="border border-amber-200/25 bg-amber-200/10 font-mono text-xs font-semibold text-amber-100">
                       {initialsOf(c.otherName)}
                     </AvatarFallback>
                   </Avatar>
@@ -204,7 +204,7 @@ export default function Messages() {
                         alt={openConvo.otherName}
                       />
                     ) : null}
-                    <AvatarFallback className="border border-cyan-200/25 bg-cyan-200/10 font-mono text-xs font-semibold text-cyan-100">
+                    <AvatarFallback className="border border-amber-200/25 bg-amber-200/10 font-mono text-xs font-semibold text-amber-100">
                       {initialsOf(openConvo.otherName)}
                     </AvatarFallback>
                   </Avatar>
@@ -244,14 +244,14 @@ export default function Messages() {
                         <div
                           className={`max-w-[78%] rounded-2xl px-3.5 py-2 ${
                             mine
-                              ? "rounded-br-sm bg-cyan-300/90 text-cyan-950"
+                              ? "rounded-br-sm bg-amber-300/90 text-amber-950"
                               : "rounded-bl-sm bg-white/8 text-foreground/90"
                           }`}
                         >
                           <p className="text-sm leading-relaxed">{m.text}</p>
                           <p
                             className={`mt-1 text-right text-[10px] ${
-                              mine ? "text-cyan-900/60" : "text-muted-foreground"
+                              mine ? "text-amber-900/60" : "text-muted-foreground"
                             }`}
                           >
                             {convoTimeLabel(m.createdAt)}
@@ -273,7 +273,7 @@ export default function Messages() {
                     }}
                     placeholder="Write to the sky…"
                     maxLength={1000}
-                    className="h-10 min-w-0 flex-1 rounded-full border border-white/12 bg-white/5 px-4 text-sm placeholder:text-foreground/50 focus:border-cyan-300/40 focus:outline-none"
+                    className="h-10 min-w-0 flex-1 rounded-full border border-white/12 bg-white/5 px-4 text-sm placeholder:text-foreground/50 focus:border-amber-300/40 focus:outline-none"
                   />
                   <Button
                     size="icon"
@@ -317,7 +317,7 @@ export default function Messages() {
                   ← Back
                 </Button>
                 <Avatar className="h-8 w-8">
-                  <AvatarFallback className="border border-cyan-200/25 bg-cyan-200/10 font-mono text-[10px] font-semibold text-cyan-100">
+                  <AvatarFallback className="border border-amber-200/25 bg-amber-200/10 font-mono text-[10px] font-semibold text-amber-100">
                     {initialsOf(openConvo.otherName)}
                   </AvatarFallback>
                 </Avatar>
@@ -338,7 +338,7 @@ export default function Messages() {
                     >
                       <div
                         className={`max-w-[80%] rounded-2xl px-3.5 py-2 ${                            mine
-                              ? "rounded-br-sm bg-cyan-300/90 text-cyan-950"
+                              ? "rounded-br-sm bg-amber-300/90 text-amber-950"
                               : "rounded-bl-sm bg-white/8 text-foreground/90"
                         }`}
                       >
@@ -360,7 +360,7 @@ export default function Messages() {
                   }}
                   placeholder="Write to the sky…"
                   maxLength={1000}
-                  className="h-10 min-w-0 flex-1 rounded-full border border-white/12 bg-white/5 px-4 text-sm placeholder:text-foreground/50 focus:border-cyan-300/40 focus:outline-none"
+                  className="h-10 min-w-0 flex-1 rounded-full border border-white/12 bg-white/5 px-4 text-sm placeholder:text-foreground/50 focus:border-amber-300/40 focus:outline-none"
                 />
                 <Button
                   size="icon"

@@ -122,7 +122,7 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
             <StarMark size={52} />
             <span>
               <span className="font-display block text-2xl font-bold tracking-tight">
-                Shifted<span className="text-cyan-200/90">Mind</span>
+                Shifted<span className="text-amber-200/90">Mind</span>
               </span>
               <span className="font-eyebrow block text-muted-foreground">
                 choose your responses
@@ -130,7 +130,7 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
             </span>
           </button>
 
-          <Card className="w-full rounded-xl border-white/12 bg-white/[0.05] pb-0 shadow-[0_24px_80px_-24px_rgba(0,0,0,0.6)] backdrop-blur-md">
+          <Card className="w-full rounded-xl border-white/12 bg-white/[0.05] pb-0 shadow-[0_24px_80px_-24px_rgba(12,6,26,0.6)] backdrop-blur-md">
             {step === "signIn" ? (
               <>
                 <CardHeader className="text-center">
@@ -160,7 +160,7 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
                         type="submit"
                         variant="outline"
                         size="icon"
-                        className="border-cyan-300/40 bg-cyan-300/10 text-cyan-200 hover:bg-cyan-300/20"
+                        className="border-amber-300/40 bg-amber-300/10 text-amber-200 hover:bg-amber-300/20"
                         disabled={isLoading}
                       >
                         {isLoading ? (
@@ -180,7 +180,7 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
                           <span className="w-full border-t border-white/10" />
                         </div>
                         <div className="relative flex justify-center text-xs uppercase">
-                          <span className="bg-[#151d44] px-2 text-muted-foreground">
+                          <span className="bg-[#1e1544] px-2 text-muted-foreground">
                             Or
                           </span>
                         </div>
@@ -246,7 +246,7 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
                       Didn't receive a code?{" "}
                       <Button
                         variant="link"
-                        className="p-0 h-auto text-cyan-300"
+                        className="p-0 h-auto text-amber-300"
                         onClick={() => setStep("signIn")}
                       >
                         Try again
@@ -291,7 +291,7 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
                 href="https://freebuff.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="underline hover:text-cyan-300 transition-colors"
+                className="underline hover:text-amber-300 transition-colors"
               >
                 freebuff.com
               </a>

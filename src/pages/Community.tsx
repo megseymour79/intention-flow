@@ -34,10 +34,10 @@ const FILE_TYPES = ["image/png", "image/jpeg", "image/webp", "image/gif"];
 
 function avatarHue(seed: string): string {
   const palettes = [
-    "from-cyan-300/80 to-teal-400/80",
-    "from-cyan-300/80 to-blue-400/80",
+    "from-amber-300/80 to-rose-400/80",
+    "from-amber-300/80 to-violet-400/80",
     "from-fuchsia-300/80 to-purple-400/80",
-    "from-lime-300/80 to-cyan-400/80",
+    "from-lime-300/80 to-amber-400/80",
     "from-rose-300/80 to-pink-400/80",
   ];
   let n = 0;
@@ -153,7 +153,7 @@ export default function Community() {
           eyebrow="Community · shared intentions"
           title={
             <>
-              The community <span className="text-cyan-200/90">sky</span>
+              The community <span className="text-amber-200/90">sky</span>
             </>
           }
           sub="Share the intention you're holding this week — and see what other people are aiming at. Glow the ones that get you."
@@ -182,7 +182,7 @@ export default function Community() {
                   onClick={() => setGlyph(g)}
                   className={`flex h-8 w-8 items-center justify-center rounded-lg border text-base transition-all ${
                     glyph === g
-                      ? "border-cyan-300/60 bg-cyan-300/10 scale-110"
+                      ? "border-amber-300/60 bg-amber-300/10 scale-110"
                       : "border-transparent hover:border-white/20"
                   }`}
                   style={
@@ -265,7 +265,7 @@ export default function Community() {
                   setImage(null);
                   if (fileRef.current) fileRef.current.value = "";
                 }}
-                className="absolute right-2 top-2 flex h-7 w-7 items-center justify-center rounded-full bg-[#0b1c26]/75 text-white backdrop-blur"
+                className="absolute right-2 top-2 flex h-7 w-7 items-center justify-center rounded-full bg-[#1b1038]/75 text-white backdrop-blur"
                 aria-label="Remove image"
               >
                 <X className="h-4 w-4" />
@@ -305,7 +305,7 @@ export default function Community() {
                           <AvatarImage src={post.author.image} alt={post.author.name} />
                         ) : null}
                         <AvatarFallback
-                          className={`bg-gradient-to-br ${avatarHue(post.author.userId)} text-sm font-bold text-[#0a1120]`}
+                          className={`bg-gradient-to-br ${avatarHue(post.author.userId)} text-sm font-bold text-[#120b26]`}
                         >
                           {(post.author.name ?? "?").slice(0, 1).toUpperCase()}
                         </AvatarFallback>
@@ -328,7 +328,7 @@ export default function Community() {
                           asChild
                           variant="ghost"
                           size="sm"
-                          className="h-8 text-xs text-muted-foreground hover:text-cyan-200"
+                          className="h-8 text-xs text-muted-foreground hover:text-amber-200"
                         >
                           <Link
                             to={`/messages?peer=${post.author.userId}`}
@@ -383,12 +383,12 @@ export default function Community() {
                           }
                           className={`h-8 text-xs ${
                             post.glowed
-                              ? "text-cyan-300"
-                              : "text-muted-foreground hover:text-cyan-200"
+                              ? "text-amber-300"
+                              : "text-muted-foreground hover:text-amber-200"
                           }`}
                         >
                           <Sparkles
-                            className={`mr-1.5 h-4 w-4 ${post.glowed ? "fill-cyan-300" : ""}`}
+                            className={`mr-1.5 h-4 w-4 ${post.glowed ? "fill-amber-300" : ""}`}
                           />
                           {post.glowCount} glow{post.glowCount === 1 ? "" : "s"}
                         </Button>
@@ -402,8 +402,8 @@ export default function Community() {
                           }
                           className={`h-8 text-xs ${
                             expandedId === post._id
-                              ? "text-cyan-200"
-                              : "text-muted-foreground hover:text-cyan-200"
+                              ? "text-amber-200"
+                              : "text-muted-foreground hover:text-amber-200"
                           }`}
                         >
                           <MessageCircle className="mr-1.5 h-4 w-4" />
@@ -422,7 +422,7 @@ export default function Community() {
                         animate={{ height: "auto", opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
                         transition={{ duration: 0.2 }}
-                        className="overflow-hidden border-t border-white/8 bg-[#0b1c26]/35"
+                        className="overflow-hidden border-t border-white/8 bg-[#1b1038]/35"
                       >
                         <div className="space-y-3 p-4">
                           {comments.length === 0 && (
@@ -440,7 +440,7 @@ export default function Community() {
                                   />
                                 ) : null}
                                 <AvatarFallback
-                                  className={`bg-gradient-to-br ${avatarHue(c.author.userId)} text-[10px] font-bold text-[#0a1120]`}
+                                  className={`bg-gradient-to-br ${avatarHue(c.author.userId)} text-[10px] font-bold text-[#120b26]`}
                                 >
                                   {(c.author.name ?? "?").slice(0, 1).toUpperCase()}
                                 </AvatarFallback>
@@ -473,7 +473,7 @@ export default function Community() {
                                 commenting || commentDraft.trim().length === 0
                               }
                               onClick={() => void handleComment()}
-                              className="h-8 rounded-full bg-cyan-300/90 font-bold text-cyan-950 hover:bg-cyan-200"
+                              className="h-8 rounded-full bg-amber-300/90 font-bold text-amber-950 hover:bg-amber-200"
                             >
                               {commenting ? (
                                 <Loader2 className="h-3.5 w-3.5 animate-spin" />
@@ -516,7 +516,7 @@ function InputComment({
       }}
       placeholder="Add a word of support…"
       maxLength={300}
-      className="h-8 min-w-0 flex-1 rounded-full border border-white/12 bg-white/5 px-3.5 text-xs placeholder:text-foreground/50 focus:border-cyan-300/50 focus:outline-none"
+      className="h-8 min-w-0 flex-1 rounded-full border border-white/12 bg-white/5 px-3.5 text-xs placeholder:text-foreground/50 focus:border-amber-300/50 focus:outline-none"
     />
   );
 }

@@ -121,9 +121,9 @@ function SkyDecor() {
             width: d.size,
             height: d.size,
             background: d.bright
-              ? "rgba(226,236,255,0.95)"
-              : "rgba(214,224,246,0.45)",
-            boxShadow: d.bright ? "0 0 6px 1px rgba(226,236,255,0.4)" : undefined,
+              ? "rgba(250,240,226,0.95)"
+              : "rgba(238,226,212,0.45)",
+            boxShadow: d.bright ? "0 0 6px 1px rgba(250,226,196,0.4)" : undefined,
             animationDelay: `${d.delay}s`,
             animationDuration: `${d.duration}s`,
           }}
@@ -132,21 +132,21 @@ function SkyDecor() {
 
   return (
     <>
-      {/* high shimmer — faint teal light across the upper sky */}
+      {/* high shimmer — faint warm light across the upper sky */}
       <div
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            "radial-gradient(150% 60% at 75% -15%, rgba(154,235,214,0.07) 0%, rgba(154,235,214,0.028) 40%, transparent 68%)",
+            "radial-gradient(150% 60% at 75% -15%, rgba(251,205,160,0.07) 0%, rgba(251,205,160,0.028) 40%, transparent 68%)",
         }}
       />
-      {/* deep-water glow along the bottom edge of the sky — dark sea-ink so
+      {/* dusk-ink deepening along the bottom edge of the sky — dark plum so
           it deepens contrast for content without going muddy */}
       <div
         className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3"
         style={{
           background:
-            "linear-gradient(to top, rgba(4,14,22,0.5) 0%, rgba(6,20,30,0.2) 50%, transparent 100%)",
+            "linear-gradient(to top, rgba(12,6,26,0.5) 0%, rgba(16,9,34,0.2) 50%, transparent 100%)",
         }}
       />
       <div
@@ -229,8 +229,8 @@ function ShootingStars() {
               left: `${m.left}%`,
               top: `${m.top}%`,
               background:
-                "linear-gradient(90deg, rgba(235,244,255,0.95), rgba(180,205,245,0.5), transparent)",
-              filter: "drop-shadow(0 0 4px rgba(200,220,255,0.7))",
+                "linear-gradient(90deg, rgba(255,244,224,0.95), rgba(250,206,164,0.5), transparent)",
+              filter: "drop-shadow(0 0 4px rgba(255,214,168,0.7))",
               animationDuration: `${m.duration}s`,
               "--shoot-angle": `${m.angle}deg`,
             } as React.CSSProperties
@@ -274,7 +274,7 @@ function SkyVortex({ onDiveIn }: { onDiveIn: () => void }) {
             className="animate-dive absolute left-1/2 top-1/2 h-[148px] w-[148px] rounded-[50%]"
             style={{
               background:
-                "radial-gradient(circle, #000 0%, #05070f 55%, rgba(120,150,230,0.14) 72%, transparent 78%)",
+                "radial-gradient(circle, #000 0%, #080418 55%, rgba(150,140,255,0.14) 72%, transparent 78%)",
             }}
           />
           {/* its glow blown outward, dimming as the horizon swallows you */}
@@ -283,7 +283,7 @@ function SkyVortex({ onDiveIn }: { onDiveIn: () => void }) {
             className="animate-dive-fade absolute left-1/2 top-1/2 h-[148px] w-[148px] rounded-full"
             style={{
               background:
-                "radial-gradient(circle, transparent 46%, rgba(150,180,255,0.16) 58%, transparent 74%)",
+                "radial-gradient(circle, transparent 46%, rgba(170,160,255,0.16) 58%, transparent 74%)",
             }}
           />
         </>
@@ -295,7 +295,7 @@ function SkyVortex({ onDiveIn }: { onDiveIn: () => void }) {
         className="animate-horizon-breathe pointer-events-none absolute left-1/2 top-1/2 h-[168px] w-[168px] rounded-full"
         style={{
           background:
-            "radial-gradient(circle, transparent 26%, rgba(140,170,255,0.14) 38%, rgba(90,120,220,0.07) 48%, transparent 62%)",
+            "radial-gradient(circle, transparent 26%, rgba(160,150,255,0.14) 38%, rgba(110,100,230,0.07) 48%, transparent 62%)",
         }}
       />
 
@@ -305,7 +305,7 @@ function SkyVortex({ onDiveIn }: { onDiveIn: () => void }) {
         className="animate-swirl pointer-events-none absolute left-1/2 top-1/2 h-[132px] w-[132px] rounded-full blur-[4px]"
         style={{
           background:
-            "conic-gradient(from 40deg, transparent 0deg, rgba(120,150,255,0.22) 70deg, rgba(210,225,255,0.38) 110deg, rgba(120,150,255,0.14) 160deg, transparent 235deg)",
+            "conic-gradient(from 40deg, transparent 0deg, rgba(140,130,255,0.22) 70deg, rgba(225,215,255,0.38) 110deg, rgba(140,130,255,0.14) 160deg, transparent 235deg)",
         }}
       />
       {/* inner disk — counter-rotating, hotter, tighter */}
@@ -314,7 +314,7 @@ function SkyVortex({ onDiveIn }: { onDiveIn: () => void }) {
         className="animate-disk-counter pointer-events-none absolute left-1/2 top-1/2 h-[92px] w-[92px] rounded-full blur-[2px]"
         style={{
           background:
-            "conic-gradient(from 200deg, transparent 0deg, rgba(255,246,230,0.5) 55deg, rgba(170,195,255,0.75) 95deg, rgba(255,235,205,0.4) 140deg, transparent 210deg)",
+            "conic-gradient(from 200deg, transparent 0deg, rgba(255,246,230,0.5) 55deg, rgba(185,175,255,0.75) 95deg, rgba(255,235,205,0.4) 140deg, transparent 210deg)",
         }}
       />
 
@@ -324,9 +324,9 @@ function SkyVortex({ onDiveIn }: { onDiveIn: () => void }) {
         className="animate-horizon-breathe relative block h-[64px] w-[64px] rounded-full"
         style={{
           background:
-            "radial-gradient(circle at 42% 38%, #0c101a 0%, #02040a 52%, #000 100%)",
+            "radial-gradient(circle at 42% 38%, #0d0918 0%, #02040a 52%, #000 100%)",
           boxShadow:
-            "0 0 30px 8px rgba(130,160,255,0.4), 0 0 80px 24px rgba(80,110,220,0.18), inset 0 0 16px 6px rgba(0,0,0,0.95)",
+            "0 0 30px 8px rgba(150,140,255,0.4), 0 0 80px 24px rgba(100,90,225,0.18), inset 0 0 16px 6px rgba(0,0,0,0.95)",
         }}
       />
       {/* the photon ring — the thin brilliant circle right at the edge */}
@@ -336,7 +336,7 @@ function SkyVortex({ onDiveIn }: { onDiveIn: () => void }) {
         style={{
           border: "1.5px solid rgba(255,255,255,0.85)",
           boxShadow:
-            "0 0 10px 1px rgba(255,255,255,0.5), 0 0 26px 3px rgba(160,185,255,0.35)",
+            "0 0 10px 1px rgba(255,255,255,0.5), 0 0 26px 3px rgba(180,170,255,0.35)",
         }}
       />
 
@@ -350,8 +350,8 @@ function SkyVortex({ onDiveIn }: { onDiveIn: () => void }) {
             className="animate-infall pointer-events-none absolute left-1/2 top-1/2 h-[3px] w-[3px] rounded-full"
             style={
               {
-                background: "rgba(220,232,255,0.9)",
-                boxShadow: "0 0 5px 1px rgba(190,210,255,0.7)",
+                background: "rgba(240,226,255,0.9)",
+                boxShadow: "0 0 5px 1px rgba(200,186,255,0.7)",
                 animationDuration: `${2.6 + d * 2.6}s`,
                 animationDelay: `${d * 3.2}s`,
                 "--fall-from": `${40 + d * 22}px`,
@@ -365,11 +365,11 @@ function SkyVortex({ onDiveIn }: { onDiveIn: () => void }) {
       {/* slow pulse ring — the void announcing itself */}
       <span
         aria-hidden
-        className="animate-vortex-pulse absolute left-1/2 top-1/2 h-[72px] w-[72px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-blue-200/35"
+        className="animate-vortex-pulse absolute left-1/2 top-1/2 h-[72px] w-[72px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-violet-200/35"
       />
 
       {/* the invitation — always visible, brighter on hover */}
-      <span className="pointer-events-none absolute left-1/2 top-full mt-2 -translate-x-1/2 whitespace-nowrap rounded-full border border-blue-200/20 bg-[#0b1c26]/70 px-3 py-1 text-[11px] font-medium tracking-wide text-blue-50/85 backdrop-blur-sm transition-colors duration-200 group-hover:border-blue-200/50 group-hover:text-white">
+      <span className="pointer-events-none absolute left-1/2 top-full mt-2 -translate-x-1/2 whitespace-nowrap rounded-full border border-violet-200/20 bg-[#1b1038]/70 px-3 py-1 text-[11px] font-medium tracking-wide text-violet-50/85 backdrop-blur-sm transition-colors duration-200 group-hover:border-violet-200/50 group-hover:text-white">
         dive deeper ↓
       </span>
 
@@ -397,10 +397,10 @@ function DeepSkyWash() {
         className="absolute inset-0"
         style={{
           background:
-            "radial-gradient(55% 42% at 20% 32%, rgba(129,90,220,0.11) 0%, transparent 70%)," +
-            "radial-gradient(48% 38% at 76% 64%, rgba(34,150,190,0.10) 0%, transparent 72%)," +
+            "radial-gradient(55% 42% at 20% 32%, rgba(160,80,220,0.11) 0%, transparent 70%)," +
+            "radial-gradient(48% 38% at 76% 64%, rgba(210,110,60,0.10) 0%, transparent 72%)," +
             "radial-gradient(38% 32% at 52% 16%, rgba(219,120,180,0.07) 0%, transparent 70%)," +
-            "radial-gradient(30% 26% at 88% 22%, rgba(90,110,220,0.08) 0%, transparent 68%)",
+            "radial-gradient(30% 26% at 88% 22%, rgba(110,90,220,0.08) 0%, transparent 68%)",
         }}
       />
     </div>
@@ -657,8 +657,8 @@ export function StarSky({
               opacity: c.opacity,
               animationDuration: `${7 + i * 2}s`,
               background:
-                "radial-gradient(50% 60% at 35% 55%, rgba(196,208,235,0.7) 0%, rgba(196,208,235,0.28) 55%, transparent 100%)," +
-                "radial-gradient(45% 55% at 68% 40%, rgba(210,220,242,0.5) 0%, transparent 90%)",
+                "radial-gradient(50% 60% at 35% 55%, rgba(230,214,235,0.7) 0%, rgba(230,214,235,0.28) 55%, transparent 100%)," +
+                "radial-gradient(45% 55% at 68% 40%, rgba(238,224,242,0.5) 0%, transparent 90%)",
               filter: "blur(6px)",
             }}
           />
@@ -776,14 +776,14 @@ export function StarSky({
           exit={{ opacity: 0 }}
           transition={{ delay: 1.2, duration: 0.4 }}
           onClick={onDiveIn}
-          className="absolute z-20 max-w-[180px] rounded-2xl border border-blue-200/25 bg-[#0b1c26]/70 p-3 text-left backdrop-blur-md transition-colors hover:border-blue-200/50"
+          className="absolute z-20 max-w-[180px] rounded-2xl border border-violet-200/25 bg-[#1b1038]/70 p-3 text-left backdrop-blur-md transition-colors hover:border-violet-200/50"
           // Anchored beside the vortex (centered at 88% / 20%) — the arrow points into the void.
           style={{
             right: "calc(12% + 108px)",
             top: "calc(20% - 30px)",
           }}
         >
-          <span className="text-[11px] font-bold uppercase tracking-[0.16em] text-blue-200/90">
+          <span className="text-[11px] font-bold uppercase tracking-[0.16em] text-violet-200/90">
             Something pulls
           </span>
           <span className="mt-0.5 block text-xs leading-relaxed text-foreground/80">
@@ -791,12 +791,12 @@ export function StarSky({
           </span>
           <span
             aria-hidden
-            className="absolute -right-1.5 top-1/2 h-3 w-3 -translate-y-1/2 rotate-45 border-r border-t border-blue-200/25 bg-[#0b1c26]/70"
+            className="absolute -right-1.5 top-1/2 h-3 w-3 -translate-y-1/2 rotate-45 border-r border-t border-violet-200/25 bg-[#1b1038]/70"
           />
         </motion.button>
       )}
       {hint && (
-        <p className="pointer-events-none absolute bottom-3 left-1/2 z-10 max-w-[calc(100%-1.5rem)] -translate-x-1/2 rounded-full border border-white/10 bg-[#0b1c26]/55 px-3 py-1 text-center font-eyebrow text-foreground/70 backdrop-blur-sm sm:whitespace-nowrap">
+        <p className="pointer-events-none absolute bottom-3 left-1/2 z-10 max-w-[calc(100%-1.5rem)] -translate-x-1/2 rounded-full border border-white/10 bg-[#1b1038]/55 px-3 py-1 text-center font-eyebrow text-foreground/70 backdrop-blur-sm sm:whitespace-nowrap">
           {hint}
         </p>
       )}
@@ -866,7 +866,7 @@ export function StarSky({
                 so it never runs off the page */}
             {star.active && (
               <span
-                className={`pointer-events-none absolute left-1/2 whitespace-nowrap rounded-full border border-white/10 bg-[#0b1c26]/70 px-2.5 py-0.5 text-[11px] text-foreground/90 backdrop-blur-sm ${
+                className={`pointer-events-none absolute left-1/2 whitespace-nowrap rounded-full border border-white/10 bg-[#1b1038]/70 px-2.5 py-0.5 text-[11px] text-foreground/90 backdrop-blur-sm ${
                   pos.y > 62 ? "bottom-full mb-1" : "top-full mt-1"
                 }`}
                 style={{

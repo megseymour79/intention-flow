@@ -78,7 +78,7 @@ export function BreathOrb({ compact = false }: { compact?: boolean }) {
           style={{
             inset: size * 0.1,
             background:
-              "radial-gradient(circle, rgba(251,191,36,0.16) 0%, rgba(125,150,255,0.08) 55%, transparent 72%)",
+              "radial-gradient(circle, rgba(251,176,59,0.16) 0%, rgba(196,181,253,0.08) 55%, transparent 72%)",
             transform: `scale(${scale * 1.14})`,
             transition: `transform ${current?.seconds ?? 4}s cubic-bezier(0.37, 0, 0.63, 1)`,
           }}
@@ -92,9 +92,9 @@ export function BreathOrb({ compact = false }: { compact?: boolean }) {
             width: size,
             height: size,
             background:
-              "radial-gradient(circle at 36% 30%, rgba(255,244,214,0.95) 0%, rgba(251,191,36,0.6) 42%, rgba(168,120,255,0.28) 72%, rgba(90,110,220,0.12) 100%)",
+              "radial-gradient(circle at 36% 30%, rgba(255,240,214,0.95) 0%, rgba(251,176,59,0.6) 42%, rgba(196,140,255,0.26) 72%, rgba(110,100,225,0.12) 100%)",
             boxShadow:
-              "0 0 34px 4px rgba(251,191,36,0.3), inset 0 0 24px rgba(255,255,255,0.28)",
+              "0 0 34px 4px rgba(251,176,59,0.3), inset 0 0 24px rgba(255,255,255,0.28)",
             transform: `scale(${scale})`,
             transition: `transform ${current?.seconds ?? 4}s cubic-bezier(0.37, 0, 0.63, 1)`,
           }}
@@ -108,7 +108,7 @@ export function BreathOrb({ compact = false }: { compact?: boolean }) {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -4 }}
                   transition={{ duration: 0.22 }}
-                  className={`font-bold tabular-nums text-[#241a06] ${
+                  className={`font-bold tabular-nums text-[#2a1a04] ${
                     compact ? "text-base" : "text-xl"
                   }`}
                 >
@@ -126,7 +126,7 @@ export function BreathOrb({ compact = false }: { compact?: boolean }) {
         {phase && current ? (
           <>
             <p
-              className={`font-display font-semibold text-cyan-100 ${
+              className={`font-display font-semibold text-amber-100 ${
                 compact ? "text-base" : "text-lg"
               }`}
             >
@@ -139,7 +139,7 @@ export function BreathOrb({ compact = false }: { compact?: boolean }) {
         ) : done ? (
           <>
             <p
-              className={`font-display font-semibold text-cyan-100 ${
+              className={`font-display font-semibold text-amber-100 ${
                 compact ? "text-base" : "text-lg"
               }`}
             >
@@ -152,7 +152,7 @@ export function BreathOrb({ compact = false }: { compact?: boolean }) {
         ) : (
           <>
             <p
-              className={`font-display font-semibold text-cyan-100 ${
+              className={`font-display font-semibold text-amber-100 ${
                 compact ? "text-base" : "text-lg"
               }`}
             >
@@ -177,7 +177,7 @@ export function BreathOrb({ compact = false }: { compact?: boolean }) {
         <button
           type="button"
           onClick={begin}
-          className="rounded-full border border-cyan-300/40 bg-cyan-300/10 px-5 py-2 text-sm font-semibold text-cyan-100 transition-all hover:scale-105 hover:bg-cyan-300/20"
+          className="rounded-full border border-amber-300/40 bg-amber-300/10 px-5 py-2 text-sm font-semibold text-amber-100 transition-all hover:scale-105 hover:bg-amber-300/20"
         >
           {done ? "Once more ✦" : "Begin ✦"}
         </button>

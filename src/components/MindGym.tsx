@@ -24,12 +24,12 @@ function GymCard({
   return (
     <div
       className={cn(
-        "flex flex-col rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.05] to-white/[0.02] p-5 transition-colors hover:border-cyan-300/25",
+        "flex flex-col rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.05] to-white/[0.02] p-5 transition-colors hover:border-amber-300/25",
         wide && "sm:col-span-2",
       )}
     >
       <div className="flex items-start gap-3">
-        <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-cyan-300/10 text-xl ring-1 ring-cyan-300/20">
+        <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-amber-300/10 text-xl ring-1 ring-amber-300/20">
           {emoji}
         </span>
         <div>
@@ -51,7 +51,7 @@ function PlayAgain({ onClick, label }: { onClick: () => void; label: string }) {
     <button
       type="button"
       onClick={onClick}
-      className="mx-auto mt-4 inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/5 px-4 py-1.5 text-xs font-semibold text-muted-foreground transition-colors hover:border-cyan-300/40 hover:text-cyan-100"
+      className="mx-auto mt-4 inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/5 px-4 py-1.5 text-xs font-semibold text-muted-foreground transition-colors hover:border-amber-300/40 hover:text-amber-100"
     >
       <RotateCcw className="h-3 w-3" /> {label}
     </button>
@@ -153,7 +153,7 @@ function ImpulseCatcher() {
 
   return (
     <div className="flex flex-1 flex-col">
-      <div className="relative h-44 overflow-hidden rounded-2xl border border-white/10 bg-[#1a2450]/45">
+      <div className="relative h-44 overflow-hidden rounded-2xl border border-white/10 bg-[#241743]/45">
         {running &&
           urges.map((u) => (
             <motion.button
@@ -239,7 +239,7 @@ function ThoughtUnhook() {
 
   return (
     <div className="flex flex-1 flex-col">
-      <div className="relative flex h-44 flex-col justify-center overflow-hidden rounded-2xl border border-white/10 bg-[#1a2450]/45 px-4">
+      <div className="relative flex h-44 flex-col justify-center overflow-hidden rounded-2xl border border-white/10 bg-[#241743]/45 px-4">
         <motion.p
           animate={{ x: `${drift}%`, opacity }}
           transition={{ duration: 1.4, ease: "easeInOut" }}
@@ -260,7 +260,7 @@ function ThoughtUnhook() {
           <button
             type="button"
             onClick={() => setPhase("watching")}
-            className="rounded-full border border-sky-300/40 bg-sky-300/10 px-4 py-1.5 text-xs font-semibold text-sky-100 transition-colors hover:bg-sky-300/20"
+            className="rounded-full border border-violet-300/40 bg-violet-300/10 px-4 py-1.5 text-xs font-semibold text-violet-100 transition-colors hover:bg-violet-300/20"
           >
             Just watch it
           </button>
@@ -269,7 +269,7 @@ function ThoughtUnhook() {
           <button
             type="button"
             onClick={() => setPhase("free")}
-            className="rounded-full border border-cyan-300/40 bg-cyan-300/10 px-4 py-1.5 text-xs font-semibold text-cyan-100 transition-colors hover:bg-cyan-300/20"
+            className="rounded-full border border-amber-300/40 bg-amber-300/10 px-4 py-1.5 text-xs font-semibold text-amber-100 transition-colors hover:bg-amber-300/20"
           >
             Let it drift
           </button>
@@ -316,7 +316,7 @@ function GroundingSteps() {
 
   return (
     <div className="flex flex-1 flex-col">
-      <div className="relative flex h-44 flex-col items-center justify-center gap-3 rounded-2xl border border-white/10 bg-[#1a2450]/45 px-4 text-center">
+      <div className="relative flex h-44 flex-col items-center justify-center gap-3 rounded-2xl border border-white/10 bg-[#241743]/45 px-4 text-center">
         {done ? (
           <>
             <motion.p
@@ -345,14 +345,14 @@ function GroundingSteps() {
             <p className="text-4xl">{s.emoji}</p>
             <p className="text-sm font-semibold">
               Notice{" "}
-              <span className="text-cyan-200">
+              <span className="text-amber-200">
                 {need} {s.sense}
               </span>
             </p>
             <button
               type="button"
               onClick={tap}
-              className="rounded-full border border-cyan-300/40 bg-cyan-300/10 px-6 py-2.5 text-sm font-semibold text-cyan-100 transition-all hover:scale-105 active:scale-95"
+              className="rounded-full border border-amber-300/40 bg-amber-300/10 px-6 py-2.5 text-sm font-semibold text-amber-100 transition-all hover:scale-105 active:scale-95"
             >
               Found one — {remaining} to go
             </button>
@@ -362,7 +362,7 @@ function GroundingSteps() {
                   key={i}
                   className={cn(
                     "h-1.5 w-5 rounded-full transition-colors",
-                    i < taps ? "bg-cyan-300" : "bg-white/10",
+                    i < taps ? "bg-amber-300" : "bg-white/10",
                   )}
                 />
               ))}
@@ -428,7 +428,7 @@ function ReframeLens() {
 
   return (
     <div className="flex flex-1 flex-col">
-      <div className="flex h-44 flex-col justify-center gap-3 rounded-2xl border border-white/10 bg-[#1a2450]/45 p-4">
+      <div className="flex h-44 flex-col justify-center gap-3 rounded-2xl border border-white/10 bg-[#241743]/45 p-4">
         <p className="text-xs uppercase tracking-widest text-muted-foreground/70">
           the situation
         </p>
@@ -498,7 +498,7 @@ function MomentCompass() {
 
   return (
     <div className="flex flex-1 flex-col">
-      <div className="flex h-44 flex-col items-center justify-center gap-3 rounded-2xl border border-white/10 bg-[#1a2450]/45 p-4 text-center">
+      <div className="flex h-44 flex-col items-center justify-center gap-3 rounded-2xl border border-white/10 bg-[#241743]/45 p-4 text-center">
         {done ? (
           <>
             <p className="text-3xl">🧭</p>
@@ -524,7 +524,7 @@ function MomentCompass() {
                   key={side}
                   type="button"
                   onClick={() => pick(side)}
-                  className="group flex-1 rounded-2xl border border-white/12 bg-white/5 px-2 py-4 text-xs font-semibold leading-snug transition-all hover:-translate-y-0.5 hover:border-cyan-300/40 hover:bg-cyan-300/10"
+                  className="group flex-1 rounded-2xl border border-white/12 bg-white/5 px-2 py-4 text-xs font-semibold leading-snug transition-all hover:-translate-y-0.5 hover:border-amber-300/40 hover:bg-amber-300/10"
                 >
                   {side === "a" ? pair!.a : pair!.b}
                 </button>

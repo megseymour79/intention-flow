@@ -13,7 +13,7 @@ interface GlowMote {
   duration: string;
   size: number;
   bright: boolean;
-  teal: boolean;
+  warm: boolean;
 }
 
 interface Firefly {
@@ -34,10 +34,10 @@ interface MistBank {
 }
 
 const FIREFLY_HUES = [
-  "rgba(126,231,135,", // aurora green
-  "rgba(103,232,249,", // bioluminescent cyan
-  "rgba(196,181,253,", // aurora violet
-  "rgba(253,224,71,", // rare gold spore
+  "rgba(255,183,94,", // ember gold
+  "rgba(244,114,140,", // dusty rose
+  "rgba(196,181,253,", // mulberry violet
+  "rgba(253,224,71,", // rare pale spore
 ];
 
 /* ------------------------------------------------------------------ */
@@ -45,8 +45,8 @@ const FIREFLY_HUES = [
 /* ------------------------------------------------------------------ */
 
 /**
- * Aurora ribbons: three layered translucent arcs that shimmer slowly.
- * Built as skewed gradient sheets, blurred, so they read as curtains of
+ * Ember-light curtains: three layered translucent arcs that shimmer slowly.
+ * Built as skewed gradient sheets, blurred, so they read as bands of dusk
  * light rather than shapes. Pure CSS — no images, GPU-cheap.
  */
 function AuroraRibbons() {
@@ -55,7 +55,7 @@ function AuroraRibbons() {
       aria-hidden
       className="pointer-events-none absolute inset-x-0 top-0 h-[62%] overflow-hidden"
     >
-      {/* primary curtain — green heart */}
+      {/* primary curtain — molten amber heart */}
       <div
         className="animate-aurora-sway absolute"
         style={{
@@ -64,13 +64,13 @@ function AuroraRibbons() {
           width: "80%",
           height: "78%",
           background:
-            "linear-gradient(168deg, transparent 18%, rgba(110,231,183,0.14) 38%, rgba(56,189,248,0.11) 56%, transparent 78%)",
+            "linear-gradient(168deg, transparent 18%, rgba(251,176,59,0.13) 38%, rgba(244,114,140,0.10) 56%, transparent 78%)",
           filter: "blur(26px)",
           ["--sway-tilt" as string]: "-6deg",
           animationDuration: "17s",
         }}
       />
-      {/* secondary curtain — cyan, crossing the first */}
+      {/* secondary curtain — dusty rose, crossing the first */}
       <div
         className="animate-aurora-sway absolute"
         style={{
@@ -79,14 +79,14 @@ function AuroraRibbons() {
           width: "72%",
           height: "70%",
           background:
-            "linear-gradient(196deg, transparent 22%, rgba(103,232,249,0.13) 42%, rgba(167,139,250,0.09) 62%, transparent 82%)",
+            "linear-gradient(196deg, transparent 22%, rgba(244,114,140,0.12) 42%, rgba(196,181,253,0.09) 62%, transparent 82%)",
           filter: "blur(30px)",
           ["--sway-tilt" as string]: "5deg",
           animationDuration: "23s",
           animationDelay: "-8s",
         }}
       />
-      {/* high violet veil — slow, barely there */}
+      {/* high mulberry veil — slow, barely there */}
       <div
         className="animate-aurora-sway absolute"
         style={{
@@ -95,7 +95,7 @@ function AuroraRibbons() {
           width: "90%",
           height: "60%",
           background:
-            "linear-gradient(178deg, transparent 30%, rgba(167,139,250,0.08) 50%, transparent 70%)",
+            "linear-gradient(178deg, transparent 30%, rgba(196,181,253,0.08) 50%, transparent 70%)",
           filter: "blur(34px)",
           ["--sway-tilt" as string]: "-2deg",
           animationDuration: "31s",
@@ -106,7 +106,7 @@ function AuroraRibbons() {
   );
 }
 
-/** The low glow of the lagoon itself, breathing at the horizon. */
+/** The low glow of the dusk horizon itself, breathing at the horizon. */
 function LagoonGlow() {
   return (
     <>
@@ -115,7 +115,7 @@ function LagoonGlow() {
         className="animate-lagoon-breathe absolute inset-x-0 bottom-0 h-[34%]"
         style={{
           background:
-            "radial-gradient(120% 100% at 50% 128%, rgba(110,231,183,0.20) 0%, rgba(56,189,248,0.10) 42%, transparent 74%)",
+            "radial-gradient(120% 100% at 50% 128%, rgba(251,146,60,0.20) 0%, rgba(244,114,140,0.10) 42%, transparent 74%)",
           animationDuration: "11s",
         }}
       />
@@ -124,7 +124,7 @@ function LagoonGlow() {
         className="animate-lagoon-breathe absolute inset-x-0 bottom-0 h-[22%]"
         style={{
           background:
-            "radial-gradient(110% 90% at 22% 124%, rgba(167,139,250,0.10) 0%, transparent 66%)",
+            "radial-gradient(110% 90% at 22% 124%, rgba(196,181,253,0.10) 0%, transparent 66%)",
           animationDuration: "14s",
           animationDelay: "-5s",
         }}
@@ -140,7 +140,7 @@ function LagoonGlow() {
 function ShoreRidges() {
   return (
     <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0">
-      {/* far shore — pale teal, dissolved in mist */}
+      {/* far shore — pale rose, dissolved in dusk mist */}
       <svg
         className="absolute inset-x-0 bottom-0 w-full"
         viewBox="0 0 1440 180"
@@ -149,10 +149,10 @@ function ShoreRidges() {
       >
         <path
           d="M0,118 L96,86 L178,106 L262,68 L344,100 L432,74 L522,96 L612,60 L702,88 L792,64 L882,92 L972,72 L1062,98 L1152,76 L1242,94 L1332,70 L1440,92 L1440,180 L0,180 Z"
-          fill="rgba(110,231,183,0.16)"
+          fill="rgba(244,114,140,0.15)"
         />
       </svg>
-      {/* mid ridge — deeper teal */}
+      {/* mid ridge — deeper mulberry */}
       <svg
         className="absolute inset-x-0 bottom-0 w-full"
         viewBox="0 0 1440 150"
@@ -161,7 +161,7 @@ function ShoreRidges() {
       >
         <path
           d="M0,108 L120,74 L222,98 L332,60 L442,92 L552,66 L662,90 L772,54 L882,84 L992,62 L1102,88 L1212,68 L1322,92 L1440,74 L1440,150 L0,150 Z"
-          fill="rgba(20,85,90,0.42)"
+          fill="rgba(101,48,95,0.42)"
         />
       </svg>
       {/* near shore — dark ink, closest to the viewer */}
@@ -173,7 +173,7 @@ function ShoreRidges() {
       >
         <path
           d="M0,82 L112,54 L212,76 L322,42 L432,68 L542,46 L652,70 L762,38 L872,62 L982,44 L1092,66 L1202,48 L1312,70 L1440,56 L1440,120 L0,120 Z"
-          fill="rgba(5,15,25,0.66)"
+          fill="rgba(14,7,30,0.66)"
         />
       </svg>
     </div>
@@ -181,8 +181,8 @@ function ShoreRidges() {
 }
 
 /**
- * Drifting mist banks over the water — the old CloudHaze body, recolored
- * to lagoon tones and kept slow.
+ * Drifting mist banks over the dusk — the old CloudHaze body, recolored
+ * to plum-rose tones and kept slow.
  */
 function MistBank({
   scale,
@@ -211,8 +211,8 @@ function MistBank({
           opacity,
           animationDuration: `${9 + scale * 5}s`,
           background:
-            "radial-gradient(50% 60% at 35% 55%, rgba(154,230,215,0.5) 0%, rgba(154,230,215,0.2) 55%, transparent 100%)," +
-            "radial-gradient(45% 55% at 68% 40%, rgba(180,220,235,0.35) 0%, transparent 90%)",
+            "radial-gradient(50% 60% at 35% 55%, rgba(243,201,182,0.5) 0%, rgba(243,201,182,0.2) 55%, transparent 100%)," +
+            "radial-gradient(45% 55% at 68% 40%, rgba(233,214,240,0.35) 0%, transparent 90%)",
           filter: "blur(6px)",
         }}
       />
@@ -238,7 +238,7 @@ function MistClump({ scale }: { scale: number }) {
         bottom,
         width: lw,
         height: lh,
-        background: `radial-gradient(circle at 42% 38%, rgba(214,244,236,${a}) 0%, rgba(180,226,214,${a * 0.72}) 55%, rgba(150,210,196,0) 100%)`,
+        background: `radial-gradient(circle at 42% 38%, rgba(250,231,214,${a}) 0%, rgba(240,210,196,${a * 0.72}) 55%, rgba(226,188,192,0) 100%)`,
         filter: "blur(1.5px)",
       }}
     />
@@ -248,12 +248,12 @@ function MistClump({ scale }: { scale: number }) {
       {lobe(0, 0, w * 0.62, h * 0.78, 0.85)}
       {lobe(w * 0.3, h * 0.12, w * 0.55, h * 0.88, 0.9)}
       {lobe(w * 0.58, 0, w * 0.42, h * 0.7, 0.78)}
-      {/* aquamarine underlit base, like light from the water below */}
+      {/* amber underlit base, like light from the horizon below */}
       <span
         className="absolute inset-x-1 bottom-0 h-[30%]"
         style={{
           background:
-            "linear-gradient(to top, rgba(103,232,249,0.28) 0%, transparent 100%)",
+            "linear-gradient(to top, rgba(251,146,60,0.26) 0%, transparent 100%)",
           filter: "blur(4px)",
         }}
       />
@@ -262,11 +262,11 @@ function MistClump({ scale }: { scale: number }) {
 }
 
 /**
- * The bioluminescent lagoon behind every page: a deep night-teal gradient,
- * three aurora ribbons shimmering overhead, the lagoon's own glow breathing
- * at the horizon, dawn-silhouette shore ridges, drifting mist banks and
- * clumps, glow motes where stars used to be, and firefly spores rising from
- * the water. Everything tuned to read as depth behind content — never over
+ * The ember-dusk sky behind every page: a deep plum-ink gradient, three
+ * mulberry-ember light curtains shimmering overhead, the molten horizon glow
+ * breathing below, dark ridge silhouettes, drifting mist banks and clumps,
+ * glow motes where stars used to be, and firefly sparks rising from the
+ * valley. Everything tuned to read as depth behind content — never over
  * the words.
  */
 export function FloatingBackground({ count = 18 }: { count?: number }) {
@@ -279,7 +279,7 @@ export function FloatingBackground({ count = 18 }: { count?: number }) {
         duration: `${(4 + seeded(i, 4) * 7).toFixed(2)}s`,
         size: 1 + seeded(i, 5) * 1.8,
         bright: seeded(i, 6) > 0.82,
-        teal: seeded(i, 7) > 0.25,
+        warm: seeded(i, 7) > 0.25,
       })),
     [count],
   );
@@ -326,13 +326,13 @@ export function FloatingBackground({ count = 18 }: { count?: number }) {
       aria-hidden
       className="pointer-events-none fixed inset-0 -z-10 overflow-hidden"
     >
-      {/* Water-sky base — deep night teal surface → aurora band → luminous
-          lagoon horizon. Same stops as .sky-gradient, kept in parity. */}
+      {/* Water-sky base — deep plum-ink night → mulberry band → molten
+          amber horizon. Same stops as .sky-gradient, kept in parity. */}
       <div
         className="absolute inset-0"
         style={{
           background:
-            "linear-gradient(to bottom, #06131f 0%, #0a2233 16%, #0e3543 32%, #14555a 48%, #1c7a63 64%, #2aa27c 80%, #4dbd95 92%, #7fd8c4 100%)",
+            "linear-gradient(to bottom, #120b26 0%, #1b1038 16%, #2a1548 32%, #43215a 48%, #65305f 64%, #8f4b57 80%, #c06a4a 92%, #eda155 100%)",
         }}
       />
 
@@ -341,7 +341,7 @@ export function FloatingBackground({ count = 18 }: { count?: number }) {
         className="absolute inset-0"
         style={{
           background:
-            "radial-gradient(120% 90% at 50% 42%, transparent 62%, rgba(4,14,22,0.18) 100%)",
+            "radial-gradient(120% 90% at 50% 42%, transparent 62%, rgba(12,6,26,0.2) 100%)",
         }}
       />
 
@@ -378,8 +378,8 @@ export function FloatingBackground({ count = 18 }: { count?: number }) {
         </div>
       ))}
 
-      {/* Rising firefly spores — bioluminescent flecks climbing from the
-          water into the night */}
+      {/* Rising ember motes — warm sparks climbing from the horizon
+          into the night */}
       {fireflies.map((f, i) => (
         <span
           key={`firefly-${i}`}
@@ -398,12 +398,12 @@ export function FloatingBackground({ count = 18 }: { count?: number }) {
         />
       ))}
 
-      {/* Glow motes — still water catches light; brighter ones gently
+      {/* Glow motes — dusk light catches in the dark; brighter ones gently
           shimmer where stars used to be */}
       {motes.map((m, i) => {
-        const color = m.teal
-          ? "rgba(186,244,222,"
-          : "rgba(224,242,254,";
+        const color = m.warm
+          ? "rgba(250,222,196,"
+          : "rgba(244,218,254,";
         return (
           <span
             key={`mote-${i}`}
