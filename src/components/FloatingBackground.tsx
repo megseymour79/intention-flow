@@ -50,8 +50,10 @@ function LowSun() {
   return (
     <div
       aria-hidden
-      className="animate-planet-drift pointer-events-none absolute left-[50%] top-[74%] -translate-x-1/2"
-      style={{ animationDuration: "52s" }}
+      className="animate-planet-drift pointer-events-none absolute top-[74%]"
+      // Centered by left-offset (not -translate-x-1/2): the drift animation
+      // animates `transform` and would override a translate-based centering.
+      style={{ left: "calc(50% - 5rem)", animationDuration: "52s" }}
     >
       <div className="relative h-40 w-40">
         {/* atmospheric halo around the disc */}
@@ -170,11 +172,7 @@ function BirdFlock({ flip }: { flip: boolean }) {
       height={10 * s}
       viewBox="0 0 22 10"
       className="animate-bird-flap absolute"
-      style={{
-        left: x,
-        top: y,
-        transform: flip ? "scaleX(-1)" : undefined,
-      }}
+      style={{ left: x, top: y }}
     >
       <path
         d="M1 6 Q6 1 11 6 Q16 1 21 6"
@@ -185,8 +183,14 @@ function BirdFlock({ flip }: { flip: boolean }) {
       />
     </svg>
   );
+  // The flip lives on this wrapper: the birds' flap animation animates
+  // `transform`, which would override an inline transform on the same node.
   return (
-    <span aria-hidden className="relative block h-12 w-24">
+    <span
+      aria-hidden
+      className="relative block h-12 w-24"
+      style={{ transform: flip ? "scaleX(-1)" : undefined }}
+    >
       {bird(0, 14, 1, "b1")}
       {bird(26, 4, 0.9, "b2")}
       {bird(50, 16, 1.05, "b3")}
