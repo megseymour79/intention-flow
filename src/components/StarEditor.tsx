@@ -173,7 +173,7 @@ export function StarEditor({
         >
           <div className="flex items-center gap-3">
             <div
-              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-[#1e2a52] to-[#141c40] text-xl ring-1 ring-white/15"
+              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-[#3a2244] to-[#2a1830] text-xl ring-1 ring-white/15"
               style={{
                 color: STAR_COLORS[colorKey].hex,
                 textShadow: `0 0 14px ${STAR_COLORS[colorKey].glow}`,

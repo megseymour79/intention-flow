@@ -246,7 +246,7 @@ export default function Dashboard() {
               }
             />
             {loading && (
-              <div className="radius-sheet absolute inset-0 z-20 flex items-center justify-center bg-[#0e1634]/70 backdrop-blur-sm">
+              <div className="radius-sheet absolute inset-0 z-20 flex items-center justify-center bg-[#2a1830]/70 backdrop-blur-sm">
                 <Loader2 className="h-6 w-6 animate-spin text-emerald-200" />
               </div>
             )}

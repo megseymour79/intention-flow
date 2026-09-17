@@ -471,61 +471,67 @@
   animation-duration: 16s;
 }
 
-@keyframes comet-drift {
-  0% {
-    transform: translate(0, 0) rotate(var(--drift-tilt, 14deg));
-    opacity: 0;
+/* Travel theme — contrails drawing lines across the sky, and a bird flock
+   crossing with a gentle bob. Both start off-screen right and exit left. */
+@keyframes contrail-drift {
+  from {
+    transform: translateX(0);
   }
-  8% {
-    opacity: 1;
-  }
-  78% {
-    opacity: 1;
-  }
-  100% {
-    transform: translate(-115vw, 52vh) rotate(var(--drift-tilt, 14deg));
-    opacity: 0;
+  to {
+    transform: translateX(-140vw);
   }
 }
 
-.animate-comet-drift {
-  animation-name: comet-drift;
+.animate-contrail-drift {
+  animation-name: contrail-drift;
   animation-iteration-count: infinite;
   animation-timing-function: linear;
   animation-fill-mode: both;
 }
 
-@keyframes galaxy-swirl {
-  from {
-    transform: rotate(0deg);
+@keyframes flock-flight {
+  0% {
+    transform: translate(0, 0);
+    opacity: 0;
   }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-.animate-galaxy-swirl {
-  animation-name: galaxy-swirl;
-  animation-iteration-count: infinite;
-  animation-timing-function: linear;
-  animation-duration: 160s;
-}
-
-@keyframes nebula-pulse {
-  0%,
-  100% {
-    opacity: 0.5;
+  6% {
+    opacity: 0.85;
   }
   50% {
-    opacity: 1;
+    transform: translate(-46vw, -8px);
+  }
+  94% {
+    opacity: 0.85;
+  }
+  100% {
+    transform: translate(-95vw, 4px);
+    opacity: 0;
   }
 }
 
-.animate-nebula-pulse {
-  animation-name: nebula-pulse;
+.animate-flock-flight {
+  animation-name: flock-flight;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+  animation-fill-mode: both;
+}
+
+/* Wing flap — a soft V beating */
+@keyframes bird-flap {
+  0%,
+  100% {
+    transform: scaleY(1);
+  }
+  50% {
+    transform: scaleY(-1);
+  }
+}
+
+.animate-bird-flap {
+  animation-name: bird-flap;
   animation-iteration-count: infinite;
   animation-timing-function: ease-in-out;
-  animation-duration: 9s;
+  animation-duration: 0.9s;
 }
 
 @keyframes planet-drift {
@@ -567,24 +573,21 @@
   animation-timing-function: linear;
 }
 
-/* Sky gradient — the same full-spectrum twilight journey (violet → indigo
-   → royal blue → azure → cyan → turquoise → mint) with the lightness capped
-   in the lower half, so ivory text always keeps contrast against the sky. */
+/* Sky gradient — the "horizon journey" that anchors the travel theme:
+   dusk violet → plum → rose → coral → amber → golden haze, like the last
+   light over a mountain pass. Lightness stays capped below the top stops so
+   ivory text keeps contrast end to end. */
 .sky-gradient {
   background: linear-gradient(
     to bottom,
-    #0a0c2a 0%,
-    #131040 10%,
-    #17205c 20%,
-    #1a3380 30%,
-    #1d4494 40%,
-    #205c98 50%,
-    #237691 58%,
-    #268a83 68%,
-    #2f9e72 78%,
-    #35ae6e 88%,
-    #c2703d 96%,
-    #e8944a 100%
+    #1b1f4b 0%,
+    #45256e 14%,
+    #7d3a72 30%,
+    #b85a6a 46%,
+    #dd8358 60%,
+    #f0a95c 74%,
+    #f6c37e 88%,
+    #fbe0a8 100%
   );
 }
 

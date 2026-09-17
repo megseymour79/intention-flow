@@ -15,6 +15,11 @@ import { join } from "node:path";
  */
 const FORBIDDEN_RUNTIME_IMPORT = "@vly-ai/integrations";
 
+/** Matches real import forms: `import … from "pkg"`, `import "pkg"`,
+ *  `import("pkg")` — while ignoring prose mentions in comments. */
+const IMPORT_STATEMENT =
+  /(?:from\s*|import\s*|import\(\s*)["']@vly-ai\/integrations["']/;
+
 function runtimeFiles(dir: string, acc: string[] = []): string[] {
   for (const entry of readdirSync(dir)) {
     const full = join(dir, entry);
@@ -32,8 +37,8 @@ function runtimeFiles(dir: string, acc: string[] = []): string[] {
 function runtimeImportIssues(): string[] {
   const issues: string[] = [];
   for (const file of runtimeFiles("src")) {
-    if (readFileSync(file, "utf8").includes(FORBIDDEN_RUNTIME_IMPORT)) {
-      issues.push(`${file} references ${FORBIDDEN_RUNTIME_IMPORT}`);
+    if (IMPORT_STATEMENT.test(readFileSync(file, "utf8"))) {
+      issues.push(`${file} imports ${FORBIDDEN_RUNTIME_IMPORT}`);
     }
   }
   return issues;
@@ -45,11 +50,20 @@ describe("runtime module graph integrity", () => {
   });
 
   it("the guard actually detects the forbidden import (sanity)", () => {
-    const detection = (content: string) =>
-      content.includes(FORBIDDEN_RUNTIME_IMPORT);
+    const detection = (content: string) => IMPORT_STATEMENT.test(content);
     expect(
       detection(`import '@vly-ai/integrations';\nimport React from "react";`),
     ).toBe(true);
+    expect(
+      detection(`import x from "@vly-ai/integrations";`),
+    ).toBe(true);
+    expect(
+      detection(`void import("@vly-ai/integrations").then(init);`),
+    ).toBe(true);
     expect(detection(`import React from "react";`)).toBe(false);
+    // Prose mentions in comments must not trip the guard.
+    expect(
+      detection(`// The @vly-ai/integrations package must stay out of runtime.`),
+    ).toBe(false);
   });
 });

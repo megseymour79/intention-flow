@@ -70,7 +70,7 @@ export function TonightEvent({
       animate={{ opacity: 1, y: 0 }}
       className="pointer-events-auto absolute left-3 top-3 z-20 max-w-[280px]"
     >
-      <div className="rounded-2xl border border-white/12 bg-[#141c40]/60 p-3 backdrop-blur-md">
+      <div className="rounded-2xl border border-white/12 bg-[#2a1830]/60 p-3 backdrop-blur-md">
         <div className="flex items-start justify-between gap-2">
           <div>
             <p className="font-eyebrow text-emerald-200/80">
@@ -174,7 +174,7 @@ export function WishComet({
             "linear-gradient(90deg, rgba(255,240,180,0.85), rgba(255,220,140,0.3), transparent)",
         }}
       />
-      <span className="pointer-events-none absolute left-1/2 top-full mt-1 -translate-x-1/2 whitespace-nowrap rounded-full border border-white/10 bg-[#141c40]/70 px-2 py-0.5 text-[10px] text-foreground/90 opacity-0 backdrop-blur-sm transition-opacity group-hover:opacity-100">
+      <span className="pointer-events-none absolute left-1/2 top-full mt-1 -translate-x-1/2 whitespace-nowrap rounded-full border border-white/10 bg-[#2a1830]/70 px-2 py-0.5 text-[10px] text-foreground/90 opacity-0 backdrop-blur-sm transition-opacity group-hover:opacity-100">
         a falling wish — catch it
       </span>
     </button>

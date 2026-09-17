@@ -162,7 +162,7 @@ function HeroSky() {
         hint="tap the sky & type a way you want to be"
       />
       <div className="border-t border-white/8 p-2.5">
-        <div className="flex items-center gap-2 rounded-lg bg-[#141c40]/50 px-1">
+        <div className="flex items-center gap-2 rounded-lg bg-[#2a1830]/50 px-1">
           <span className="pl-2 text-lg">✍️</span>
           <Input
             value={typed}
@@ -864,9 +864,9 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* ---- Footer — the night returns at the page's base: deep ink band,
-           ivory type, high contrast against the darker horizon ---- */}
-      <footer className="relative border-t border-white/10 bg-gradient-to-b from-[#0a0c2a]/0 via-[#0a0c2a]/92 to-[#0a0c2a] py-10">
+      {/* ---- Footer — dusk settles at the page's base: deep warm-ink band,
+           ivory type, high contrast against the amber horizon ---- */}
+      <footer className="relative border-t border-white/10 bg-gradient-to-b from-[#241426]/0 via-[#241426]/92 to-[#241426] py-10">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-6 px-4 sm:flex-row sm:px-6">
           <div className="flex items-center gap-2.5">
             <StarMark size={30} />
