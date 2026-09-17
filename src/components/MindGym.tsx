@@ -86,8 +86,12 @@ function ImpulseCatcher() {
   const [caught, setCaught] = useState(0);
   const [escaped, setEscaped] = useState(0);
   const nextId = useRef(0);
+  // Ref mirror of `caught` so the end-of-run callback can score the run
+  // without a stale closure.
+  const caughtRef = useRef(0);
   // Personal best lives in state (seeded from localStorage) so the UI can
-  // read it during render without touching a ref.
+  // read it during render without touching a ref. Persisted when a run ends,
+  // not in an effect — no cascading renders.
   const [bestScore, setBestScore] = useState<number>(() => {
     try {
       return Number(localStorage.getItem("sm-gym-best") ?? 0);
@@ -126,28 +130,34 @@ function ImpulseCatcher() {
     return () => clearInterval(drain);
   }, [running]);
 
+  // Guards against overlapping runs (double-tap on Start): only the run that
+  // is still current may end the game and record a score.
+  const runIdRef = useRef(0);
+
   const start = () => {
+    const runId = ++runIdRef.current;
     setCaught(0);
+    caughtRef.current = 0;
     setEscaped(0);
     setUrges([]);
     setRunning(true);
     setTimeout(() => {
+      if (runId !== runIdRef.current) return; // a newer run superseded this one
       setRunning(false);
       setUrges([]);
+      // Run over: record a new personal best, if any. Safe to read the
+      // closure's bestScore — it can only change when a run ends, and any
+      // later Start click comes from a fresh render after that.
+      if (caughtRef.current > bestScore) {
+        setBestScore(caughtRef.current);
+        try {
+          localStorage.setItem("sm-gym-best", String(caughtRef.current));
+        } catch {
+          /* private mode */
+        }
+      }
     }, 20000);
   };
-
-  const score = caught;
-  useEffect(() => {
-    if (!running && score > bestScore) {
-      setBestScore(score);
-      try {
-        localStorage.setItem("sm-gym-best", String(score));
-      } catch {
-        /* private mode */
-      }
-    }
-  }, [running, score, bestScore]);
 
   const done = !running && caught + escaped > 0;
 
@@ -163,6 +173,7 @@ function ImpulseCatcher() {
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.3, opacity: 0 }}
               onClick={() => {
+                caughtRef.current += 1;
                 setCaught((c) => c + 1);
                 setUrges((list) => list.filter((x) => x.id !== u.id));
               }}
@@ -543,6 +554,29 @@ function MomentCompass() {
 /* ------------------------------------------------------------------ */
 /* The gym itself                                                      */
 /* ------------------------------------------------------------------ */
+
+/** The two body-first exercises — senses and reframe — also surface on
+ *  /breathe, where they sit naturally beside the 4-7-8 reset. */
+export function GroundingExercises() {
+  return (
+    <div className="grid gap-4 sm:grid-cols-2">
+      <GymCard
+        emoji="🌿"
+        title="Grounding 5-4-3-2-1"
+        sub="Walk your five senses one tap at a time and land back in the room."
+      >
+        <GroundingSteps />
+      </GymCard>
+      <GymCard
+        emoji="🔭"
+        title="The Reframe Lens"
+        sub="Same situation, three lenses. Turn the dial and feel the frame shift."
+      >
+        <ReframeLens />
+      </GymCard>
+    </div>
+  );
+}
 
 export function MindGym() {
   return (

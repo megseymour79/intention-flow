@@ -320,7 +320,7 @@ export default function Landing() {
               },
               "/breathe": {
                 emoji: "🫧",
-                body: "A surprise intention and a guided 4-7-8 reset. No account needed for either.",
+                body: "A surprise intention, grounding exercises, and a guided 4-7-8 reset. No account needed.",
               },
             };
             const c = copy[l.to] ?? { emoji: "✦", body: "" };

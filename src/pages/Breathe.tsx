@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { Shuffle } from "lucide-react";
 
 import { BreathOrb } from "@/components/BreathOrb";
+import { GroundingExercises } from "@/components/MindGym";
 import { FadeUp, PublicPage, Section } from "@/components/PublicShell";
 import {
   SUGGESTED_STARS,
@@ -107,8 +108,9 @@ export default function Breathe() {
             One breath. One intention. No account needed.
           </h1>
           <p className="mt-4 max-w-xl text-base leading-relaxed text-foreground/70">
-            Pull a real intention out of the sky, breathe through one guided
-            reset. If either lands, that's the whole app in miniature.
+            Pull a real intention out of the sky, ground yourself through your
+            five senses, breathe through one guided reset. If any of it lands,
+            that's the whole app in miniature.
           </p>
         </FadeUp>
       </section>
@@ -128,6 +130,17 @@ export default function Breathe() {
 
       <Section
         index="02"
+        eyebrow="Grounding exercises"
+        title="Come back to the room, one sense at a time"
+        note="Two body-first reps: walk your senses to land in the now, or turn the dial until the same moment reads different. No account, no score."
+      >
+        <FadeUp>
+          <GroundingExercises />
+        </FadeUp>
+      </Section>
+
+      <Section
+        index="03"
         eyebrow="Breathe with the sky"
         title="The 4-7-8 reset, guided"
         note="The same pocket reset your sky nudges you with — in for four, hold for seven, out for eight. Reaction to choice, in about a minute."
