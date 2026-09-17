@@ -20,6 +20,10 @@ const Community = lazy(() => import("./pages/Community.tsx"));
 const Messages = lazy(() => import("./pages/Messages.tsx"));
 const Observatory = lazy(() => import("./pages/Observatory.tsx"));
 const Practice = lazy(() => import("./pages/Practice.tsx"));
+const Method = lazy(() => import("./pages/Method.tsx"));
+const ToneLab = lazy(() => import("./pages/ToneLab.tsx"));
+const Quiz = lazy(() => import("./pages/Quiz.tsx"));
+const Breathe = lazy(() => import("./pages/Breathe.tsx"));
 const Deeper = lazy(() => import("./pages/Deeper.tsx"));
 const Evening = lazy(() => import("./pages/Evening.tsx"));
 const NotFound = lazy(() => import("./pages/NotFound.tsx"));
@@ -175,6 +179,10 @@ createRoot(document.getElementById("root")!).render(
           <Suspense fallback={<RouteLoading />}>
             <Routes>
               <Route path="/" element={<Landing />} />
+              <Route path="/method" element={<Method />} />
+              <Route path="/tone-lab" element={<ToneLab />} />
+              <Route path="/quiz" element={<Quiz />} />
+              <Route path="/breathe" element={<Breathe />} />
               <Route
                 path="/auth"
                 element={<AuthPage redirectAfterAuth="/dashboard" />}
