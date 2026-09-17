@@ -173,7 +173,7 @@ export function StarEditor({
         >
           <div className="flex items-center gap-3">
             <div
-              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-[#3a2244] to-[#2a1830] text-xl ring-1 ring-white/15"
+              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-[#134e4a] to-[#0b1c26] text-xl ring-1 ring-white/15"
               style={{
                 color: STAR_COLORS[colorKey].hex,
                 textShadow: `0 0 14px ${STAR_COLORS[colorKey].glow}`,
@@ -210,8 +210,8 @@ export function StarEditor({
                 <p
                   className={`rounded-lg border px-3 py-2 text-xs leading-relaxed ${
                     hint.tone === "good"
-                      ? "border-emerald-300/25 bg-emerald-300/[0.07] text-emerald-100/90"
-                      : "border-emerald-300/30 bg-emerald-300/[0.06] text-emerald-100/90"
+                      ? "border-cyan-300/25 bg-cyan-300/[0.07] text-cyan-100/90"
+                      : "border-cyan-300/30 bg-cyan-300/[0.06] text-cyan-100/90"
                   }`}
                 >
                   {hint.tone === "good" ? "✦ " : "✧ "}
@@ -224,7 +224,7 @@ export function StarEditor({
           {/* Suggested intentions */}
           <div>
             <p className="mb-2 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-              <Wand2 className="h-3.5 w-3.5 text-emerald-300/80" /> Or borrow a
+              <Wand2 className="h-3.5 w-3.5 text-cyan-300/80" /> Or borrow a
               ready-made wish
             </p>
             <div className="flex flex-wrap gap-1.5">
@@ -237,7 +237,7 @@ export function StarEditor({
                     setMoment(s.moment);
                     setColorKey(s.colorKey);
                   }}
-                  className="max-w-full truncate rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-xs text-foreground/85 transition-colors hover:border-emerald-300/40 hover:bg-emerald-300/10"
+                  className="max-w-full truncate rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-xs text-foreground/85 transition-colors hover:border-cyan-300/40 hover:bg-cyan-300/10"
                 >
                   {s.emoji} {s.text}
                 </button>
@@ -258,7 +258,7 @@ export function StarEditor({
                   onClick={() => setMoment(m.id)}
                   className={`rounded-full border px-3 py-1.5 text-xs transition-colors ${
                     moment === m.id
-                      ? "border-emerald-300/60 bg-emerald-300/12 text-emerald-100"
+                      ? "border-cyan-300/60 bg-cyan-300/12 text-cyan-100"
                       : "border-white/10 bg-white/5 text-foreground/70 hover:border-white/25 hover:text-foreground"
                   }`}
                 >
@@ -339,7 +339,7 @@ export function StarEditor({
                   onClick={() => setEmoji(g)}
                   className={`flex h-10 w-10 items-center justify-center rounded-xl border text-lg transition-all ${
                     emoji === g
-                      ? "border-emerald-300/60 bg-emerald-300/10 scale-110"
+                      ? "border-cyan-300/60 bg-cyan-300/10 scale-110"
                       : "border-white/10 bg-white/5 hover:border-white/30"
                   }`}
                   style={

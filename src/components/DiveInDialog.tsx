@@ -67,7 +67,7 @@ export function DiveInDialog({
                   onOpenChange(false);
                   onPickQuiz(q.kind);
                 }}
-                className="group flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-left transition-all hover:border-emerald-300/45 hover:bg-emerald-300/10"
+                className="group flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-left transition-all hover:border-cyan-300/45 hover:bg-cyan-300/10"
               >
                 <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-white/5 text-xl ring-1 ring-white/10">
                   {q.emoji}
@@ -84,7 +84,7 @@ export function DiveInDialog({
                   <span className="block text-[10px] uppercase tracking-wider text-muted-foreground/70">
                     {q.meta}
                   </span>
-                  <span className="mt-0.5 block text-xs font-semibold text-emerald-200/60 transition-colors group-hover:text-emerald-200">
+                  <span className="mt-0.5 block text-xs font-semibold text-cyan-200/60 transition-colors group-hover:text-cyan-200">
                     Start →
                   </span>
                 </span>

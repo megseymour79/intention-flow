@@ -28,7 +28,7 @@ const METER_COLORS: Record<ToneKey, string> = {
   rude: "bg-rose-400",
   direct: "bg-sky-300",
   funny: "bg-amber-300",
-  warm: "bg-emerald-300",
+  warm: "bg-cyan-300",
   neutral: "bg-slate-300",
 };
 
@@ -53,9 +53,9 @@ function CopyButton({ text }: { text: string }) {
         if (timer.current) window.clearTimeout(timer.current);
         timer.current = window.setTimeout(() => setCopied(false), 1400);
       }}
-      className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-md border border-white/10 text-muted-foreground transition-colors hover:border-emerald-300/40 hover:text-emerald-200"
+      className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-md border border-white/10 text-muted-foreground transition-colors hover:border-cyan-300/40 hover:text-cyan-200"
     >
-      {copied ? <Check className="h-3.5 w-3.5 text-emerald-300" /> : <Copy className="h-3.5 w-3.5" />}
+      {copied ? <Check className="h-3.5 w-3.5 text-cyan-300" /> : <Copy className="h-3.5 w-3.5" />}
     </button>
   );
 }
@@ -102,7 +102,7 @@ export function ToneDetector({ compact = false }: { compact?: boolean }) {
             Instrument 01 · runs in your browser
           </p>
           <h3 className="mt-2 font-display text-2xl font-semibold tracking-tight sm:text-[1.7rem]">
-            Tone detector <span className="text-emerald-200/90">&amp;</span> corrector
+            Tone detector <span className="text-cyan-200/90">&amp;</span> corrector
           </h3>
           <p className="mt-1.5 max-w-lg text-sm leading-relaxed text-muted-foreground">
             Type any message — a reply you're not sure about, a text you're
@@ -110,8 +110,8 @@ export function ToneDetector({ compact = false }: { compact?: boolean }) {
             offers ways to say it differently.
           </p>
         </div>
-        <span className="hidden h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-emerald-300/25 bg-emerald-300/5 sm:inline-flex">
-          <ScanSearch className="h-5 w-5 text-emerald-200/80" />
+        <span className="hidden h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-cyan-300/25 bg-cyan-300/5 sm:inline-flex">
+          <ScanSearch className="h-5 w-5 text-cyan-200/80" />
         </span>
       </div>
 
@@ -124,7 +124,7 @@ export function ToneDetector({ compact = false }: { compact?: boolean }) {
             if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) run();
           }}
           placeholder={'e.g. "You need to fix this NOW, it is completely broken!!"'}
-          className="min-h-[104px] resize-none border-white/12 bg-[#161e42]/40 text-sm leading-relaxed focus-visible:ring-emerald-300/30"
+          className="min-h-[104px] resize-none border-white/12 bg-[#161e42]/40 text-sm leading-relaxed focus-visible:ring-cyan-300/30"
           maxLength={400}
         />
         <div className="mt-3 flex flex-wrap items-center gap-2.5">
@@ -141,7 +141,7 @@ export function ToneDetector({ compact = false }: { compact?: boolean }) {
             onClick={useSample}
             className="h-9 rounded-lg border-white/12 bg-transparent hover:bg-white/5"
           >
-            <Sparkles className="mr-1.5 h-4 w-4 text-emerald-200/70" />
+            <Sparkles className="mr-1.5 h-4 w-4 text-cyan-200/70" />
             Try a sample
           </Button>
           <span className="ml-auto font-eyebrow text-muted-foreground/70">
@@ -162,8 +162,8 @@ export function ToneDetector({ compact = false }: { compact?: boolean }) {
           {listening || !reading ? (
             <div className="flex items-center gap-3 text-sm text-muted-foreground">
               <span className="relative flex h-2.5 w-2.5">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-300/60" />
-                <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-emerald-300" />
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-cyan-300/60" />
+                <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-cyan-300" />
               </span>
               Listening to the words…
             </div>
@@ -172,7 +172,7 @@ export function ToneDetector({ compact = false }: { compact?: boolean }) {
               {/* verdict */}
               <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
                 <p className="font-eyebrow text-muted-foreground">Reading</p>
-                <p className="font-display text-xl font-semibold tracking-tight text-emerald-100 sm:text-2xl">
+                <p className="font-display text-xl font-semibold tracking-tight text-cyan-100 sm:text-2xl">
                   {reading.primary}
                 </p>
                 <p className="font-eyebrow text-muted-foreground/70">
@@ -238,7 +238,7 @@ export function ToneDetector({ compact = false }: { compact?: boolean }) {
                       className={cn(
                         "inline-flex items-center gap-1.5 rounded-lg border px-3.5 py-2 text-sm font-semibold transition-all",
                         target === t.key
-                          ? "border-emerald-300/45 bg-emerald-300/12 text-emerald-100"
+                          ? "border-cyan-300/45 bg-cyan-300/12 text-cyan-100"
                           : "border-white/12 bg-white/[0.03] text-foreground/75 hover:border-white/25 hover:text-foreground",
                       )}
                     >

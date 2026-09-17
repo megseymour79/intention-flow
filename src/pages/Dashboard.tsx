@@ -198,7 +198,7 @@ export default function Dashboard() {
               })}
             </p>
             <h1 className="text-clearing-soft mt-1 font-display text-3xl font-semibold tracking-tight sm:text-4xl">
-              {greeting}, <span className="text-emerald-200">{firstName}</span>{" "}
+              {greeting}, <span className="text-cyan-200">{firstName}</span>{" "}
               <span className="inline-block animate-sway">✦</span>
             </h1>
             <p className="mt-1 text-sm text-muted-foreground">
@@ -246,8 +246,8 @@ export default function Dashboard() {
               }
             />
             {loading && (
-              <div className="radius-sheet absolute inset-0 z-20 flex items-center justify-center bg-[#2a1830]/70 backdrop-blur-sm">
-                <Loader2 className="h-6 w-6 animate-spin text-emerald-200" />
+              <div className="radius-sheet absolute inset-0 z-20 flex items-center justify-center bg-[#0b1c26]/70 backdrop-blur-sm">
+                <Loader2 className="h-6 w-6 animate-spin text-cyan-200" />
               </div>
             )}
             {!loading && stars.length === 0 && (
@@ -347,7 +347,7 @@ export default function Dashboard() {
                   size="sm"
                   variant="outline"
                   onClick={openFreshEditor}
-                  className="border-emerald-300/40 bg-emerald-300/10 text-emerald-100 hover:bg-emerald-300/20"
+                  className="border-cyan-300/40 bg-cyan-300/10 text-cyan-100 hover:bg-cyan-300/20"
                 >
                   <Sparkles className="mr-1.5 h-3.5 w-3.5" /> Hang my focus
                 </Button>
@@ -379,7 +379,7 @@ export default function Dashboard() {
               </div>
             </div>
             <p className="mt-3 border-t border-white/8 pt-3 text-xs text-muted-foreground">
-              <span className="font-semibold text-emerald-200/90">
+              <span className="font-semibold text-cyan-200/90">
                 {streakData?.total ?? stars.length}
               </span>{" "}
               stars in your sky so far

@@ -159,7 +159,7 @@ export function StyleQuiz({
                 <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                   Where does your energy live?
                 </p>
-                <p className="text-xs tabular-nums text-emerald-200/80">
+                <p className="text-xs tabular-nums text-cyan-200/80">
                   {step + 1} / {deck.length}
                 </p>
               </div>
@@ -169,7 +169,7 @@ export function StyleQuiz({
                   <span
                     key={i}
                     className={`h-1.5 flex-1 rounded-full transition-colors ${
-                      i <= step ? "bg-emerald-300" : "bg-white/10"
+                      i <= step ? "bg-cyan-300" : "bg-white/10"
                     }`}
                   />
                 ))}
@@ -187,10 +187,10 @@ export function StyleQuiz({
                     type="button"
                     disabled={saving}
                     onClick={() => answer(a.style)}
-                    className="group flex w-full items-center justify-between gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-left text-sm text-foreground/90 transition-all hover:border-emerald-300/45 hover:bg-emerald-300/10"
+                    className="group flex w-full items-center justify-between gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-left text-sm text-foreground/90 transition-all hover:border-cyan-300/45 hover:bg-cyan-300/10"
                   >
                     <span>{a.label}</span>
-                    <ArrowRight className="h-4 w-4 shrink-0 text-emerald-200/50 transition-transform group-hover:translate-x-0.5 group-hover:text-emerald-200" />
+                    <ArrowRight className="h-4 w-4 shrink-0 text-cyan-200/50 transition-transform group-hover:translate-x-0.5 group-hover:text-cyan-200" />
                   </button>
                 ))}
               </div>
@@ -296,8 +296,8 @@ export function StyleQuiz({
                   </p>
                 </div>
 
-                <div className="rounded-2xl border border-emerald-300/25 bg-emerald-300/8 p-4 text-left">
-                  <p className="text-xs font-bold uppercase tracking-wider text-emerald-200/90">
+                <div className="rounded-2xl border border-cyan-300/25 bg-cyan-300/8 p-4 text-left">
+                  <p className="text-xs font-bold uppercase tracking-wider text-cyan-200/90">
                     Try this practice
                   </p>
                   <p className="mt-1.5 text-sm leading-relaxed text-foreground/90">
@@ -325,12 +325,12 @@ export function StyleQuiz({
                               colorKey: preset?.colorKey ?? look.colorKey,
                             });
                           }}
-                          className="group flex w-full items-center justify-between gap-3 rounded-xl border border-white/10 bg-white/5 px-3.5 py-2.5 text-left text-sm text-foreground/90 transition-all hover:border-emerald-300/45 hover:bg-emerald-300/10"
+                          className="group flex w-full items-center justify-between gap-3 rounded-xl border border-white/10 bg-white/5 px-3.5 py-2.5 text-left text-sm text-foreground/90 transition-all hover:border-cyan-300/45 hover:bg-cyan-300/10"
                         >
                           <span>
                             {look.emoji} {text}
                           </span>
-                          <span className="text-xs text-emerald-200/60 transition-colors group-hover:text-emerald-200">
+                          <span className="text-xs text-cyan-200/60 transition-colors group-hover:text-cyan-200">
                             Hang it →
                           </span>
                         </button>

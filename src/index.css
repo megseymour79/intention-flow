@@ -58,68 +58,68 @@
 :root {
   --radius: 0.75rem;
   --font-sans: "Space Grotesk", ui-sans-serif, system-ui, -apple-system, sans-serif;
-  --background: oklch(0.22 0.042 262);
+  --background: oklch(0.185 0.05 215);
   --foreground: oklch(0.97 0.012 95);
-  --card: oklch(0.25 0.036 262 / 0.6);
+  --card: oklch(0.235 0.045 215 / 0.6);
   --card-foreground: oklch(0.97 0.012 95);
-  --popover: oklch(0.24 0.036 262);
+  --popover: oklch(0.225 0.045 215);
   --popover-foreground: oklch(0.97 0.012 95);
   --primary: oklch(0.93 0.03 95);
-  --primary-foreground: oklch(0.18 0.04 262);
-  --secondary: oklch(0.29 0.03 262);
+  --primary-foreground: oklch(0.16 0.045 215);
+  --secondary: oklch(0.27 0.04 215);
   --secondary-foreground: oklch(0.97 0.012 95);
-  --muted: oklch(0.28 0.026 262);
+  --muted: oklch(0.26 0.035 215);
   --muted-foreground: oklch(0.8 0.02 95);
-  --accent: oklch(0.78 0.09 182);
-  --accent-foreground: oklch(0.18 0.04 262);
+  --accent: oklch(0.83 0.13 195);
+  --accent-foreground: oklch(0.16 0.045 215);
   --destructive: oklch(0.66 0.2 25);
   --border: oklch(1 0 0 / 9%);
   --input: oklch(1 0 0 / 11%);
   --ring: oklch(0.93 0.03 95);
   --chart-1: oklch(0.93 0.03 95);
-  --chart-2: oklch(0.78 0.09 182);
-  --chart-3: oklch(0.75 0.12 250);
-  --chart-4: oklch(0.8 0.14 160);
+  --chart-2: oklch(0.83 0.13 195);
+  --chart-3: oklch(0.85 0.14 160);
+  --chart-4: oklch(0.72 0.16 340);
   --chart-5: oklch(0.75 0.14 320);
-  --sidebar: oklch(0.215 0.034 262);
+  --sidebar: oklch(0.2 0.042 215);
   --sidebar-foreground: oklch(0.945 0.012 95);
   --sidebar-primary: oklch(0.93 0.03 95);
-  --sidebar-primary-foreground: oklch(0.18 0.04 262);
-  --sidebar-accent: oklch(0.24 0.028 262);
+  --sidebar-primary-foreground: oklch(0.16 0.045 215);
+  --sidebar-accent: oklch(0.235 0.04 215);
   --sidebar-accent-foreground: oklch(0.945 0.012 95);
   --sidebar-border: oklch(1 0 0 / 9%);
   --sidebar-ring: oklch(0.93 0.03 95);
 }
 
 .dark {
-  --background: oklch(0.205 0.04 262);
+  --background: oklch(0.17 0.048 215);
   --foreground: oklch(0.97 0.012 95);
-  --card: oklch(0.25 0.036 262 / 0.6);
+  --card: oklch(0.235 0.045 215 / 0.6);
   --card-foreground: oklch(0.97 0.012 95);
-  --popover: oklch(0.24 0.036 262);
+  --popover: oklch(0.225 0.045 215);
   --popover-foreground: oklch(0.97 0.012 95);
   --primary: oklch(0.93 0.03 95);
-  --primary-foreground: oklch(0.18 0.04 262);
-  --secondary: oklch(0.29 0.03 262);
+  --primary-foreground: oklch(0.16 0.045 215);
+  --secondary: oklch(0.27 0.04 215);
   --secondary-foreground: oklch(0.97 0.012 95);
-  --muted: oklch(0.28 0.026 262);
+  --muted: oklch(0.26 0.035 215);
   --muted-foreground: oklch(0.8 0.02 95);
-  --accent: oklch(0.78 0.09 182);
-  --accent-foreground: oklch(0.18 0.04 262);
+  --accent: oklch(0.83 0.13 195);
+  --accent-foreground: oklch(0.16 0.045 215);
   --destructive: oklch(0.66 0.2 25);
   --border: oklch(1 0 0 / 9%);
   --input: oklch(1 0 0 / 11%);
   --ring: oklch(0.93 0.03 95);
   --chart-1: oklch(0.93 0.03 95);
-  --chart-2: oklch(0.78 0.09 182);
-  --chart-3: oklch(0.75 0.12 250);
-  --chart-4: oklch(0.8 0.14 160);
+  --chart-2: oklch(0.83 0.13 195);
+  --chart-3: oklch(0.85 0.14 160);
+  --chart-4: oklch(0.72 0.16 340);
   --chart-5: oklch(0.75 0.14 320);
-  --sidebar: oklch(0.215 0.034 262);
+  --sidebar: oklch(0.2 0.042 215);
   --sidebar-foreground: oklch(0.945 0.012 95);
   --sidebar-primary: oklch(0.93 0.03 95);
-  --sidebar-primary-foreground: oklch(0.18 0.04 262);
-  --sidebar-accent: oklch(0.24 0.028 262);
+  --sidebar-primary-foreground: oklch(0.16 0.045 215);
+  --sidebar-accent: oklch(0.235 0.04 215);
   --sidebar-accent-foreground: oklch(0.945 0.012 95);
   --sidebar-border: oklch(1 0 0 / 9%);
   --sidebar-ring: oklch(0.93 0.03 95);
@@ -473,6 +473,40 @@
 
 /* Travel theme — contrails drawing lines across the sky, and a bird flock
    crossing with a gentle bob. Both start off-screen right and exit left. */
+@keyframes aurora-sway {
+  0%,
+  100% {
+    transform: translateX(0) skewY(var(--sway-tilt, -4deg));
+    opacity: 0.85;
+  }
+  50% {
+    transform: translateX(4vw) skewY(var(--sway-tilt, -4deg));
+    opacity: 1;
+  }
+}
+
+.animate-aurora-sway {
+  animation-name: aurora-sway;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+}
+
+/* The lagoon's own glow, slowly breathing at the horizon. */
+@keyframes lagoon-breathe {
+  0%,
+  100% {
+    opacity: 0.75;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.animate-lagoon-breathe {
+  animation-name: lagoon-breathe;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+}
 @keyframes contrail-drift {
   from {
     transform: translateX(0);
@@ -571,23 +605,21 @@
   animation-name: wisp-rise;
   animation-iteration-count: infinite;
   animation-timing-function: linear;
-}
-
-/* Sky gradient — the "horizon journey" that anchors the travel theme:
-   dusk violet → plum → rose → coral → amber → golden haze, like the last
-   light over a mountain pass. Lightness stays capped below the top stops so
-   ivory text keeps contrast end to end. */
+}/* Sky gradient — the "aurora lagoon" that anchors the bioluminescent theme:
+   deep night-teal surface → aurora ribbons (emerald → cyan → violet) glowing
+   down the sky → a calm luminous lagoon horizon. Lightness stays capped in
+   the aurora band so ivory text keeps contrast end to end. */
 .sky-gradient {
   background: linear-gradient(
     to bottom,
-    #1b1f4b 0%,
-    #45256e 14%,
-    #7d3a72 30%,
-    #b85a6a 46%,
-    #dd8358 60%,
-    #f0a95c 74%,
-    #f6c37e 88%,
-    #fbe0a8 100%
+    #06131f 0%,
+    #0a2233 16%,
+    #0e3543 32%,
+    #14555a 48%,
+    #1c7a63 64%,
+    #2aa27c 80%,
+    #4dbd95 92%,
+    #7fd8c4 100%
   );
 }
 

@@ -126,7 +126,7 @@ export function BreathOrb({ compact = false }: { compact?: boolean }) {
         {phase && current ? (
           <>
             <p
-              className={`font-display font-semibold text-emerald-100 ${
+              className={`font-display font-semibold text-cyan-100 ${
                 compact ? "text-base" : "text-lg"
               }`}
             >
@@ -139,7 +139,7 @@ export function BreathOrb({ compact = false }: { compact?: boolean }) {
         ) : done ? (
           <>
             <p
-              className={`font-display font-semibold text-emerald-100 ${
+              className={`font-display font-semibold text-cyan-100 ${
                 compact ? "text-base" : "text-lg"
               }`}
             >
@@ -152,7 +152,7 @@ export function BreathOrb({ compact = false }: { compact?: boolean }) {
         ) : (
           <>
             <p
-              className={`font-display font-semibold text-emerald-100 ${
+              className={`font-display font-semibold text-cyan-100 ${
                 compact ? "text-base" : "text-lg"
               }`}
             >
@@ -177,7 +177,7 @@ export function BreathOrb({ compact = false }: { compact?: boolean }) {
         <button
           type="button"
           onClick={begin}
-          className="rounded-full border border-emerald-300/40 bg-emerald-300/10 px-5 py-2 text-sm font-semibold text-emerald-100 transition-all hover:scale-105 hover:bg-emerald-300/20"
+          className="rounded-full border border-cyan-300/40 bg-cyan-300/10 px-5 py-2 text-sm font-semibold text-cyan-100 transition-all hover:scale-105 hover:bg-cyan-300/20"
         >
           {done ? "Once more ✦" : "Begin ✦"}
         </button>

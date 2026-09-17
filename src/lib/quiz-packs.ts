@@ -613,7 +613,7 @@ const SPIRIT_RESULTS: PackResult[] = [
       "You move at the speed of certainty. While everyone sprints, you carry your home and your history with you, and you outlast things that were louder and faster.",
     shadow:
       "Stillness can slip into avoidance — the shell is home, not the whole world.",
-    hue: "text-emerald-200",
+    hue: "text-cyan-200",
     intentions: [
       { text: "Take one brave step today, however small", moment: "mornings", colorKey: "surge" },
       { text: "Speak up before the moment passes", moment: "meetings", colorKey: "nova" },
@@ -756,7 +756,7 @@ const ATTACHMENT_RESULTS: PackResult[] = [
       "You can be close without disappearing and apart without panicking. You ask directly, repair after conflict, and trust that love is something people build together.",
     shadow:
       "Even secure folks can slide toward anxious or avoidant under long stress — this is a practice, not a permanence.",
-    hue: "text-emerald-200",
+    hue: "text-cyan-200",
     intentions: [
       { text: "Extend the same patience to myself I give others", moment: "nights", colorKey: "surge" },
       { text: "Stay present in the hard conversation", moment: "conversations", colorKey: "wave" },

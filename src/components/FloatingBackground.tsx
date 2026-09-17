@@ -6,17 +6,17 @@ function seeded(i: number, salt: number) {
   return x - Math.floor(x);
 }
 
-interface SkyStar {
+interface GlowMote {
   left: string;
   top: string;
   delay: string;
   duration: string;
   size: number;
   bright: boolean;
-  blue: boolean;
+  teal: boolean;
 }
 
-interface Wisp {
+interface Firefly {
   left: string;
   delay: string;
   duration: string;
@@ -25,185 +25,166 @@ interface Wisp {
   opacity: number;
 }
 
-interface Contrail {
+interface MistBank {
   top: string;
   delay: string;
   duration: string;
   scale: number;
   opacity: number;
-  silver: boolean;
 }
 
-const WISP_HUES = [
-  "rgba(251,191,36,", // gold — lantern / firefly warmth
-  "rgba(253,224,71,", // sunbeam
-  "rgba(255,237,213,", // peach haze
-  "rgba(196,181,253,", // dusk violet — echoes the sky's top
+const FIREFLY_HUES = [
+  "rgba(126,231,135,", // aurora green
+  "rgba(103,232,249,", // bioluminescent cyan
+  "rgba(196,181,253,", // aurora violet
+  "rgba(253,224,71,", // rare gold spore
 ];
 
 /* ------------------------------------------------------------------ */
-/* Travel sky — photographic, never cartoonish                          */
+/* Lagoon atmosphere — soft light, never harsh                          */
 /* ------------------------------------------------------------------ */
 
-/** A low sun sitting on the horizon, half-hazed by atmosphere. */
-function LowSun() {
+/**
+ * Aurora ribbons: three layered translucent arcs that shimmer slowly.
+ * Built as skewed gradient sheets, blurred, so they read as curtains of
+ * light rather than shapes. Pure CSS — no images, GPU-cheap.
+ */
+function AuroraRibbons() {
   return (
     <div
       aria-hidden
-      className="animate-planet-drift pointer-events-none absolute top-[74%]"
-      // Centered by left-offset (not -translate-x-1/2): the drift animation
-      // animates `transform` and would override a translate-based centering.
-      style={{ left: "calc(50% - 5rem)", animationDuration: "52s" }}
+      className="pointer-events-none absolute inset-x-0 top-0 h-[62%] overflow-hidden"
     >
-      <div className="relative h-40 w-40">
-        {/* atmospheric halo around the disc */}
-        <div
-          className="absolute -inset-16 rounded-full"
-          style={{
-            background:
-              "radial-gradient(circle, rgba(255,214,150,0.30) 0%, rgba(255,190,130,0.12) 45%, transparent 72%)",
-            filter: "blur(6px)",
-          }}
+      {/* primary curtain — green heart */}
+      <div
+        className="animate-aurora-sway absolute"
+        style={{
+          left: "-18%",
+          top: "-14%",
+          width: "80%",
+          height: "78%",
+          background:
+            "linear-gradient(168deg, transparent 18%, rgba(110,231,183,0.14) 38%, rgba(56,189,248,0.11) 56%, transparent 78%)",
+          filter: "blur(26px)",
+          ["--sway-tilt" as string]: "-6deg",
+          animationDuration: "17s",
+        }}
+      />
+      {/* secondary curtain — cyan, crossing the first */}
+      <div
+        className="animate-aurora-sway absolute"
+        style={{
+          left: "30%",
+          top: "-8%",
+          width: "72%",
+          height: "70%",
+          background:
+            "linear-gradient(196deg, transparent 22%, rgba(103,232,249,0.13) 42%, rgba(167,139,250,0.09) 62%, transparent 82%)",
+          filter: "blur(30px)",
+          ["--sway-tilt" as string]: "5deg",
+          animationDuration: "23s",
+          animationDelay: "-8s",
+        }}
+      />
+      {/* high violet veil — slow, barely there */}
+      <div
+        className="animate-aurora-sway absolute"
+        style={{
+          left: "4%",
+          top: "-20%",
+          width: "90%",
+          height: "60%",
+          background:
+            "linear-gradient(178deg, transparent 30%, rgba(167,139,250,0.08) 50%, transparent 70%)",
+          filter: "blur(34px)",
+          ["--sway-tilt" as string]: "-2deg",
+          animationDuration: "31s",
+          animationDelay: "-16s",
+        }}
+      />
+    </div>
+  );
+}
+
+/** The low glow of the lagoon itself, breathing at the horizon. */
+function LagoonGlow() {
+  return (
+    <>
+      <div
+        aria-hidden
+        className="animate-lagoon-breathe absolute inset-x-0 bottom-0 h-[34%]"
+        style={{
+          background:
+            "radial-gradient(120% 100% at 50% 128%, rgba(110,231,183,0.20) 0%, rgba(56,189,248,0.10) 42%, transparent 74%)",
+          animationDuration: "11s",
+        }}
+      />
+      <div
+        aria-hidden
+        className="animate-lagoon-breathe absolute inset-x-0 bottom-0 h-[22%]"
+        style={{
+          background:
+            "radial-gradient(110% 90% at 22% 124%, rgba(167,139,250,0.10) 0%, transparent 66%)",
+          animationDuration: "14s",
+          animationDelay: "-5s",
+        }}
+      />
+    </>
+  );
+}
+
+/**
+ * Layered ridgelines along the bottom — dawn silhouettes across the far
+ * shore of the lagoon, with aerial perspective (nearer = darker, cooler).
+ */
+function ShoreRidges() {
+  return (
+    <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0">
+      {/* far shore — pale teal, dissolved in mist */}
+      <svg
+        className="absolute inset-x-0 bottom-0 w-full"
+        viewBox="0 0 1440 180"
+        preserveAspectRatio="none"
+        style={{ height: "15vh" }}
+      >
+        <path
+          d="M0,118 L96,86 L178,106 L262,68 L344,100 L432,74 L522,96 L612,60 L702,88 L792,64 L882,92 L972,72 L1062,98 L1152,76 L1242,94 L1332,70 L1440,92 L1440,180 L0,180 Z"
+          fill="rgba(110,231,183,0.16)"
         />
-        <div
-          className="absolute inset-6 rounded-full"
-          style={{
-            background:
-              "radial-gradient(circle at 42% 38%, #fff3d6 0%, #ffdc9a 45%, #f5b45f 80%, #e8964a 100%)",
-            boxShadow: "0 0 42px 12px rgba(255,205,130,0.35)",
-          }}
+      </svg>
+      {/* mid ridge — deeper teal */}
+      <svg
+        className="absolute inset-x-0 bottom-0 w-full"
+        viewBox="0 0 1440 150"
+        preserveAspectRatio="none"
+        style={{ height: "11vh" }}
+      >
+        <path
+          d="M0,108 L120,74 L222,98 L332,60 L442,92 L552,66 L662,90 L772,54 L882,84 L992,62 L1102,88 L1212,68 L1322,92 L1440,74 L1440,150 L0,150 Z"
+          fill="rgba(20,85,90,0.42)"
         />
-      </div>
+      </svg>
+      {/* near shore — dark ink, closest to the viewer */}
+      <svg
+        className="absolute inset-x-0 bottom-0 w-full"
+        viewBox="0 0 1440 120"
+        preserveAspectRatio="none"
+        style={{ height: "7vh" }}
+      >
+        <path
+          d="M0,82 L112,54 L212,76 L322,42 L432,68 L542,46 L652,70 L762,38 L872,62 L982,44 L1092,66 L1202,48 L1312,70 L1440,56 L1440,120 L0,120 Z"
+          fill="rgba(5,15,25,0.66)"
+        />
+      </svg>
     </div>
   );
 }
 
 /**
- * Layered mountain ridges along the bottom — a ridgeline silhouette with
- * aerial perspective (nearer = darker). SVG paths, no images needed.
+ * Drifting mist banks over the water — the old CloudHaze body, recolored
+ * to lagoon tones and kept slow.
  */
-function MountainRidges() {
-  return (
-    <div
-      aria-hidden
-      className="pointer-events-none absolute inset-x-0 bottom-0"
-    >
-      {/* far ridge — pale, dissolved in haze */}
-      <svg
-        className="absolute inset-x-0 bottom-0 w-full"
-        viewBox="0 0 1440 180"
-        preserveAspectRatio="none"
-        style={{ height: "16vh" }}
-      >
-        <path
-          d="M0,120 L90,84 L170,108 L260,66 L340,102 L430,72 L520,96 L610,58 L700,88 L790,62 L880,92 L970,70 L1060,98 L1150,74 L1240,94 L1330,68 L1440,90 L1440,180 L0,180 Z"
-          fill="rgba(255,214,170,0.28)"
-        />
-      </svg>
-      {/* mid ridge — warmer, stronger */}
-      <svg
-        className="absolute inset-x-0 bottom-0 w-full"
-        viewBox="0 0 1440 150"
-        preserveAspectRatio="none"
-        style={{ height: "12vh" }}
-      >
-        <path
-          d="M0,110 L120,72 L220,98 L330,58 L440,92 L550,64 L660,90 L770,52 L880,84 L990,60 L1100,88 L1210,66 L1320,92 L1440,72 L1440,150 L0,150 Z"
-          fill="rgba(196,124,88,0.42)"
-        />
-      </svg>
-      {/* near ridge — dark plum, closest to the viewer */}
-      <svg
-        className="absolute inset-x-0 bottom-0 w-full"
-        viewBox="0 0 1440 120"
-        preserveAspectRatio="none"
-        style={{ height: "8vh" }}
-      >
-        <path
-          d="M0,84 L110,52 L210,76 L320,40 L430,68 L540,44 L650,70 L760,36 L870,62 L980,42 L1090,66 L1200,46 L1310,70 L1440,54 L1440,120 L0,120 Z"
-          fill="rgba(66,38,66,0.55)"
-        />
-      </svg>
-    </div>
-  );
-}
-
-/** A contrail: bright needle nose, tapered fading tail, soft bloom. */
-function Contrail({ silver, scale }: { silver: boolean; scale: number }) {
-  const body = silver
-    ? "linear-gradient(to right, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.75) 6%, rgba(255,240,220,0.4) 40%, rgba(255,225,200,0.14) 70%, transparent 100%)"
-    : "linear-gradient(to right, rgba(255,236,210,0.95) 0%, rgba(255,236,210,0.7) 6%, rgba(250,220,190,0.36) 40%, rgba(245,210,180,0.12) 70%, transparent 100%)";
-  const bloom = silver ? "rgba(255,255,255,0.55)" : "rgba(255,230,190,0.55)";
-  return (
-    <span
-      aria-hidden
-      className="relative block"
-      style={{ width: 150 * scale, height: 14 }}
-    >
-      {/* trailing line, thickening blur behind the nose */}
-      <span
-        className="absolute right-0 top-1/2 block h-[2.5px] w-full -translate-y-1/2 rounded-full"
-        style={{ background: body, filter: "blur(0.4px)" }}
-      />
-      <span
-        className="absolute right-0 top-1/2 block h-[8px] w-[45%] -translate-y-1/2 rounded-full"
-        style={{ background: body, filter: "blur(4px)", opacity: 0.6 }}
-      />
-      {/* the glinting nose */}
-      <span
-        className="absolute right-0 top-1/2 block -translate-y-1/2 rounded-full"
-        style={{
-          width: 7 * scale,
-          height: 7 * scale,
-          background: "#fff",
-          boxShadow: `0 0 10px 3px ${bloom}, 0 0 26px 9px rgba(255,255,255,0.14)`,
-        }}
-      />
-    </span>
-  );
-}
-
-/** A small flock of birds — chevron strokes with a flap keyframe. */
-function BirdFlock({ flip }: { flip: boolean }) {
-  const bird = (x: number, y: number, s: number, k: string) => (
-    <svg
-      key={k}
-      width={22 * s}
-      height={10 * s}
-      viewBox="0 0 22 10"
-      className="animate-bird-flap absolute"
-      style={{ left: x, top: y }}
-    >
-      <path
-        d="M1 6 Q6 1 11 6 Q16 1 21 6"
-        fill="none"
-        stroke="rgba(60,40,56,0.65)"
-        strokeWidth="1.6"
-        strokeLinecap="round"
-      />
-    </svg>
-  );
-  // The flip lives on this wrapper: the birds' flap animation animates
-  // `transform`, which would override an inline transform on the same node.
-  return (
-    <span
-      aria-hidden
-      className="relative block h-12 w-24"
-      style={{ transform: flip ? "scaleX(-1)" : undefined }}
-    >
-      {bird(0, 14, 1, "b1")}
-      {bird(26, 4, 0.9, "b2")}
-      {bird(50, 16, 1.05, "b3")}
-      {bird(74, 6, 0.85, "b4")}
-    </span>
-  );
-}
-
-/* ------------------------------------------------------------------ */
-/* Ambient haze — barely-there vapor                                    */
-/* ------------------------------------------------------------------ */
-
-function CloudHaze({
+function MistBank({
   scale,
   opacity,
   delay,
@@ -230,8 +211,8 @@ function CloudHaze({
           opacity,
           animationDuration: `${9 + scale * 5}s`,
           background:
-            "radial-gradient(50% 60% at 35% 55%, rgba(255,214,190,0.6) 0%, rgba(255,206,190,0.24) 55%, transparent 100%)," +
-            "radial-gradient(45% 55% at 68% 40%, rgba(255,226,206,0.45) 0%, transparent 90%)",
+            "radial-gradient(50% 60% at 35% 55%, rgba(154,230,215,0.5) 0%, rgba(154,230,215,0.2) 55%, transparent 100%)," +
+            "radial-gradient(45% 55% at 68% 40%, rgba(180,220,235,0.35) 0%, transparent 90%)",
           filter: "blur(6px)",
         }}
       />
@@ -239,58 +220,40 @@ function CloudHaze({
   );
 }
 
-/** A puffy cumulus built from stacked radial lobes. */
-function Cumulus({ scale }: { scale: number }) {
+/** A puffy mist clump built from stacked radial lobes. */
+function MistClump({ scale }: { scale: number }) {
   const w = 210 * scale;
   const h = 64 * scale;
-  return (
+  const lobe = (
+    left: number,
+    bottom: number,
+    lw: number,
+    lh: number,
+    a: number,
+  ) => (
     <span
-      aria-hidden
-      className="relative block"
-      style={{ width: w, height: h }}
-    >
-      <span
-        className="absolute rounded-full"
-        style={{
-          left: 0,
-          bottom: 0,
-          width: w * 0.62,
-          height: h * 0.78,
-          background:
-            "radial-gradient(circle at 40% 38%, rgba(255,246,236,0.92) 0%, rgba(255,231,210,0.72) 55%, rgba(255,215,190,0) 100%)",
-          filter: "blur(1.5px)",
-        }}
-      />
-      <span
-        className="absolute rounded-full"
-        style={{
-          left: w * 0.3,
-          bottom: h * 0.12,
-          width: w * 0.55,
-          height: h * 0.88,
-          background:
-            "radial-gradient(circle at 45% 35%, rgba(255,250,242,0.95) 0%, rgba(255,236,214,0.8) 52%, rgba(255,215,190,0) 100%)",
-          filter: "blur(1.5px)",
-        }}
-      />
-      <span
-        className="absolute rounded-full"
-        style={{
-          left: w * 0.58,
-          bottom: 0,
-          width: w * 0.42,
-          height: h * 0.7,
-          background:
-            "radial-gradient(circle at 45% 40%, rgba(255,244,230,0.88) 0%, rgba(255,226,200,0.6) 55%, rgba(255,215,190,0) 100%)",
-          filter: "blur(2px)",
-        }}
-      />
-      {/* warm underlit base */}
+      className="absolute rounded-full"
+      style={{
+        left,
+        bottom,
+        width: lw,
+        height: lh,
+        background: `radial-gradient(circle at 42% 38%, rgba(214,244,236,${a}) 0%, rgba(180,226,214,${a * 0.72}) 55%, rgba(150,210,196,0) 100%)`,
+        filter: "blur(1.5px)",
+      }}
+    />
+  );
+  return (
+    <span aria-hidden className="relative block" style={{ width: w, height: h }}>
+      {lobe(0, 0, w * 0.62, h * 0.78, 0.85)}
+      {lobe(w * 0.3, h * 0.12, w * 0.55, h * 0.88, 0.9)}
+      {lobe(w * 0.58, 0, w * 0.42, h * 0.7, 0.78)}
+      {/* aquamarine underlit base, like light from the water below */}
       <span
         className="absolute inset-x-1 bottom-0 h-[30%]"
         style={{
           background:
-            "linear-gradient(to top, rgba(240,164,92,0.35) 0%, transparent 100%)",
+            "linear-gradient(to top, rgba(103,232,249,0.28) 0%, transparent 100%)",
           filter: "blur(4px)",
         }}
       />
@@ -299,57 +262,42 @@ function Cumulus({ scale }: { scale: number }) {
 }
 
 /**
- * The travel-sky backdrop behind every page: a dusk-to-golden-hour gradient
- * (violet dusk → plum → rose → coral → amber horizon), a low hazed sun,
- * layered mountain ridges, drifting cloud banks, puffy cumulus, contrails
- * drawing lines across the sky, migrating birds, rising lantern motes and
- * soft haze. Everything is tuned to read as depth behind content — never
- * over the words.
+ * The bioluminescent lagoon behind every page: a deep night-teal gradient,
+ * three aurora ribbons shimmering overhead, the lagoon's own glow breathing
+ * at the horizon, dawn-silhouette shore ridges, drifting mist banks and
+ * clumps, glow motes where stars used to be, and firefly spores rising from
+ * the water. Everything tuned to read as depth behind content — never over
+ * the words.
  */
 export function FloatingBackground({ count = 18 }: { count?: number }) {
-  const stars = useMemo<SkyStar[]>(
+  const motes = useMemo<GlowMote[]>(
     () =>
       Array.from({ length: count }, (_, i) => ({
         left: `${(seeded(i, 1) * 96 + 2).toFixed(2)}%`,
-        // Dusk realism: the first “stars” linger only in the darker upper sky
-        // and fade out before the bright horizon — never glitter on gold.
-        top: `${(seeded(i, 2) * 52 + 2).toFixed(2)}%`,
+        top: `${(seeded(i, 2) * 88 + 2).toFixed(2)}%`,
         delay: `${(seeded(i, 3) * 9).toFixed(2)}s`,
         duration: `${(4 + seeded(i, 4) * 7).toFixed(2)}s`,
         size: 1 + seeded(i, 5) * 1.8,
         bright: seeded(i, 6) > 0.82,
-        blue: seeded(i, 7) > 0.25,
+        teal: seeded(i, 7) > 0.25,
       })),
     [count],
   );
 
-  const wisps = useMemo<Wisp[]>(
+  const fireflies = useMemo<Firefly[]>(
     () =>
       Array.from({ length: 5 }, (_, i) => ({
         left: `${(seeded(i, 81) * 92 + 4).toFixed(1)}%`,
         delay: `${(seeded(i, 82) * 46).toFixed(1)}s`,
         duration: `${(44 + seeded(i, 83) * 30).toFixed(1)}s`,
         size: 2 + seeded(i, 84) * 2.4,
-        hue: WISP_HUES[i % WISP_HUES.length],
+        hue: FIREFLY_HUES[i % FIREFLY_HUES.length],
         opacity: 0.14 + seeded(i, 85) * 0.12,
       })),
     [],
   );
 
-  const contrails = useMemo<Contrail[]>(
-    () =>
-      Array.from({ length: 4 }, (_, i) => ({
-        top: `${(seeded(i, 91) * 26 + 3).toFixed(1)}%`,
-        delay: `${(seeded(i, 92) * 42).toFixed(1)}s`,
-        duration: `${(26 + seeded(i, 93) * 14).toFixed(1)}s`,
-        scale: 0.85 + seeded(i, 94) * 0.6,
-        opacity: 0.5 + seeded(i, 95) * 0.3,
-        silver: seeded(i, 96) > 0.5,
-      })),
-    [],
-  );
-
-  const clouds = useMemo(
+  const mists = useMemo<MistBank[]>(
     () =>
       Array.from({ length: 3 }, (_, i) => ({
         top: `${(16 + seeded(i, 61) * 28).toFixed(0)}%`,
@@ -361,19 +309,7 @@ export function FloatingBackground({ count = 18 }: { count?: number }) {
     [],
   );
 
-  const flocks = useMemo(
-    () =>
-      Array.from({ length: 2 }, (_, i) => ({
-        top: `${(seeded(i, 71) * 22 + 8).toFixed(1)}%`,
-        delay: `${(seeded(i, 72) * 36).toFixed(1)}s`,
-        duration: `${(34 + seeded(i, 73) * 16).toFixed(1)}s`,
-        flip: seeded(i, 74) > 0.5,
-        left: "105vw" as const,
-      })),
-    [],
-  );
-
-  const cumuli = useMemo(
+  const clumps = useMemo(
     () =>
       Array.from({ length: 4 }, (_, i) => ({
         left: `${(seeded(i, 51) * 90 + 2).toFixed(1)}%`,
@@ -390,29 +326,13 @@ export function FloatingBackground({ count = 18 }: { count?: number }) {
       aria-hidden
       className="pointer-events-none fixed inset-0 -z-10 overflow-hidden"
     >
-      {/* Sky base — the horizon journey: violet dusk → plum → rose →
-          coral → amber → golden haze. Warm, travel-poster sky. */}
+      {/* Water-sky base — deep night teal surface → aurora band → luminous
+          lagoon horizon. Same stops as .sky-gradient, kept in parity. */}
       <div
         className="absolute inset-0"
         style={{
           background:
-            "linear-gradient(to bottom, #1b1f4b 0%, #45256e 14%, #7d3a72 30%, #b85a6a 46%, #dd8358 60%, #f0a95c 74%, #f6c37e 88%, #fbe0a8 100%)",
-        }}
-      />
-
-      {/* warm bloom around the sun's position + faint rose afterglow */}
-      <div
-        className="absolute inset-x-0 bottom-0 h-[46%]"
-        style={{
-          background:
-            "radial-gradient(130% 100% at 50% 118%, rgba(255,224,170,0.22) 0%, rgba(255,190,140,0.10) 40%, transparent 75%)",
-        }}
-      />
-      <div
-        className="absolute inset-x-0 bottom-0 h-[28%]"
-        style={{
-          background:
-            "radial-gradient(120% 90% at 24% 116%, rgba(255,150,120,0.08) 0%, transparent 65%)",
+            "linear-gradient(to bottom, #06131f 0%, #0a2233 16%, #0e3543 32%, #14555a 48%, #1c7a63 64%, #2aa27c 80%, #4dbd95 92%, #7fd8c4 100%)",
         }}
       />
 
@@ -421,40 +341,31 @@ export function FloatingBackground({ count = 18 }: { count?: number }) {
         className="absolute inset-0"
         style={{
           background:
-            "radial-gradient(120% 90% at 50% 42%, transparent 62%, rgba(27,20,40,0.16) 100%)",
+            "radial-gradient(120% 90% at 50% 42%, transparent 62%, rgba(4,14,22,0.18) 100%)",
         }}
       />
 
-      <LowSun />
+      <AuroraRibbons />
+      <LagoonGlow />
 
-      {/* sunbeam shafts — wide faint diagonals from the horizon upward */}
-      <div
-        className="absolute inset-0"
-        style={{
-          background:
-            "linear-gradient(115deg, transparent 40%, rgba(255,236,200,0.06) 50%, transparent 58%)," +
-            "linear-gradient(122deg, transparent 56%, rgba(255,236,200,0.045) 64%, transparent 72%)",
-        }}
-      />
+      <ShoreRidges />
 
-      <MountainRidges />
-
-      {/* Starlit haze → warm drifting haze across the whole sky */}
-      {clouds.map((c, i) => (
-        <CloudHaze
-          key={`cloud-${i}`}
-          scale={c.scale}
-          opacity={c.opacity}
-          delay={c.delay}
-          duration={c.duration}
-          top={c.top}
+      {/* Drifting mist banks across the whole sky */}
+      {mists.map((m, i) => (
+        <MistBank
+          key={`mist-${i}`}
+          scale={m.scale}
+          opacity={m.opacity}
+          delay={m.delay}
+          duration={m.duration}
+          top={m.top}
         />
       ))}
 
-      {/* Puffy cumulus clouds floating on their own drift paths */}
-      {cumuli.map((c, i) => (
+      {/* Floating mist clumps on their own slow paths */}
+      {clumps.map((c, i) => (
         <div
-          key={`cumulus-${i}`}
+          key={`clump-${i}`}
           className="animate-planet-drift absolute"
           style={{
             left: c.left,
@@ -463,86 +374,55 @@ export function FloatingBackground({ count = 18 }: { count?: number }) {
             animationDuration: c.duration,
           }}
         >
-          <Cumulus scale={c.scale} />
+          <MistClump scale={c.scale} />
         </div>
       ))}
 
-      {/* Rising lantern motes — warm flecks of light climbing the sky */}
-      {wisps.map((w, i) => (
+      {/* Rising firefly spores — bioluminescent flecks climbing from the
+          water into the night */}
+      {fireflies.map((f, i) => (
         <span
-          key={`wisp-${i}`}
+          key={`firefly-${i}`}
           className="animate-wisp-rise absolute rounded-full"
           style={{
-            left: w.left,
+            left: f.left,
             top: "100%",
-            width: w.size,
-            height: w.size,
-            background: `${w.hue}${w.opacity.toFixed(2)})`,
-            boxShadow: `0 0 ${w.size * 3}px 1px ${w.hue}${(w.opacity * 0.7).toFixed(2)})`,
-            animationDelay: w.delay,
-            animationDuration: w.duration,
-            ["--wisp-opacity" as string]: w.opacity,
+            width: f.size,
+            height: f.size,
+            background: `${f.hue}${f.opacity.toFixed(2)})`,
+            boxShadow: `0 0 ${f.size * 3}px 1px ${f.hue}${(f.opacity * 0.7).toFixed(2)})`,
+            animationDelay: f.delay,
+            animationDuration: f.duration,
+            ["--wisp-opacity" as string]: f.opacity,
           }}
         />
       ))}
 
-      {/* Dusk sparkles — faint glints where the last starlight lingers up high */}
-      {stars.map((s, i) => {
-        const color = s.blue
-          ? "rgba(255,238,214,"
-          : "rgba(255,244,224,";
+      {/* Glow motes — still water catches light; brighter ones gently
+          shimmer where stars used to be */}
+      {motes.map((m, i) => {
+        const color = m.teal
+          ? "rgba(186,244,222,"
+          : "rgba(224,242,254,";
         return (
           <span
-            key={`star-${i}`}
-            className={`absolute rounded-full ${s.bright ? "animate-twinkle" : ""}`}
+            key={`mote-${i}`}
+            className={`absolute rounded-full ${m.bright ? "animate-twinkle" : ""}`}
             style={{
-              left: s.left,
-              top: s.top,
-              width: s.size,
-              height: s.size,
-              background: `${color}${s.bright ? 0.9 : 0.45})`,
-              boxShadow: s.bright
-                ? `0 0 ${s.size * 3}px 1px ${color}0.3)`
+              left: m.left,
+              top: m.top,
+              width: m.size,
+              height: m.size,
+              background: `${color}${m.bright ? 0.9 : 0.45})`,
+              boxShadow: m.bright
+                ? `0 0 ${m.size * 3}px 1px ${color}0.35)`
                 : undefined,
-              animationDelay: s.delay,
-              animationDuration: s.duration,
+              animationDelay: m.delay,
+              animationDuration: m.duration,
             }}
           />
         );
       })}
-
-      {/* Contrails — high-altitude travelers crossing the upper sky */}
-      {contrails.map((c, i) => (
-        <div
-          key={`contrail-${i}`}
-          className="animate-contrail-drift absolute"
-          style={{
-            left: "110vw",
-            top: c.top,
-            opacity: c.opacity,
-            animationDelay: c.delay,
-            animationDuration: c.duration,
-          }}
-        >
-          <Contrail silver={c.silver} scale={c.scale} />
-        </div>
-      ))}
-
-      {/* Bird flocks crossing on long slow paths */}
-      {flocks.map((f, i) => (
-        <div
-          key={`flock-${i}`}
-          className="animate-flock-flight absolute"
-          style={{
-            left: f.left,
-            top: f.top,
-            animationDelay: f.delay,
-            animationDuration: f.duration,
-          }}
-        >
-          <BirdFlock flip={f.flip} />
-        </div>
-      ))}
     </div>
   );
 }

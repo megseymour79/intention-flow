@@ -225,8 +225,8 @@ export const RESPONSE_STYLES: ResponseStyle[] = [
     practice:
       "For every yes you hand out today, give one to yourself. 'I'll help' and 'I need a minute' can live in the same conversation.",
     intentions: ["Stay curious when the answer feels obvious", "Leave the work at the door tonight", "Get curious before I get defensive"],
-    bar: "bg-emerald-300",
-    glow: "text-emerald-300",
+    bar: "bg-cyan-300",
+    glow: "text-cyan-300",
   },
 ];
 

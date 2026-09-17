@@ -80,7 +80,7 @@ function Section({
               )}
             >
               <div className={cn(center && "max-w-2xl")}>
-                <p className="font-eyebrow text-emerald-200/85">
+                <p className="font-eyebrow text-cyan-200/85">
                   {index ? `${index} · ` : ""}
                   {eyebrow}
                 </p>
@@ -148,8 +148,8 @@ function HeroSky() {
     <div className="panel overflow-hidden">
       <div className="flex items-center justify-between border-b border-white/8 px-4 py-2.5">
         <p className="font-eyebrow text-muted-foreground">Observation deck</p>
-        <span className="flex items-center gap-1.5 font-eyebrow text-emerald-200/80">
-          <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-300" />
+        <span className="flex items-center gap-1.5 font-eyebrow text-cyan-200/80">
+          <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-cyan-300" />
           live
         </span>
       </div>
@@ -162,7 +162,7 @@ function HeroSky() {
         hint="tap the sky & type a way you want to be"
       />
       <div className="border-t border-white/8 p-2.5">
-        <div className="flex items-center gap-2 rounded-lg bg-[#2a1830]/50 px-1">
+        <div className="flex items-center gap-2 rounded-lg bg-[#0b1c26]/50 px-1">
           <span className="pl-2 text-lg">✍️</span>
           <Input
             value={typed}
@@ -279,9 +279,9 @@ function SurpriseStar() {
       <button
         type="button"
         onClick={draw}
-        className="group inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-5 py-2.5 text-sm font-semibold text-foreground/85 transition-all hover:border-emerald-300/40 hover:text-emerald-100"
+        className="group inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-5 py-2.5 text-sm font-semibold text-foreground/85 transition-all hover:border-cyan-300/40 hover:text-cyan-100"
       >
-        <Shuffle className="h-4 w-4 text-emerald-200/80 transition-transform group-hover:rotate-180" />
+        <Shuffle className="h-4 w-4 text-cyan-200/80 transition-transform group-hover:rotate-180" />
         {star ? "Draw another" : "Surprise me"}
       </button>
       <p className="max-w-[220px] text-center font-eyebrow text-muted-foreground/70">
@@ -320,7 +320,7 @@ function ShiftCard({
         <span
           className={cn(
             "font-eyebrow transition-colors",
-            open ? "text-emerald-200/90" : "text-foreground/75",
+            open ? "text-cyan-200/90" : "text-foreground/75",
           )}
         >
           {open ? "− close" : "+ tap"}
@@ -356,9 +356,9 @@ function ShiftWall() {
           type="button"
           onClick={() => setSeed((s) => s + 1)}
           title="Show me four different ones"
-          className="group inline-flex items-center gap-2 rounded-full border border-white/12 bg-white/[0.03] px-3.5 py-1.5 transition-all hover:border-emerald-300/40"
+          className="group inline-flex items-center gap-2 rounded-full border border-white/12 bg-white/[0.03] px-3.5 py-1.5 transition-all hover:border-cyan-300/40"
         >
-          <Shuffle className="h-3.5 w-3.5 text-emerald-200/80 transition-transform duration-300 group-hover:rotate-180" />
+          <Shuffle className="h-3.5 w-3.5 text-cyan-200/80 transition-transform duration-300 group-hover:rotate-180" />
           <span className="font-eyebrow text-foreground/70">shuffle</span>
         </button>
       </div>
@@ -432,23 +432,23 @@ export default function Landing() {
           <a href="#top" className="flex items-center gap-2.5">
             <StarMark size={34} />
             <span className="font-display text-lg font-semibold tracking-tight">
-              Shifted<span className="text-emerald-200/90">Mind</span>
+              Shifted<span className="text-cyan-200/90">Mind</span>
             </span>
           </a>
           <nav className="hidden items-center gap-6 font-eyebrow text-muted-foreground md:flex">
-            <a href="#how" className="transition-colors hover:text-emerald-200">
+            <a href="#how" className="transition-colors hover:text-cyan-200">
               01 Practice
             </a>
-            <a href="#tone" className="transition-colors hover:text-emerald-200">
+            <a href="#tone" className="transition-colors hover:text-cyan-200">
               02 Tone lab
             </a>
-            <a href="#quiz" className="transition-colors hover:text-emerald-200">
+            <a href="#quiz" className="transition-colors hover:text-cyan-200">
               03 Archetype
             </a>
-            <a href="#gym" className="transition-colors hover:text-emerald-200">
+            <a href="#gym" className="transition-colors hover:text-cyan-200">
               04 Mind gym
             </a>
-            <a href="#voices" className="transition-colors hover:text-emerald-200">
+            <a href="#voices" className="transition-colors hover:text-cyan-200">
               05 Field notes
             </a>
           </nav>
@@ -484,9 +484,9 @@ export default function Landing() {
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
-              className="inline-flex items-center gap-2.5 font-eyebrow text-emerald-200/80"
+              className="inline-flex items-center gap-2.5 font-eyebrow text-cyan-200/80"
             >
-              <span className="h-px w-8 bg-emerald-200/40" />
+              <span className="h-px w-8 bg-cyan-200/40" />
               A field guide to the moment
             </motion.div>
             <motion.h1
@@ -496,7 +496,7 @@ export default function Landing() {
               className="text-clearing-soft mt-5 font-display text-5xl font-semibold leading-[1.04] tracking-tight sm:text-6xl"
             >
               Choose how you{" "}
-              <span className="bg-gradient-to-r from-emerald-100 via-teal-100 to-sky-200 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-cyan-100 via-teal-100 to-sky-200 bg-clip-text text-transparent">
                 show up
               </span>{" "}
               — before life chooses for you.
@@ -521,7 +521,7 @@ export default function Landing() {
               {cta}
               <a
                 href="#how"
-                className="relative z-10 font-eyebrow text-foreground/75 transition-colors hover:text-emerald-200"
+                className="relative z-10 font-eyebrow text-foreground/75 transition-colors hover:text-cyan-200"
               >
                 See it in action ↓
               </a>
@@ -754,7 +754,7 @@ export default function Landing() {
       >
         <FadeUp>
           <div className="panel relative mx-auto max-w-3xl overflow-hidden p-10 text-center">
-            <div className="pointer-events-none absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-emerald-200/5 to-transparent" />
+            <div className="pointer-events-none absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-cyan-200/5 to-transparent" />
             <div className="flex justify-center">
               <BreathOrb />
             </div>
@@ -835,13 +835,13 @@ export default function Landing() {
         <div className="mx-auto max-w-4xl px-4 sm:px-6">
           <FadeUp>
             <div className="panel relative overflow-hidden p-10 text-center sm:p-14">
-              <div className="pointer-events-none absolute -top-16 left-1/2 h-48 w-96 -translate-x-1/2 rounded-full bg-emerald-200/10 blur-3xl" />
-              <p className="font-eyebrow text-emerald-200/70">
+              <div className="pointer-events-none absolute -top-16 left-1/2 h-48 w-96 -translate-x-1/2 rounded-full bg-cyan-200/10 blur-3xl" />
+              <p className="font-eyebrow text-cyan-200/70">
                 Last call · the sky is open
               </p>
               <h2 className="text-clearing-soft mx-auto mt-4 max-w-xl font-display text-4xl font-semibold leading-tight tracking-tight sm:text-5xl">
                 Your first star takes{" "}
-                <span className="text-emerald-200">ten seconds</span>
+                <span className="text-cyan-200">ten seconds</span>
               </h2>
               <p className="mx-auto mt-4 max-w-md text-sm leading-relaxed text-foreground/85 sm:text-base">
                 {isAuthenticated
@@ -853,10 +853,10 @@ export default function Landing() {
               </div>
               <div className="mt-7 flex items-center justify-center gap-6 font-eyebrow text-muted-foreground">
                 <span className="flex items-center gap-1.5">
-                  <Star className="h-3 w-3 text-emerald-300" /> Streaks & nudges
+                  <Star className="h-3 w-3 text-cyan-300" /> Streaks & nudges
                 </span>
                 <span className="flex items-center gap-1.5">
-                  <Bell className="h-3 w-3 text-emerald-300" /> No ads, ever
+                  <Bell className="h-3 w-3 text-cyan-300" /> No ads, ever
                 </span>
               </div>
             </div>
@@ -864,15 +864,15 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* ---- Footer — dusk settles at the page's base: deep warm-ink band,
-           ivory type, high contrast against the amber horizon ---- */}
-      <footer className="relative border-t border-white/10 bg-gradient-to-b from-[#241426]/0 via-[#241426]/92 to-[#241426] py-10">
+      {/* ---- Footer — the lagoon floor at the page's base: deep sea-ink band,
+           ivory type, high contrast against the glowing horizon ---- */}
+      <footer className="relative border-t border-white/10 bg-gradient-to-b from-[#06131f]/0 via-[#06131f]/92 to-[#06131f] py-10">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-6 px-4 sm:flex-row sm:px-6">
           <div className="flex items-center gap-2.5">
             <StarMark size={30} />
             <div>
               <p className="font-display text-sm font-semibold tracking-tight text-foreground">
-                Shifted<span className="text-emerald-200/90">Mind</span>
+                Shifted<span className="text-cyan-200/90">Mind</span>
               </p>
               <p className="font-eyebrow text-foreground/70">
                 choose your responses
@@ -880,19 +880,19 @@ export default function Landing() {
             </div>
           </div>
           <nav className="flex items-center gap-5 font-eyebrow text-foreground/80">
-            <a href="#how" className="hover:text-emerald-200">
+            <a href="#how" className="hover:text-cyan-200">
               Practice
             </a>
-            <a href="#tone" className="hover:text-emerald-200">
+            <a href="#tone" className="hover:text-cyan-200">
               Tone lab
             </a>
-            <a href="#quiz" className="hover:text-emerald-200">
+            <a href="#quiz" className="hover:text-cyan-200">
               Archetype
             </a>
-            <a href="#gym" className="hover:text-emerald-200">
+            <a href="#gym" className="hover:text-cyan-200">
               Mind gym
             </a>
-            <Link to="/auth" className="hover:text-emerald-200">
+            <Link to="/auth" className="hover:text-cyan-200">
               Sign in
             </Link>
           </nav>

@@ -11,7 +11,7 @@ export default function Practice() {
           eyebrow="Section · practice"
           title={
             <>
-              The practice <span className="text-emerald-200/90">deck</span>
+              The practice <span className="text-cyan-200/90">deck</span>
             </>
           }
           sub="Short, real reps between stimulus and response — check your tone, train your attention, reset your breath. A few minutes here changes how the rest of the day goes."

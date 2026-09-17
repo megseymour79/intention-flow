@@ -34,10 +34,10 @@ const FILE_TYPES = ["image/png", "image/jpeg", "image/webp", "image/gif"];
 
 function avatarHue(seed: string): string {
   const palettes = [
-    "from-emerald-300/80 to-teal-400/80",
+    "from-cyan-300/80 to-teal-400/80",
     "from-cyan-300/80 to-blue-400/80",
     "from-fuchsia-300/80 to-purple-400/80",
-    "from-lime-300/80 to-emerald-400/80",
+    "from-lime-300/80 to-cyan-400/80",
     "from-rose-300/80 to-pink-400/80",
   ];
   let n = 0;
@@ -153,7 +153,7 @@ export default function Community() {
           eyebrow="Community · shared intentions"
           title={
             <>
-              The community <span className="text-emerald-200/90">sky</span>
+              The community <span className="text-cyan-200/90">sky</span>
             </>
           }
           sub="Share the intention you're holding this week — and see what other people are aiming at. Glow the ones that get you."
@@ -182,7 +182,7 @@ export default function Community() {
                   onClick={() => setGlyph(g)}
                   className={`flex h-8 w-8 items-center justify-center rounded-lg border text-base transition-all ${
                     glyph === g
-                      ? "border-emerald-300/60 bg-emerald-300/10 scale-110"
+                      ? "border-cyan-300/60 bg-cyan-300/10 scale-110"
                       : "border-transparent hover:border-white/20"
                   }`}
                   style={
@@ -265,7 +265,7 @@ export default function Community() {
                   setImage(null);
                   if (fileRef.current) fileRef.current.value = "";
                 }}
-                className="absolute right-2 top-2 flex h-7 w-7 items-center justify-center rounded-full bg-[#2a1830]/75 text-white backdrop-blur"
+                className="absolute right-2 top-2 flex h-7 w-7 items-center justify-center rounded-full bg-[#0b1c26]/75 text-white backdrop-blur"
                 aria-label="Remove image"
               >
                 <X className="h-4 w-4" />
@@ -383,12 +383,12 @@ export default function Community() {
                           }
                           className={`h-8 text-xs ${
                             post.glowed
-                              ? "text-emerald-300"
-                              : "text-muted-foreground hover:text-emerald-200"
+                              ? "text-cyan-300"
+                              : "text-muted-foreground hover:text-cyan-200"
                           }`}
                         >
                           <Sparkles
-                            className={`mr-1.5 h-4 w-4 ${post.glowed ? "fill-emerald-300" : ""}`}
+                            className={`mr-1.5 h-4 w-4 ${post.glowed ? "fill-cyan-300" : ""}`}
                           />
                           {post.glowCount} glow{post.glowCount === 1 ? "" : "s"}
                         </Button>
@@ -422,7 +422,7 @@ export default function Community() {
                         animate={{ height: "auto", opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
                         transition={{ duration: 0.2 }}
-                        className="overflow-hidden border-t border-white/8 bg-[#2a1830]/35"
+                        className="overflow-hidden border-t border-white/8 bg-[#0b1c26]/35"
                       >
                         <div className="space-y-3 p-4">
                           {comments.length === 0 && (

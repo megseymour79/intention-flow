@@ -70,10 +70,10 @@ export function TonightEvent({
       animate={{ opacity: 1, y: 0 }}
       className="pointer-events-auto absolute left-3 top-3 z-20 max-w-[280px]"
     >
-      <div className="rounded-2xl border border-white/12 bg-[#2a1830]/60 p-3 backdrop-blur-md">
+      <div className="rounded-2xl border border-white/12 bg-[#0b1c26]/60 p-3 backdrop-blur-md">
         <div className="flex items-start justify-between gap-2">
           <div>
-            <p className="font-eyebrow text-emerald-200/80">
+            <p className="font-eyebrow text-cyan-200/80">
               Tonight's sky
             </p>
             <p className="mt-0.5 text-sm font-bold tracking-tight text-foreground">
@@ -174,7 +174,7 @@ export function WishComet({
             "linear-gradient(90deg, rgba(255,240,180,0.85), rgba(255,220,140,0.3), transparent)",
         }}
       />
-      <span className="pointer-events-none absolute left-1/2 top-full mt-1 -translate-x-1/2 whitespace-nowrap rounded-full border border-white/10 bg-[#2a1830]/70 px-2 py-0.5 text-[10px] text-foreground/90 opacity-0 backdrop-blur-sm transition-opacity group-hover:opacity-100">
+      <span className="pointer-events-none absolute left-1/2 top-full mt-1 -translate-x-1/2 whitespace-nowrap rounded-full border border-white/10 bg-[#0b1c26]/70 px-2 py-0.5 text-[10px] text-foreground/90 opacity-0 backdrop-blur-sm transition-opacity group-hover:opacity-100">
         a falling wish — catch it
       </span>
     </button>
@@ -289,7 +289,7 @@ export function WishCaught({
             animate={{ scale: 1, y: 0 }}
             exit={{ scale: 0.9, opacity: 0 }}
             transition={{ type: "spring", stiffness: 300, damping: 22 }}
-            className="mx-4 max-w-xs rounded-2xl border border-emerald-300/25 bg-[#131b3e]/95 p-5 text-center shadow-2xl"
+            className="mx-4 max-w-xs rounded-2xl border border-cyan-300/25 bg-[#131b3e]/95 p-5 text-center shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
             <p className="text-3xl">✨</p>
@@ -300,7 +300,7 @@ export function WishCaught({
               Falling wishes only cross the sky once a night. Finish the
               sentence — it'll hang as a star where you caught it.
             </p>
-            <p className="mt-3 rounded-2xl border border-emerald-300/25 bg-emerald-300/10 px-3 py-2 text-sm font-semibold text-emerald-100">
+            <p className="mt-3 rounded-2xl border border-cyan-300/25 bg-cyan-300/10 px-3 py-2 text-sm font-semibold text-cyan-100">
               “{starter}”
             </p>
             <button

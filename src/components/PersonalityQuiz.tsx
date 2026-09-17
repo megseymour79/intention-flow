@@ -126,7 +126,7 @@ export function PersonalityQuiz({
                 <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                   {pack.emoji} {pack.title}
                 </p>
-                <p className="text-xs tabular-nums text-emerald-200/80">
+                <p className="text-xs tabular-nums text-cyan-200/80">
                   {step + 1} / {pack.questions.length}
                 </p>
               </div>
@@ -136,7 +136,7 @@ export function PersonalityQuiz({
                   <span
                     key={i}
                     className={`h-1.5 flex-1 rounded-full transition-colors ${
-                      i <= step ? "bg-emerald-300" : "bg-white/10"
+                      i <= step ? "bg-cyan-300" : "bg-white/10"
                     }`}
                   />
                 ))}
@@ -153,10 +153,10 @@ export function PersonalityQuiz({
                     type="button"
                     disabled={saving}
                     onClick={() => answer(a.label, a.scores)}
-                    className="group flex w-full items-center justify-between gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-left text-sm text-foreground/90 transition-all hover:border-emerald-300/45 hover:bg-emerald-300/10"
+                    className="group flex w-full items-center justify-between gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-left text-sm text-foreground/90 transition-all hover:border-cyan-300/45 hover:bg-cyan-300/10"
                   >
                     <span>{a.label}</span>
-                    <ArrowRight className="h-4 w-4 shrink-0 text-emerald-200/50 transition-transform group-hover:translate-x-0.5 group-hover:text-emerald-200" />
+                    <ArrowRight className="h-4 w-4 shrink-0 text-cyan-200/50 transition-transform group-hover:translate-x-0.5 group-hover:text-cyan-200" />
                   </button>
                 ))}
               </div>
@@ -263,7 +263,7 @@ export function PersonalityQuiz({
                               duration: 0.5,
                               delay: 0.2 + i * 0.08,
                             }}
-                            className="h-full rounded-full bg-emerald-300"
+                            className="h-full rounded-full bg-cyan-300"
                           />
                         </div>
                         <span className="w-4 text-right text-xs tabular-nums text-muted-foreground">
@@ -290,12 +290,12 @@ export function PersonalityQuiz({
                             colorKey,
                           });
                         }}
-                        className="group flex w-full items-center justify-between gap-3 rounded-xl border border-white/10 bg-white/5 px-3.5 py-2.5 text-left text-sm text-foreground/90 transition-all hover:border-emerald-300/45 hover:bg-emerald-300/10"
+                        className="group flex w-full items-center justify-between gap-3 rounded-xl border border-white/10 bg-white/5 px-3.5 py-2.5 text-left text-sm text-foreground/90 transition-all hover:border-cyan-300/45 hover:bg-cyan-300/10"
                       >
                         <span>
                           {result.emoji} {text}
                         </span>
-                        <span className="text-xs text-emerald-200/60 transition-colors group-hover:text-emerald-200">
+                        <span className="text-xs text-cyan-200/60 transition-colors group-hover:text-cyan-200">
                           Hang it →
                         </span>
                       </button>

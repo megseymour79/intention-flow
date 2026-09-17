@@ -29,7 +29,7 @@ export default function Evening() {
           eyebrow="Section · evening"
           title={
             <>
-              The evening <span className="text-emerald-200/90">ledger</span>
+              The evening <span className="text-cyan-200/90">ledger</span>
             </>
           }
           sub="How the day actually went — one honest line at a time. This is where a shift stops being an idea and starts being a pattern."
@@ -39,8 +39,8 @@ export default function Evening() {
         <div className="panel p-5">
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div className="flex items-start gap-3">
-              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-emerald-200/25 bg-emerald-200/10">
-                <Bell className="h-5 w-5 text-emerald-200" />
+              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-cyan-200/25 bg-cyan-200/10">
+                <Bell className="h-5 w-5 text-cyan-200" />
               </span>
               <div>
                 <p className="font-bold">Nudge me back to my intention</p>
@@ -88,7 +88,7 @@ export default function Evening() {
                   }
                   className={`flex items-center gap-2 rounded-full border px-3 py-1.5 text-xs transition-colors disabled:cursor-not-allowed disabled:opacity-40 ${
                     on
-                      ? "border-emerald-300/50 bg-emerald-300/12 text-emerald-100"
+                      ? "border-cyan-300/50 bg-cyan-300/12 text-cyan-100"
                       : "border-white/10 bg-white/5 text-muted-foreground hover:border-white/25"
                   }`}
                 >
@@ -139,7 +139,7 @@ export default function Evening() {
                     ? "Remove this custom time"
                     : "Add this custom time"
                 }
-                className="text-muted-foreground transition-colors hover:text-emerald-200 disabled:cursor-not-allowed disabled:opacity-40"
+                className="text-muted-foreground transition-colors hover:text-cyan-200 disabled:cursor-not-allowed disabled:opacity-40"
               >
                 {reminders.slots.includes(customTime) ? (
                   <X className="h-3.5 w-3.5" />

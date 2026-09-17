@@ -122,7 +122,7 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
             <StarMark size={52} />
             <span>
               <span className="font-display block text-2xl font-bold tracking-tight">
-                Shifted<span className="text-emerald-200/90">Mind</span>
+                Shifted<span className="text-cyan-200/90">Mind</span>
               </span>
               <span className="font-eyebrow block text-muted-foreground">
                 choose your responses
@@ -160,7 +160,7 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
                         type="submit"
                         variant="outline"
                         size="icon"
-                        className="border-emerald-300/40 bg-emerald-300/10 text-emerald-200 hover:bg-emerald-300/20"
+                        className="border-cyan-300/40 bg-cyan-300/10 text-cyan-200 hover:bg-cyan-300/20"
                         disabled={isLoading}
                       >
                         {isLoading ? (
@@ -246,7 +246,7 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
                       Didn't receive a code?{" "}
                       <Button
                         variant="link"
-                        className="p-0 h-auto text-emerald-300"
+                        className="p-0 h-auto text-cyan-300"
                         onClick={() => setStep("signIn")}
                       >
                         Try again
@@ -291,7 +291,7 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
                 href="https://freebuff.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="underline hover:text-emerald-300 transition-colors"
+                className="underline hover:text-cyan-300 transition-colors"
               >
                 freebuff.com
               </a>
