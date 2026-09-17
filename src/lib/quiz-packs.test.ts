@@ -12,19 +12,16 @@ import { STAR_COLORS, type ColorKey } from "./shift-data";
  * well-formedness of the repainted values.
  */
 
-const HUE_FAMILY_TO_HUE_HEX_START: Record<string, string[]> = {
-  "text-amber-": ["#f59e0b", "#fbbf24", "#fcd34d", "#fde68a", "#fef3c7"],
-  "text-rose-": ["#f43f5e", "#fb7185", "#fda4af", "#fecdd3", "#ffe4e6"],
-  "text-violet-": ["#8b5cf6", "#a78bfa", "#c4b5fd", "#ddd6fe", "#ede9fe"],
-  "text-orange-": ["#f97316", "#fb923c", "#fdba74", "#fed7aa", "#ffedd5"],
-  "text-lime-": ["#84cc16", "#a3e635", "#bef264", "#d9f99d", "#ecfccb"],
-  "text-slate-": ["#64748b", "#94a3b8", "#cbd5e1", "#e2e8f0", "#f1f5f9", "#f8fafc"],
-};
+/** Hue families the palette allows for result accents: the six currently
+ *  shipped families. Cold old-theme families (cyan/teal/emerald/sky/blue)
+ *  are deliberately absent — their return would be a repaint regression. */
+const ALLOWED_HUE_FAMILIES = [
+  "text-amber-", "text-rose-", "text-violet-", "text-orange-",
+  "text-lime-", "text-slate-",
+];
 
 function hueFamily(hue: string): string | undefined {
-  return Object.keys(HUE_FAMILY_TO_HUE_HEX_START).find((f) =>
-    hue.startsWith(f),
-  );
+  return ALLOWED_HUE_FAMILIES.find((f) => hue.startsWith(f));
 }
 
 describe("QUIZ_PACKS structure", () => {
